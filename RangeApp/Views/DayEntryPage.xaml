@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+			 xmlns:DayEntryPage="clr-namespace:RangeApp"
+			 x:Class="RangeApp.Views.DayEntryPage"
+			 xmlns:viewmodel="clr-namespace:RangeApp.ViewModel"
+			 x:DataType="viewmodel:DayEntryViewModel" >
+
+	<VerticalStackLayout Padding="20">
+		<Label
+			Text="Day Entry Page"
+			FontSize="32"
+			HorizontalOptions="Center"
+			/>
+        <Entry Placeholder="Test Block" 
+               Text="{Binding Text}"/>
+        <Button Text="New Salvo"
+				Clicked="NewSalvo"/>
+	</VerticalStackLayout>
+
+</ContentPage>
