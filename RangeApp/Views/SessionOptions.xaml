@@ -1,55 +1,75 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-			 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-			 xmlns:SessionOptions="clr-namespace:RangeApp"
-			 xmlns:viewmodel="clr-namespace:RangeApp.ViewModel"
-			 x:DataType="viewmodel:SessionOptionsViewModel" 
-			 x:Class="RangeApp.Views.SessionOptions"
-			 >
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:SessionOptions="clr-namespace:RangeApp"
+             xmlns:viewmodel="clr-namespace:RangeApp.ViewModel"
+             x:Class="RangeApp.Views.SessionOptions"
+             Title="New Session">
 
-	<VerticalStackLayout>
-		<Label
-			Text="New Session Options"
-			FontSize="32"
-			HorizontalOptions="Center"/>
-        <Entry Text="Enter Name For Session" x:Name="NameEntry"/>
-        <Entry Text="Enter Description" x:Name="DescriptionEntry"/>
-        <Border Stroke="Red">
-            <Picker x:Name="LocationPicker"
-					Title="Select A Location"
-					>
-			</Picker>
-		</Border>
-        <Button Text="New Location" Clicked="NewLocation"/>
-        <Entry Text="Enter The Name Of The Location" x:Name="LocationEntry" IsVisible="False"/>
-        <Entry Text="Enter The Shooting Direction(Degrees)" x:Name="DirectionEntry" IsVisible="False"/>
-        <Border Stroke="Red">
-            <Picker x:Name="FirearmsPicker"
-					Title="Select Firearm From Existing"
-                    SelectedIndexChanged="SelectedFirearm">
-			</Picker>
-		</Border>
-        <Label Text="Fireamrs Currently In Session" HorizontalOptions="Center"/>
-        <ListView x:Name="FirearmList" MinimumHeightRequest="200" BackgroundColor="LightBlue">
+    <VerticalStackLayout
+                  Padding="20,0,0,0"
+        >
+        <Label
+            Text="New Session Options"
+            FontSize="32"
+                HorizontalOptions="{OnPlatform WinUI=Start, Android=Center}"
+                WidthRequest="{OnPlatform WinUI=400}"
+                  Padding="0,0,0,20"
+            />
+        <Entry Placeholder="Enter Name For Session"
+                HorizontalOptions="{OnPlatform WinUI=Start, Android=Fill}"
+                WidthRequest="{OnPlatform WinUI=400}"
+               x:Name="NameEntry"/>
+        <Entry Placeholder="Enter Description"
+                HorizontalOptions="{OnPlatform WinUI=Start, Android=Fill}"
+                WidthRequest="{OnPlatform WinUI=400}"
+               x:Name="DescriptionEntry"/>
+        <Picker x:Name="LocationPicker"
+                WidthRequest="{OnPlatform WinUI=400}"
+                HorizontalOptions="{OnPlatform WinUI=Start, Android=Fill}"
+                    Title="Select A Location">
+        </Picker>
+        <Button Text="New Location"
+                HorizontalOptions="{OnPlatform WinUI=Start, Android=Fill}"
+                WidthRequest="{OnPlatform WinUI=400}"
+                Clicked="NewLocation"/>
+        <Entry Text="Enter The Name Of The Location"
+               x:Name="LocationEntry"
+               IsVisible="False"/>
+        <Entry Text="Enter The Shooting Direction(Degrees)"
+               x:Name="DirectionEntry"
+               IsVisible="False"/>
+        <Picker
+                ItemsSource="{Binding AvailableFirearms, Mode=TwoWay}"
+                SelectedIndex="{Binding AvailableFirearmIndex, Mode=TwoWay}"
+                ItemDisplayBinding="{Binding Name}"
+                WidthRequest="{OnPlatform WinUI=400}"
+                HorizontalOptions="{OnPlatform WinUI=Start, Android=Fill}"
+                Title="Select Firearm From Existing">
+        </Picker>
+        <Label Text="Fireamrs Currently In Session"
+                  Padding="0,20,0,0"
+                WidthRequest="{OnPlatform WinUI=400}"
+                HorizontalOptions="{OnPlatform WinUI=Start, Android=Fill}"
+               TextDecorations="Underline"/>
+        <ListView x:Name="FirearmListView"
+                HorizontalOptions="{OnPlatform WinUI=Start, Android=Fill}"
+                WidthRequest="{OnPlatform WinUI=400}"
+                  ItemsSource="{Binding FirearmsInSession}">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
                         <VerticalStackLayout>
-                            <Label Text="{Binding Name}" />
-                            <Label Text="{Binding Id}" />
+                            <Label Text="{Binding Name}"/>
                         </VerticalStackLayout>
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <Button Text="Add Firearm" Clicked="AddFirearm"/>
-        <Entry x:Name="newFirearmName" Placeholder="Enter Name For New Firearm" IsVisible="Hidden" />
-        <Entry x:Name="newFirearmBarrelLength" Placeholder="Enter Barrel Length" IsVisible="Hidden" Keyboard="Numeric"/>
-        <Entry x:Name="newFirearmManufacturer" Placeholder="Enter Manufacturer" IsVisible="Hidden"/>
-        <Entry x:Name="newFirearmCaliber" Placeholder="Enter Caliber" IsVisible="Hidden"/>
-        <Entry x:Name="newFirearmScope" Placeholder="Enter Scope Name" IsVisible="Hidden"/>
-        <Button x:Name="saveFirearmButton" Text="Save Firearm" Clicked="SaveFirearm" IsVisible="Hidden"/>
-        <Label x:Name="statusMessage" Text="" />
+        <Button Text="Add Firearm"
+                HorizontalOptions="{OnPlatform WinUI=Start, Android=Fill}"
+                WidthRequest="{OnPlatform WinUI=400}"
+                Clicked="AddFirearm"/>
     </VerticalStackLayout>
 
 </ContentPage>

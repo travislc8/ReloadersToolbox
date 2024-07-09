@@ -33,11 +33,12 @@ public class RangeDayRepository
 
     public RangeDayRepository(string dbPath)
     {
-        _dbPath = dbPath;                        
+        _dbPath = dbPath;
+        StatusMessage = "";
     }
 
-    public void AddNewFirearm(Firearm firearm)
-    {            
+    public int AddNewFirearm(Firearm firearm)
+    {
         int result = 0;
         try
         {
@@ -46,11 +47,14 @@ public class RangeDayRepository
             if (firearm == null)
                 throw new Exception("Valid name required");
 
-            result = conn.Insert(new Firearm { Name = firearm.Name,
+            result = conn.Insert(new Firearm
+            {
+                Name = firearm.Name,
                 BarrelLength = firearm.BarrelLength,
                 Manufacturer = firearm.Manufacturer,
                 Caliber = firearm.Caliber,
-                ScopeID = firearm.ScopeID});
+                ScopeID = firearm.ScopeID
+            });
 
             StatusMessage = string.Format("{0} record(s) added (Name: {1})", result, firearm.Name);
         }
@@ -58,6 +62,7 @@ public class RangeDayRepository
         {
             StatusMessage = string.Format("Failed to add {0}. Error: {1}", firearm.Name, ex.Message);
         }
+        return result; 
 
     }
 
@@ -68,7 +73,7 @@ public class RangeDayRepository
         {
             Init();
             return conn.Table<Firearm>().ToList();
-            
+
         }
         catch (Exception ex)
         {
@@ -77,7 +82,25 @@ public class RangeDayRepository
 
         return new List<Firearm>();
     }
+    public List<String> GetAllFirearmNames()
+    {
+        try
+        {
+            Init();
+            var choice = from c in conn.Table<Firearm>()
+                         select c.Name;
+            var list = choice.ToList();
+            StatusMessage = string.Format("Found {0} Name(s)", list.Count());
 
+            return list;
+
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = string.Format("Failed to retrieve data. {0}", ex.Message);
+        }
+        return new List<String>();
+    }
     public List<Locations> GetAllLocations()
     {
 
@@ -85,7 +108,7 @@ public class RangeDayRepository
         {
             Init();
             return conn.Table<Locations>().ToList();
-            
+
         }
         catch (Exception ex)
         {
@@ -103,7 +126,7 @@ public class RangeDayRepository
             command.CommandText = "SELECT Firearm FROM Firearm ,Sessions, FirearmInSession WHERE Session.Id=session_id AND Firearm.Id=FirearmInSession.FirearmId";
             return command.ExecuteQuery<Firearm>();
         }
-        catch (Exception ex) 
+        catch (Exception ex)
         {
             StatusMessage = string.Format("Failed to retrieve data. {0}", ex.Message);
         }
@@ -120,8 +143,8 @@ public class RangeDayRepository
                          select c;
             StatusMessage = string.Format("Found Item {0}", name);
             return choice.FirstOrDefault();
-;
-        } 
+            ;
+        }
         catch (Exception ex)
         {
             StatusMessage = string.Format("Failed to retrieve data. {0}", ex.Message);

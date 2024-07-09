@@ -15,7 +15,8 @@ public static class MauiProgram
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
 			});
 
-		string dbPath = System.IO.Path.Combine(FileSystem.AppDataDirectory, "rangeData.db3");
+		string dbPath = System.IO.Path.Combine(Microsoft.Maui.Storage.FileSystem.AppDataDirectory, "rangeData.db3");
+
 		builder.Services.AddSingleton<Models.RangeDayRepository>(s => ActivatorUtilities.CreateInstance<Models.RangeDayRepository>(s, dbPath));
 
 #if DEBUG

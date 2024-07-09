@@ -9,6 +9,6 @@ public partial class DayEntryPage : ContentPage
 	}
 	async void NewSalvo(Object sender, EventArgs e)
 	{
-		await Navigation.PushAsync(new SessionOptions());
+		await Navigation.PushAsync(new SessionOptions(new ViewModel.SessionOptionsViewModel()));
 	}
 }

@@ -24,5 +24,8 @@
             </ListView.ItemTemplate>
         </ListView>
         <Button Text="Add" Command="{Binding AddCommand}"/>
+        <Button Text="Add Firearm Page"
+                Clicked="GoToAddNewFirearmPage"/>
+        <Label x:Name="TestLabel" Text="Test Label"/>
     </VerticalStackLayout>
 </ContentPage>

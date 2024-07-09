@@ -66,13 +66,16 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Views\NewFirearmPage.xaml.cs">
+	    <DependentUpon>NewFirearmPage.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Views\SessionOptions.xaml.cs">
 	    <DependentUpon>SessionOptions.xaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Views\Test2.xaml">
+	  <MauiXaml Update="Views\NewFirearmPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\TestPage.xaml">
