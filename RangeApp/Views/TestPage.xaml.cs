@@ -17,8 +17,8 @@ public partial class TestPage : ContentPage
 
     private async void GoToAddNewFirearmPage(object sender, EventArgs e)
     {
-		var vm = new ViewModel.NewFirearmPageViewModel();
-		await Navigation.PushAsync(new Views.NewFirearmPage(vm));
+		var vm = new ViewModel.FirearmListPageViewModel();
+		await Navigation.PushAsync(new Views.FirearmListPage(vm));
 
     }
 }

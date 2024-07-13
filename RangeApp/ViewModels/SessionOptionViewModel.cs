@@ -9,7 +9,7 @@ public partial class SessionOptionsViewModel : ObservableObject
 	public SessionOptionsViewModel()
 	{
 		FirearmsInSession = new ObservableCollection<Models.Firearm>();
-		AvailableFirearms = new ObservableCollection<RangeApp.Models.Firearm>(App.rangeDayRepo.GetAllFirearms());
+		AvailableFirearms = new ObservableCollection<RangeApp.Models.Firearm>(App.FirearmRepo.GetAllFirearms());
 
 	}
 	[ObservableProperty]
@@ -32,7 +32,7 @@ public partial class SessionOptionsViewModel : ObservableObject
 		StatusMessage = "";
 		if (AvailableFirearmIndex != -1)
 			FirearmsInSession.Add(AvailableFirearms[AvailableFirearmIndex]);
-		StatusMessage = App.rangeDayRepo.StatusMessage;
+		StatusMessage = App.FirearmRepo.StatusMessage;
 	}
 	public void SetStatusMessage(string message)
 	{
@@ -40,7 +40,7 @@ public partial class SessionOptionsViewModel : ObservableObject
 	}
 	public void AddToFirearmsInSession (string name)
 	{
-		var firearm = App.rangeDayRepo.GetFirearmFromName(name);
+		var firearm = App.FirearmRepo.GetFirearmFromName(name);
 		AddFirearmToSession (firearm);
 	}
 

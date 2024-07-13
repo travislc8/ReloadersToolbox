@@ -9,11 +9,31 @@ public partial class NewFirearmPage : ContentPage
 		InitializeComponent();
 		VM = vm;
 		BindingContext = vm;
+		textColor = NewFirearmName.TextColor;	
+		WeakReferenceMessenger.Default.Register<Models.SendItemMessage>(this, (r, m) =>
+            {
+				PopulateWithFirearm(m.Value);	
+
+            });  
 	}
 	private ViewModel.NewFirearmPageViewModel VM;
 	private Color? textColor = null;
 	private bool AddFirearmParamtersPass = false;
+	private bool edit_mode = false;
+	private string? edit_firearm_name;
+	private Models.Firearm? firearm;
 
+	private void PopulateWithFirearm(string name)
+	{
+        edit_firearm_name = name;
+        edit_mode = true;
+        firearm = App.FirearmRepo.GetFirearmFromName(edit_firearm_name);
+        NewFirearmName.Text = firearm.Name;
+		NewFirearmBarrelLength.Text = firearm.BarrelLength.ToString();
+		NewFirearmManufacturer.Text = firearm.Manufacturer;
+		NewFirearmCaliber.Text = firearm.Caliber;
+		NewFirearmScope.Text = firearm.ScopeID;
+	}
 	private bool NewFirearmNamePass = false;
 	void NewFirearmNameTextChanged(object sender, EventArgs e)
 	{
@@ -43,13 +63,29 @@ public partial class NewFirearmPage : ContentPage
 		{
 			if (VM.CheckNameIsDuplicate(NewFirearmName.Text))
 			{
-				VM.SetStatusMessage("Name Already Exists");
-				NewFirearmName.TextColor = Colors.Red;
-				NewFirearmNamePass = false;
-				if (AddFirearmParamtersPass)
+				// in edit mode so check duplicate is not itself
+				if (edit_mode && edit_firearm_name == NewFirearmName.Text)
 				{
-					saveFirearmButton.IsEnabled = false;
-					AddFirearmParamtersPass = false;
+					if (NewFirearmName.TextColor != textColor)
+						NewFirearmName.TextColor = textColor;
+					NewFirearmNamePass = true;
+					VM.SetStatusMessage("");
+					if (!AddFirearmParamtersPass && !saveFirearmButton.IsEnabled)
+					{
+						if (AddFirearmPararmetersPassCheck())
+							saveFirearmButton.IsEnabled = true;
+					}
+				}
+				else
+				{
+					VM.SetStatusMessage("Name Already Exists");
+					NewFirearmName.TextColor = Colors.Red;
+					NewFirearmNamePass = false;
+					if (AddFirearmParamtersPass)
+					{
+						saveFirearmButton.IsEnabled = false;
+						AddFirearmParamtersPass = false;
+					}
 				}
 			}
 			else
@@ -75,38 +111,23 @@ public partial class NewFirearmPage : ContentPage
 			{
 				var barrelLength = int.Parse(NewFirearmBarrelLength.Text);
 			}
-			catch (Exception ex)
+			catch 
 			{
 				VM.SetStatusMessage("Barrel Length Must Be a Number");
 				NewFirearmBarrelLength.TextColor = Colors.Red;
 				NewFirearmBarrelLengthPass = false;
-			if (AddFirearmParamtersPass)
-			{
-				saveFirearmButton.IsEnabled = false;
-				AddFirearmParamtersPass = false;
-			}
 				return;
 			}
 			VM.SetStatusMessage("");
 			if (NewFirearmBarrelLength.TextColor != textColor)
 				NewFirearmBarrelLength.TextColor = textColor;
 			NewFirearmBarrelLengthPass = true;
-			if (!AddFirearmParamtersPass && !saveFirearmButton.IsEnabled)
-			{
-				if (AddFirearmPararmetersPassCheck())
-                    saveFirearmButton.IsEnabled = true;
-            }
 		}
 		else
 		{
 			NewFirearmBarrelLengthPass = false;
 			NewFirearmBarrelLength.Placeholder = "Enter Barrel Length"; 
 			VM.SetStatusMessage("");
-			if (AddFirearmParamtersPass)
-			{
-				saveFirearmButton.IsEnabled = false;
-				AddFirearmParamtersPass = false;
-			}
 		}
 		return;
     }
@@ -118,21 +139,11 @@ public partial class NewFirearmPage : ContentPage
 			NewFirearmManufacturer.TextColor = Colors.Red;
 			VM.SetStatusMessage("Manufacture Name To Long");
 			NewFirearmManufactrurerPass = false;
-			if (AddFirearmParamtersPass)
-			{
-				saveFirearmButton.IsEnabled = false;
-				AddFirearmParamtersPass = false;
-			}
 		}
 		else if (NewFirearmManufacturer.Text.Length < 1){
 			VM.SetStatusMessage("");
 			NewFirearmManufacturer.Placeholder = "Enter Manufacturer";
 			NewFirearmManufactrurerPass = false;
-			if (AddFirearmParamtersPass)
-			{
-				saveFirearmButton.IsEnabled = false;
-				AddFirearmParamtersPass = false;
-			}
 		}
 		else
 		{
@@ -140,11 +151,6 @@ public partial class NewFirearmPage : ContentPage
 			if (NewFirearmManufacturer.TextColor != textColor)
                 NewFirearmManufacturer.TextColor = textColor;
 			NewFirearmManufactrurerPass = true;
-			if (!AddFirearmParamtersPass && !saveFirearmButton.IsEnabled)
-			{
-				if (AddFirearmPararmetersPassCheck())
-                    saveFirearmButton.IsEnabled = true;
-            }
         }
 		
 	}
@@ -156,22 +162,12 @@ public partial class NewFirearmPage : ContentPage
 			NewFirearmCaliber.TextColor = Colors.Red;
 			VM.SetStatusMessage("Caliber Name To Long");
 			NewFirearmCaliberPass = false;
-			if (AddFirearmParamtersPass)
-			{
-				saveFirearmButton.IsEnabled = false;
-				AddFirearmParamtersPass = false;
-			}
 		}
 		else if (NewFirearmCaliber.Text.Length < 1)
 		{
 			VM.SetStatusMessage("");
 			NewFirearmCaliber.Placeholder = "Enter Caliber";
 			NewFirearmCaliberPass = false;
-			if (AddFirearmParamtersPass)
-			{
-				saveFirearmButton.IsEnabled = false;
-				AddFirearmParamtersPass = false;
-			}
 		}
 		else
 		{
@@ -179,11 +175,6 @@ public partial class NewFirearmPage : ContentPage
 			if (NewFirearmCaliber.TextColor != textColor)
                 NewFirearmCaliber.TextColor = textColor;
 			NewFirearmCaliberPass = true;
-			if (!AddFirearmParamtersPass && !saveFirearmButton.IsEnabled)
-			{
-				if (AddFirearmPararmetersPassCheck())
-                    saveFirearmButton.IsEnabled = true;
-            }
         }
 	}
 	private bool NewFirearmScopePass = false;
@@ -194,22 +185,12 @@ public partial class NewFirearmPage : ContentPage
 			NewFirearmScope.TextColor = Colors.Red;
 			VM.SetStatusMessage("Scope Name To Long");
 			NewFirearmScopePass = false;
-			if (AddFirearmParamtersPass)
-			{
-				saveFirearmButton.IsEnabled = false;
-				AddFirearmParamtersPass = false;
-			}
 		}
 		else if (NewFirearmScope.Text.Length < 1)
 		{
 			VM.SetStatusMessage("");
 			NewFirearmScope.Placeholder = "Enter Scope Name";
 			NewFirearmScopePass = false;
-			if (AddFirearmParamtersPass)
-			{
-				saveFirearmButton.IsEnabled = false;
-				AddFirearmParamtersPass = false;
-			}
 		}
 		else
 		{
@@ -217,17 +198,12 @@ public partial class NewFirearmPage : ContentPage
 			if (NewFirearmScope.TextColor != textColor)
                 NewFirearmScope.TextColor = textColor;
 			NewFirearmScopePass = true;
-			if (!AddFirearmParamtersPass && !saveFirearmButton.IsEnabled)
-			{
-				if (AddFirearmPararmetersPassCheck())
-                    saveFirearmButton.IsEnabled = true;
-            }
         }
 
     }
 	private bool AddFirearmPararmetersPassCheck()
 	{
-		if (NewFirearmScopePass && NewFirearmScopePass && NewFirearmCaliberPass && NewFirearmManufactrurerPass && NewFirearmBarrelLengthPass && NewFirearmNamePass)
+		if (NewFirearmNamePass)
 		{ 
 			AddFirearmParamtersPass = true;
 			return true; 
@@ -243,19 +219,28 @@ public partial class NewFirearmPage : ContentPage
 		if (!AddFirearmPararmetersPassCheck())
 			return;
 
-		var barrelLength = int.Parse(NewFirearmBarrelLength.Text);
-		var firearm = new Firearm
+		int barrelLength;
+		if (NewFirearmBarrelLength.Text != null)
+            barrelLength = int.Parse(NewFirearmBarrelLength.Text);
+        else
+            barrelLength = 0;
+		var new_firearm = new Firearm
 		{
 			Name = NewFirearmName.Text,
 			BarrelLength = barrelLength,
 			Manufacturer = NewFirearmManufacturer.Text,
 			Caliber = NewFirearmCaliber.Text,
-			ScopeID = NewFirearmScope.Text
+			ScopeID = NewFirearmScope.Text,
 		};
+		if (firearm != null)
+		{
+			new_firearm.Id = firearm.Id;
+		}
 
-		var result = App.rangeDayRepo.AddNewFirearm(firearm);
 
-		WeakReferenceMessenger.Default.Send(new SendItemMessage(NewFirearmName.Text));	
+        App.FirearmRepo.AddNewFirearm(new_firearm);
+
+        WeakReferenceMessenger.Default.Send(new SendItemMessage(NewFirearmName.Text));	
 		Navigation.PopAsync();
 	}
 	private void CancelSaveFirearm(object sender, EventArgs e)

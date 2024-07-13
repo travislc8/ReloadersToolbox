@@ -2,7 +2,6 @@ using CommunityToolkit.Mvvm.Messaging;
 using RangeApp.Models;
 namespace RangeApp.Views;
 
-//TODO: Bind Picker to view model
 public partial class SessionOptions : ContentPage
 {
 
@@ -17,7 +16,7 @@ public partial class SessionOptions : ContentPage
 				VM.AddToFirearmsInSession(m.Value.ToString());
             });  
 	}
-	private List<Locations> locations { get; set; }
+	private List<Models.Location> locations { get; set; }
 	private ViewModel.SessionOptionsViewModel VM;
 	// fix
 	void NewLocation(object sender, EventArgs e)

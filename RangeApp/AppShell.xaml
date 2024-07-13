@@ -24,7 +24,10 @@
     <FlyoutItem Title="Test Page"
                 Icon="home.png">
         <Tab>
-            <ShellContent ContentTemplate="{DataTemplate local:Views.TestPage}"/>
+            <ShellContent ContentTemplate="{DataTemplate local:Views.TestPage}"
+                          Title="TestPage"/>
+            <ShellContent ContentTemplate="{DataTemplate local:Views.FirearmListPage}"
+                          Title="Firearm Edit"/>
         </Tab>
     </FlyoutItem>
 

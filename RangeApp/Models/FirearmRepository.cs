@@ -1,48 +1,26 @@
-﻿
-using SQLite;
+﻿using SQLite;
 
 namespace RangeApp.Models;
 
-public struct Result
-{
-    public int num_effected;
-    public string status_message;
-}
-public class RangeDayRepository
+public class FirearmRepository
 {
     string _dbPath;
     private SQLiteConnection conn;
+    public string StatusMessage = "";
 
-
-    public string StatusMessage { get; set; }
-
-    // TODO: Add variable for the SQLite connection
-
-    private void Init()
-    {
-        // TODO: Add code to initialize the repository         
-        if (conn != null)
-            return;
-        conn = new SQLiteConnection(_dbPath);
-        conn.CreateTable<Firearm>();
-        conn.CreateTable<FirearmInSession>();
-        conn.CreateTable<FirearmToRound>();
-        conn.CreateTable<Group>();
-        conn.CreateTable<GroupInSessison>();
-        conn.CreateTable<Round>();
-        conn.CreateTable<RoundInSession>();
-        conn.CreateTable<Session>();
-        conn.CreateTable<Shot>();
-    }
-
-    public RangeDayRepository(string dbPath)
+    public FirearmRepository(string dbPath)
     {
         _dbPath = dbPath;
-        StatusMessage = "";
     }
-
-    public int AddNewFirearm(Firearm firearm)
+    private void Init()
     {
+        if (conn != null)
+            return; 
+            conn = new SQLiteConnection(_dbPath);
+            conn.CreateTable<Firearm>();
+       
+    }
+    public int AddNewFirearm(Firearm firearm) {
         int result = 0;
         try
         {

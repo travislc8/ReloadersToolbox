@@ -1,12 +1,12 @@
 ﻿using System; using SQLite;
 
 namespace RangeApp.Models;
-[Table("Locations")]
+[Table("Location")]
 
-public class Locations
+public class Location
 {
     [PrimaryKey, AutoIncrement]
-    public int LocationId { get; set; }
+    public int Id { get; set; }
     [Unique]
     public string? Name { get; set; }
     public int? ShootingDirection  { get; set; }

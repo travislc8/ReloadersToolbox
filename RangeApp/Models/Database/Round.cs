@@ -21,5 +21,6 @@ internal class Round
     public string? CaseName { get; set; }
     [MaxLength (50)]
     public string? Primer { get; set; }
-    Decimal? Offset { get; set; }
+    public Decimal? Jump { get; set; }
+    public bool? Tested { get; set; }
 }

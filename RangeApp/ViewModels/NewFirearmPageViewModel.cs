@@ -8,12 +8,13 @@ public partial class NewFirearmPageViewModel : ObservableObject
 {
     public NewFirearmPageViewModel()
     {
-        var list = new ObservableCollection<string>(App.rangeDayRepo.GetAllFirearmNames());
-        availableFirearms = list;
+        AvailableFirearms = new ObservableCollection<string>(App.FirearmRepo.GetAllFirearmNames());
 
-        StatusMessage = App.rangeDayRepo.StatusMessage;
+        StatusMessage = App.FirearmRepo.StatusMessage;
     }
 
+    [ObservableProperty]
+    ObservableCollection<Models.Firearm>? allFirearms;
     [ObservableProperty]
     ObservableCollection<string>? availableFirearms;
     [ObservableProperty]

@@ -9,7 +9,7 @@ public partial class TestPageViewModel : ObservableObject
 {
 	public TestPageViewModel()
 	{
-		FirearmListView = new ObservableCollection<RangeApp.Models.Firearm>(App.rangeDayRepo.GetAllFirearms());
+		FirearmListView = new ObservableCollection<RangeApp.Models.Firearm>(App.FirearmRepo.GetAllFirearms());
 	}
 	[ObservableProperty]
 	ObservableCollection<RangeApp.Models.Firearm> firearmListView;
