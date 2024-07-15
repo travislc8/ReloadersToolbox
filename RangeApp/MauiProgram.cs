@@ -22,6 +22,8 @@ public static class MauiProgram
 
 		builder.Services.AddSingleton<Models.RangeDayRepository>(s => ActivatorUtilities.CreateInstance<Models.RangeDayRepository>(s, dbPath));
 		builder.Services.AddSingleton<Models.FirearmRepository>(s => ActivatorUtilities.CreateInstance<Models.FirearmRepository>(s, dbPath));
+		builder.Services.AddSingleton<Models.LocationRepository>(s => ActivatorUtilities.CreateInstance<Models.LocationRepository>(s, dbPath));
+		builder.Services.AddSingleton<Models.SessionRepository>(s => ActivatorUtilities.CreateInstance<Models.SessionRepository>(s, dbPath));
 
 #if DEBUG
 		builder.Logging.AddDebug();

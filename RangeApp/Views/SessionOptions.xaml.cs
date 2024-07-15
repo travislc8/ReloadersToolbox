@@ -11,6 +11,7 @@ public partial class SessionOptions : ContentPage
 		VM = vm;
 		BindingContext = vm;
 		locations = [];
+		TextColor = NameEntry.TextColor;
 		WeakReferenceMessenger.Default.Register<SendItemMessage>(this, (r, m) =>
             {
 				VM.AddToFirearmsInSession(m.Value.ToString());
@@ -18,11 +19,12 @@ public partial class SessionOptions : ContentPage
 	}
 	private List<Models.Location> locations { get; set; }
 	private ViewModel.SessionOptionsViewModel VM;
-	// fix
-	void NewLocation(object sender, EventArgs e)
+	private Color TextColor;
+	private async void NewLocation(object sender, EventArgs e)
 	{
-		LocationEntry.IsVisible = true;
-		DirectionEntry.IsVisible = true;
+		var vm = new ViewModel.NewLocationPageViewModel();
+		await Navigation.PushAsync(new Views.NewLocationPage(vm));
+		VM.UpdateLocations();
 	}
     private async void AddFirearm(object sender, EventArgs e)
     {
@@ -31,4 +33,45 @@ public partial class SessionOptions : ContentPage
 		
     }
 
+
+    private void OnNameTextChanged(object sender, TextChangedEventArgs e)
+    {
+		if (NameEntry.Text.Length > 0)
+		{
+			if (VM.NameDuplicateCheck(NameEntry.Text))
+			{
+				VM.SetStatusMessage("Name Already Exists");
+				SaveSessionButton.IsEnabled = false;
+				if (NameEntry.TextColor == TextColor)
+				{
+					NameEntry.TextColor = Colors.Red;
+				}
+			}
+			else if (NameEntry.Text.Length > 30)
+			{
+				VM.SetStatusMessage("Name Is Too Long");
+				SaveSessionButton.IsEnabled = false;
+				if (NameEntry.TextColor == TextColor)
+				{
+					NameEntry.TextColor = Colors.Red;
+				}
+			}
+			else
+			{
+				if (NameEntry.TextColor != TextColor)
+					NameEntry.TextColor = TextColor;
+				VM.SetStatusMessage("");
+				SaveSessionButton.IsEnabled = true;
+
+			}
+		}
+		else
+		{
+			VM.SetStatusMessage("");
+		}
+    }
+	private void SaveButtonClicked(object sender, EventArgs args)
+	{
+		VM.Save(NameEntry.Text, NoteEntry.Text);
+	}
 }

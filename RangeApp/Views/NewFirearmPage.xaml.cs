@@ -41,7 +41,8 @@ public partial class NewFirearmPage : ContentPage
 		{
 
 			VM.SetStatusMessage("Name To Long");
-			NewFirearmNamePass = false;
+            NewFirearmName.TextColor = Colors.Red;
+            NewFirearmNamePass = false;
 			if (AddFirearmParamtersPass)
 			{
 				saveFirearmButton.IsEnabled = false;

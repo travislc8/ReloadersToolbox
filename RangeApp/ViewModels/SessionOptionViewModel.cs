@@ -10,8 +10,10 @@ public partial class SessionOptionsViewModel : ObservableObject
 	{
 		FirearmsInSession = new ObservableCollection<Models.Firearm>();
 		AvailableFirearms = new ObservableCollection<RangeApp.Models.Firearm>(App.FirearmRepo.GetAllFirearms());
-
+		AvailableLocations = new ObservableCollection<Models.Location>(App.LocationRepo.GetAllLocations());
+		SessionNames = new ObservableCollection<string>(App.SessionRepo.GetSessionNames());
 	}
+	private int LocationId = -1;
 	[ObservableProperty]
 	ObservableCollection<RangeApp.Models.Firearm> firearmsInSession;
 	[ObservableProperty]
@@ -19,7 +21,15 @@ public partial class SessionOptionsViewModel : ObservableObject
 	[ObservableProperty]
 	int availableFirearmIndex = -1;
 	[ObservableProperty]
+	ObservableCollection<RangeApp.Models.Location> availableLocations;
+	[ObservableProperty]
+	int availableLocaitonIndex = -1;
+	[ObservableProperty]
 	string statusMessage = string.Empty;
+	[ObservableProperty]
+	ObservableCollection<string> sessionNames;
+	[ObservableProperty]
+	string firearmPickerPlaceholder = "Select a Firearm From Existing";
 
 
 	public void AddFirearmToSession(Models.Firearm firearm)
@@ -32,9 +42,16 @@ public partial class SessionOptionsViewModel : ObservableObject
 		StatusMessage = "";
 		if (AvailableFirearmIndex != -1)
 			FirearmsInSession.Add(AvailableFirearms[AvailableFirearmIndex]);
-		StatusMessage = App.FirearmRepo.StatusMessage;
 	}
-	public void SetStatusMessage(string message)
+	partial void OnAvailableLocaitonIndexChanged(int value)
+	{
+		StatusMessage = "";
+		if (AvailableLocaitonIndex != -1)
+			if (AvailableLocaitonIndex != -1)
+                LocationId = AvailableLocations[AvailableLocaitonIndex].Id;
+    }
+
+    public void SetStatusMessage(string message)
 	{
 		StatusMessage = message;
 	}
@@ -44,4 +61,30 @@ public partial class SessionOptionsViewModel : ObservableObject
 		AddFirearmToSession (firearm);
 	}
 
+	public bool NameDuplicateCheck(string name)
+	{
+		return SessionNames.Contains(name);
+	}
+	public void Save(string location_name, string note)
+	{
+
+		var session = new Models.Session
+		{
+			Name = location_name,
+			Note = note,
+			Id = LocationId
+		};
+		App.SessionRepo.AddSession(session);
+		List<Models.Firearm> list = FirearmsInSession.ToList();
+		App.SessionRepo.AddFirearmsToSession(FirearmsInSession.ToList());
+		StatusMessage = App.SessionRepo.StatusMessage;
+	}
+	public void UpdateLocations()
+	{
+		AvailableLocations = new ObservableCollection<Models.Location>(App.LocationRepo.GetAllLocations());
+	}
+	public void UpdateFirearms()
+	{
+		AvailableFirearms = new ObservableCollection<RangeApp.Models.Firearm>(App.FirearmRepo.GetAllFirearms());
+	}
 }

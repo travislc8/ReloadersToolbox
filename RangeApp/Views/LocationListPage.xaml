@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="RangeApp.Views.LocationListPage"
+             Title="Locations"
+             xmlns:viewmodel="clr-namespace:RangeApp.ViewModel"
+             x:DataType="viewmodel:LocationListPageViewModel">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:SelectedItemEventArgsConverter x:Key="SelectedItemEventArgsConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <VerticalStackLayout>
+        <Entry x:Name="SearchInput"
+                   Placeholder="Search"
+                   TextChanged="SearchInputChanged"
+                   Text="{Binding SearchInputText}"
+                   />
+        <ScrollView>
+            <ListView x:Name="LocationListView"
+                HorizontalOptions="{OnPlatform WinUI=Start, Android=Fill}"
+                WidthRequest="{OnPlatform WinUI=400}"
+                SelectedItem="{Binding ItemSelectedCommand}"
+                MaximumHeightRequest="200"
+                x:DataType="{x:Null}"
+                ItemsSource="{Binding RefinedLocations}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <VerticalStackLayout>
+                                <Label Text="{Binding Name}"/>
+                            </VerticalStackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+                <ListView.Behaviors>
+                    <toolkit:EventToCommandBehavior
+                        EventName="ItemSelected"
+                        Command="{Binding ItemSelectedCommand}"
+                        EventArgsConverter="{StaticResource SelectedItemEventArgsConverter}" />
+                </ListView.Behaviors>
+            </ListView>
+        </ScrollView>
+        <Button Text="Add New"
+                Clicked="AddNew"/>
+        <Button x:Name="Edit"
+                Text="Edit Selected"
+                Clicked="EditSelected"
+                />
+        <Button x:Name="Delete"
+                Text="Delete Selected"
+                Command="{Binding DeleteSelectedCommand}"
+                />
+
+        <Label 
+               Text="Selected Info"
+               HorizontalOptions="Center"
+               FontSize="Large"
+               Padding="0,20,0,0"/>
+
+        <Label HorizontalOptions="Center"
+               Padding="0,10,0,0"
+               TextDecorations="Underline"
+               Text="Name"
+               />
+        <Label x:Name="Name"
+               HorizontalOptions="Center"
+               Text="{Binding SelectedName}"/>
+
+        <Label HorizontalOptions="Center"
+               Padding="0,10,0,0"
+               Text="Barrel Length"
+               TextDecorations="Underline"
+               />
+        <Label x:Name="ShootingDirection"
+               HorizontalOptions="Center"
+               Text="{Binding SelectedShootingDirection}"/>
+    </VerticalStackLayout>
+
+</ContentPage>

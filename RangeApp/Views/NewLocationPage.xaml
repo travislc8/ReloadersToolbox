@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:SessionOptions="clr-namespace:RangeApp"
+             xmlns:viewmodel="clr-namespace:RangeApp.ViewModel"
+             x:Class="RangeApp.Views.NewLocationPage"
+             Title="New Location Entry">
+
+    <VerticalStackLayout Padding="20,0,0,0">
+        <Entry x:Name="NewLocationName"
+               Placeholder="Enter Name For New Location"
+               TextChanged="NewLocationNameTextChanged"
+                HorizontalOptions="{OnPlatform WinUI=Start, Android=Fill}"
+                WidthRequest="{OnPlatform WinUI=400}"
+               />
+        <Entry x:Name="NewShootingDirection"
+               Placeholder="Enter the Shooting Direction in Degrees"
+                HorizontalOptions="{OnPlatform WinUI=Start, Android=Fill}"
+                WidthRequest="{OnPlatform WinUI=400}"
+               TextChanged="NewShootingDirectionTextChanged"
+               Keyboard="Numeric"/>
+        <Grid ColumnDefinitions="{OnPlatform WinUI='200,200', Android='Auto,Auto'}"
+                WidthRequest="{OnPlatform WinUI=400}"
+                HorizontalOptions="{OnPlatform WinUI=Start, Android=Fill}">
+
+            <Button x:Name="saveLocationButton"
+                Grid.Column="0" 
+                IsEnabled="false"
+                Text="Save Location"
+                Clicked="SaveLocation"
+                />
+            <Button x:Name="cancelSaveLocationButton"
+                Text="Cancel"
+                Grid.Column="1"
+                Clicked="CancelSaveLocation"
+               />
+
+        </Grid>
+        <Label Text="{Binding StatusMessage}"/>
+    </VerticalStackLayout>
+
+</ContentPage>
+

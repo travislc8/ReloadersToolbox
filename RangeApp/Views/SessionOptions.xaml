@@ -19,12 +19,16 @@
         <Entry Placeholder="Enter Name For Session"
                 HorizontalOptions="{OnPlatform WinUI=Start, Android=Fill}"
                 WidthRequest="{OnPlatform WinUI=400}"
+                TextChanged="OnNameTextChanged"
                x:Name="NameEntry"/>
         <Entry Placeholder="Enter Description"
                 HorizontalOptions="{OnPlatform WinUI=Start, Android=Fill}"
                 WidthRequest="{OnPlatform WinUI=400}"
-               x:Name="DescriptionEntry"/>
+               x:Name="NoteEntry"/>
         <Picker x:Name="LocationPicker"
+                ItemsSource="{Binding AvailableLocations, Mode=TwoWay}"
+                SelectedIndex="{Binding AvailableLocationsIndex, Mode=TwoWay}"
+                ItemDisplayBinding="{Binding Name}"
                 WidthRequest="{OnPlatform WinUI=400}"
                 HorizontalOptions="{OnPlatform WinUI=Start, Android=Fill}"
                     Title="Select A Location">
@@ -45,8 +49,12 @@
                 ItemDisplayBinding="{Binding Name}"
                 WidthRequest="{OnPlatform WinUI=400}"
                 HorizontalOptions="{OnPlatform WinUI=Start, Android=Fill}"
-                Title="Select Firearm From Existing">
+                Title="{Binding FirearmPickerPlaceholder}">
         </Picker>
+        <Button Text="New Firearm"
+                HorizontalOptions="{OnPlatform WinUI=Start, Android=Fill}"
+                WidthRequest="{OnPlatform WinUI=400}"
+                Clicked="AddFirearm"/>
         <Label Text="Fireamrs Currently In Session"
                   Padding="0,20,0,0"
                 WidthRequest="{OnPlatform WinUI=400}"
@@ -66,10 +74,14 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <Button Text="Add Firearm"
-                HorizontalOptions="{OnPlatform WinUI=Start, Android=Fill}"
+        <Button x:Name="SaveSessionButton" Text="Start Session"
                 WidthRequest="{OnPlatform WinUI=400}"
-                Clicked="AddFirearm"/>
+                Clicked="SaveButtonClicked"
+                IsEnabled="False"/>
+        <Label Text="{Binding StatusMessage}"/>
+
+
+
     </VerticalStackLayout>
 
 </ContentPage>

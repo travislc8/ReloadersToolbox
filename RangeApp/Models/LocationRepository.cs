@@ -11,6 +11,7 @@ public class LocationRepository
     public LocationRepository(string dbPath)
     {
         _dbPath = dbPath;
+        Init();
     }
     private void Init()
     {

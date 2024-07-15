@@ -28,6 +28,8 @@
                           Title="TestPage"/>
             <ShellContent ContentTemplate="{DataTemplate local:Views.FirearmListPage}"
                           Title="Firearm Edit"/>
+            <ShellContent ContentTemplate="{DataTemplate local:Views.LocationListPage}"
+                          Title="Location Edit"/>
         </Tab>
     </FlyoutItem>
 
