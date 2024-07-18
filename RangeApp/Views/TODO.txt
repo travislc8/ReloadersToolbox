@@ -1,0 +1,72 @@
+﻿Session Page
+	Default firearm/round
+	Save Session Button 
+		Delete Button
+	field data verification
+	Firearm list without check for in session
+		create new button
+	Round List 
+	Edit Group Button 
+	display 1 for first group on list (not 0)
+	Group List data displayed
+	Delete Group update list
+
+Group Page
+	FPS/MPS Adjustment
+	scroll with keyboard
+	stdev
+	average into dbs and display
+	field data verification
+	display 1 for first shot on list (not 0)
+
+Session Options 
+	Complete Data into session
+
+
+
+Add Round list in session page 
+
+Page for Rounds 
+	Round Builder Page
+	new/edit 
+	detail page
+	sortable 
+	queue creation
+	way to move rounds to other firearms
+
+Page to edit/view groups
+	Inside the Session Page 
+
+Page to view Sessions
+	Data in is all of the relevent round gun .....
+
+Page to view Locations
+
+Page for detailed view of firearm
+	rounds available with links 
+	groups ...
+	sessions ...
+	shot ?
+
+Page to pre-build sessions?
+	may just be normal page
+	save for later button?
+
+Day entry page options to create new sess or edit current 
+
+
+Home Page 
+	What is it for 
+
+Async Database 
+
+Firgure out load wait animation
+	Preload page?
+
+
+New database stuff
+	May just be a created list for round builder page 
+		Powder
+		bullet
+		pressures in bullet
+

@@ -14,6 +14,7 @@ public partial class SessionOptionsViewModel : ObservableObject
 		SessionNames = new ObservableCollection<string>(App.SessionRepo.GetSessionNames());
 	}
 	private int LocationId = -1;
+	private string SessionName;
 	[ObservableProperty]
 	ObservableCollection<RangeApp.Models.Firearm> firearmsInSession;
 	[ObservableProperty]
@@ -29,9 +30,13 @@ public partial class SessionOptionsViewModel : ObservableObject
 	[ObservableProperty]
 	ObservableCollection<string> sessionNames;
 	[ObservableProperty]
-	string firearmPickerPlaceholder = "Select a Firearm From Existing";
+	string firearmPickerPlaceholder = "Select a FirearmName From Existing";
 
 
+	public void SetSessionName(string sessionName)
+	{
+		SessionName = sessionName;
+	}
 	public void AddFirearmToSession(Models.Firearm firearm)
 	{
 		FirearmsInSession.Add(firearm);
@@ -70,13 +75,14 @@ public partial class SessionOptionsViewModel : ObservableObject
 
 		var session = new Models.Session
 		{
-			Name = location_name,
+			LocationId = LocationId,
 			Note = note,
-			Id = LocationId
+			Id = LocationId,
+			Name = SessionName,
 		};
 		App.SessionRepo.AddSession(session);
-		List<Models.Firearm> list = FirearmsInSession.ToList();
-		App.SessionRepo.AddFirearmsToSession(FirearmsInSession.ToList());
+		var session_id = App.SessionRepo.GetSessionIdFromName(SessionName);
+		App.SessionRepo.AddFirearmsToSession(FirearmsInSession.ToList(), session_id);
 		StatusMessage = App.SessionRepo.StatusMessage;
 	}
 	public void UpdateLocations()

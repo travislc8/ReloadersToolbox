@@ -10,9 +10,13 @@ public partial class TestPageViewModel : ObservableObject
 	public TestPageViewModel()
 	{
 		FirearmListView = new ObservableCollection<RangeApp.Models.Firearm>(App.FirearmRepo.GetAllFirearms());
+		var list = App.SessionRepo.GetFirearmsInSession(6);
+		count = list.Count;
 	}
 	[ObservableProperty]
 	ObservableCollection<RangeApp.Models.Firearm> firearmListView;
+	[ObservableProperty]
+	public int count;
 
 
 	[RelayCommand]

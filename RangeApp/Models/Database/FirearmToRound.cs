@@ -5,7 +5,7 @@ namespace RangeApp.Models;
 [Table("FirearmToRound")]
 public class FirearmToRound
 {
-    [PrimaryKey]
+    [PrimaryKey, AutoIncrement]
     public int FirearmToRoundId { get; set; }  
     public int FirearmId { get; set; }
     public string RoundId { get; set; }

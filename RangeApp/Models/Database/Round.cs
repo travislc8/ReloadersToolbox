@@ -3,7 +3,7 @@
 namespace RangeApp.Models;
 [Table("Round")]
 
-internal class Round
+public class Round
 {
     [PrimaryKey, AutoIncrement] 
     public int Id { get; set; }

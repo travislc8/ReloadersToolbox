@@ -25,6 +25,10 @@ public static class MauiProgram
 		builder.Services.AddSingleton<Models.LocationRepository>(s => ActivatorUtilities.CreateInstance<Models.LocationRepository>(s, dbPath));
 		builder.Services.AddSingleton<Models.SessionRepository>(s => ActivatorUtilities.CreateInstance<Models.SessionRepository>(s, dbPath));
 
+		//Page Routes
+		Routing.RegisterRoute("NewGroupPage", typeof(Views.NewGroupPage));
+		Routing.RegisterRoute("SessionPage", typeof(Views.SessionPage));
+
 #if DEBUG
 		builder.Logging.AddDebug();
 #endif

@@ -7,7 +7,7 @@
              Title="Test Page">
     <VerticalStackLayout>
         <Label
-            Text="Test Page 123"
+            Text="{Binding Count}"
             FontSize="30"/>
         <ListView x:Name="FirearmList"
                     ItemsSource="{Binding FirearmListView}"

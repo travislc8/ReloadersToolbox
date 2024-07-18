@@ -154,7 +154,7 @@ public class RangeDayRepository
         {
             Init();
             var command = new SQLiteCommand(conn);
-            command.CommandText = "SELECT Firearm FROM Firearm ,Sessions, FirearmInSession WHERE Session.Id=session_id AND Firearm.Id=FirearmInSession.FirearmId";
+            command.CommandText = "SELECT FirearmName FROM FirearmName ,Sessions, FirearmInSession WHERE Session.Id=session_id AND FirearmName.Id=FirearmInSession.FirearmId";
             return command.ExecuteQuery<Firearm>();
         }
         catch (Exception ex)

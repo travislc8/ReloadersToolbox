@@ -21,6 +21,9 @@
             <ShellContent ContentTemplate="{DataTemplate local:Views.DayEntryPage}"/>
         </Tab>
     </FlyoutItem>
+    <FlyoutItem Title="Session Page">
+        <ShellContent ContentTemplate="{DataTemplate local:Views.SessionPage}"/>
+    </FlyoutItem>
     <FlyoutItem Title="Test Page"
                 Icon="home.png">
         <Tab>

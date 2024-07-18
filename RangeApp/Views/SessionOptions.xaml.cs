@@ -62,6 +62,7 @@ public partial class SessionOptions : ContentPage
 					NameEntry.TextColor = TextColor;
 				VM.SetStatusMessage("");
 				SaveSessionButton.IsEnabled = true;
+				VM.SetSessionName(NameEntry.Text);
 
 			}
 		}
@@ -70,8 +71,10 @@ public partial class SessionOptions : ContentPage
 			VM.SetStatusMessage("");
 		}
     }
-	private void SaveButtonClicked(object sender, EventArgs args)
+	async private void SaveButtonClicked(object sender, EventArgs args)
 	{
-		VM.Save(NameEntry.Text, NoteEntry.Text);
+		 VM.Save(NameEntry.Text, NoteEntry.Text);
+		var name = NameEntry.Text;
+		await Shell.Current.GoToAsync($"SessionPage?name={name}");
 	}
 }

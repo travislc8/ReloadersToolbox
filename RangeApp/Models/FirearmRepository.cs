@@ -132,7 +132,7 @@ public class FirearmRepository
         {
             Init();
             var command = new SQLiteCommand(conn);
-            command.CommandText = "SELECT Firearm FROM Firearm ,Sessions, FirearmInSession WHERE Session.Id=session_id AND Firearm.Id=FirearmInSession.FirearmId";
+            command.CommandText = "SELECT FirearmName FROM FirearmName ,Sessions, FirearmInSession WHERE Session.Id=session_id AND FirearmName.Id=FirearmInSession.FirearmId";
             return command.ExecuteQuery<Firearm>();
         }
         catch (Exception ex)
@@ -152,12 +152,31 @@ public class FirearmRepository
                          select c;
             StatusMessage = string.Format("Found Item {0}", name);
             return choice.FirstOrDefault();
-            ;
         }
         catch (Exception ex)
         {
             StatusMessage = string.Format("Failed to retrieve data. {0}", ex.Message);
         }
         return new Firearm();
+    }
+    public string GetFirearmNameFromId(int? id)
+    {
+        try
+        {
+            if (id == null)
+                return string.Empty;
+            Init();
+            var choice = from c in conn.Table<Firearm>()
+                         where c.Id == id
+                         select c.Name;
+            StatusMessage = string.Format("Found Item {0}", id);
+            return choice.FirstOrDefault();
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = string.Format("Failed to retrieve data. {0}", ex.Message);
+        }
+        return string.Empty;
+
     }
 }

@@ -2,7 +2,7 @@
 using SQLite;
 
 namespace RangeApp.Models;
-[Table("Firearm")]
+[Table("FirearmName")]
 public class Firearm
 {
     [PrimaryKey, AutoIncrement]

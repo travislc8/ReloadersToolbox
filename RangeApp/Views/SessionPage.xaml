@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+			 xmlns:SessionPage="clr-namespace:RangeApp"
+             x:Class="RangeApp.Views.SessionPage"
+             xmlns:viewmodel="clr-namespace:RangeApp.ViewModel"
+             x:DataType="viewmodel:SessionPageViewModel"
+             Padding="10,20,10,0"
+             Title="Session Details">
+    <ScrollView>
+        <VerticalStackLayout>
+            <Label Text="Groups"
+               FontSize="Subtitle"
+               HorizontalOptions="Center"/>
+            <ScrollView>
+                <ListView x:Name="GropDataListView" 
+                          ItemsSource="{Binding GroupData}"
+                          ItemSelected="OnGroupItemSelected"
+                          x:DataType="{x:Null}"
+                          MaximumHeightRequest="200">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <VerticalStackLayout>
+                                    <HorizontalStackLayout>
+                                        <Label Text="Group: "/>
+                                        <Label Text="{Binding GroupNum}"/>
+                                        <Label Text=" Firearm: "/>
+                                        <Label Text="{Binding FirearmName}"/>
+                                    </HorizontalStackLayout>
+                                </VerticalStackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </ScrollView>
+            <Grid ColumnSpacing="10"
+                  ColumnDefinitions="*,*">
+                <Button Text="Edit Group"
+                        Grid.Column="0"
+                        Clicked="EditGroupButtonClicked"/>
+                <Button Text="Delete Group"
+                        Grid.Column="1"
+                        Clicked="DeleteGroupButtonClicked"/>
+            </Grid>
+
+            <Grid ColumnSpacing="10"
+                  ColumnDefinitions="*,*,100"
+                  Padding="0,20,0,20">
+
+                <Label Text="Current Firearm: "
+                       VerticalTextAlignment="Center"
+                       Grid.Column="0"/>
+                <Label Text="{Binding CurrentFirearm}"
+                       VerticalTextAlignment="Center"
+                       Grid.Column="1"/>
+
+                <Button Text="Change"
+                        Grid.Column="2"
+                        Clicked="ChangeFirearmButtonClicked"/>
+            </Grid>
+            <Border x:Name="FirearmChange"
+                    Padding="10"
+                    IsVisible="Hidden">
+                <VerticalStackLayout>
+                    <Label Text="Firearm Selection"
+                       HorizontalOptions="Center"
+                               FontSize="Medium"/>
+                    <Grid ColumnSpacing="10"
+                        ColumnDefinitions="30,Auto,*">
+                        <CheckBox Grid.Column="0"
+                                  IsChecked="True"/>
+                        <Label Text="Firearms In Session"
+                               Grid.Column="1"
+                               VerticalOptions="Center"
+                               FontSize="Small"/>
+                        <Entry Placeholder="Search Firearms"
+                               Grid.Column="2"/>
+                    </Grid>
+                    <ScrollView>
+                        <ListView x:Name="FirearmListView" 
+                          ItemsSource="{Binding RefinedFirearms}"
+                          ItemSelected="OnFirearmSelected"
+                          x:DataType="{x:Null}"
+                          MaximumHeightRequest="200">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <ViewCell>
+                                        <VerticalStackLayout>
+                                            <Label Text="{Binding Name}"/>
+                                        </VerticalStackLayout>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </ScrollView>
+                    <Grid ColumnDefinitions="*,*,*"
+                          ColumnSpacing="10">
+                        <Button Text="Save Selection"
+                                Grid.Column="0"
+                                Clicked="FirearmChangeSave"/>
+                        <Button Text="Cancel"
+                                Grid.Column="1"
+                                Clicked="FirearmChangeCancel"/>
+                        <Button Text="Create New"
+                                Grid.Column="2"
+                                Clicked="FirearmChangeCreateNew"/>
+                    </Grid>
+
+
+                </VerticalStackLayout>
+            </Border>
+            <Grid ColumnSpacing="10"
+                  ColumnDefinitions="*,*,100"
+                  Padding="0,20,0,0">
+
+                <Label Text="Selected Round: "
+                       Grid.Column="0"
+                       VerticalTextAlignment="Center"/>
+                <Label Text="{Binding CurrentRound}"
+                       Grid.Column="1"
+                       VerticalTextAlignment="Center"/>
+                <Button Text="Change"
+                        Grid.Column="2"
+                        Clicked="ChangeRoundButtonClicked"/>
+            </Grid>
+
+            <Border IsVisible="Hidden"
+                    Padding="10"
+                    x:Name="RoundChange">
+                <VerticalStackLayout>
+                    <Label Text="Rounds For Current Firearm"
+                           FontSize="Medium"
+                   HorizontalOptions="Center"/>
+                    <Grid ColumnSpacing="10"
+                  ColumnDefinitions="30,Auto,*">
+                        <CheckBox Grid.Column="0"/>
+                        <Label Text="Rounds In Test Queue" 
+                       Grid.Column="1"
+                       VerticalOptions="Center"/>
+                        <Entry Grid.Column="2" 
+                       Placeholder="Search Rounds"/>
+
+                    </Grid>
+                    <ScrollView>
+                        <ListView x:Name="RoundListView" 
+                          ItemsSource="{Binding RefinedRounds}"
+                          ItemSelected="OnRoundSelected"
+                          x:DataType="{x:Null}"
+                          MaximumHeightRequest="200">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <ViewCell>
+                                        <VerticalStackLayout>
+                                            <Label Text="{Binding Name}"/>
+                                        </VerticalStackLayout>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </ScrollView>
+                    <Grid ColumnDefinitions="*,*,*"
+                          ColumnSpacing="10">
+                        <Button Text="Save Selection"
+                                Grid.Column="0"
+                                Clicked="RoundChangeSave"/>
+                        <Button Text="Cancel"
+                                Grid.Column="1"
+                                Clicked="RoundChangeCancel"/>
+                        <Button Text="Create New"
+                                Grid.Column="2"
+                                Clicked="RoundChangeCreateNew"/>
+                    </Grid>
+                </VerticalStackLayout>
+            </Border>
+
+            <VerticalStackLayout Padding="0,20,0,0">
+                <Button Text="New Group"
+                    IsEnabled="True"
+                    Command="{Binding NewGroupCommand}"/>
+            </VerticalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

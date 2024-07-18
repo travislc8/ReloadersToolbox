@@ -5,7 +5,7 @@ namespace RangeApp.Models;
 [Table("FirearmInSession")]
 public class FirearmInSession
 {
-    [PrimaryKey]
+    [PrimaryKey,AutoIncrement]
     public int FirearmInSessionId { get; set; }
     public int FirearmId { get; set; }
     public int SessionID { get; set; }

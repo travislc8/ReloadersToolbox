@@ -51,7 +51,7 @@ public partial class NewFirearmPage : ContentPage
 		}
 		else if (NewFirearmName.Text.Length <= 0)
 		{
-			NewFirearmName.Placeholder = "Enter Name For New Firearm";
+			NewFirearmName.Placeholder = "Enter Name For New FirearmName";
 			VM.SetStatusMessage("");
 			NewFirearmNamePass = false;
 			if (AddFirearmParamtersPass)

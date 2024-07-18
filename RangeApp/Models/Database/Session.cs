@@ -8,7 +8,7 @@ public class Session
 {
     [PrimaryKey, AutoIncrement] 
     public int Id { get; set; }
-    [MaxLength(30)]
+    [Unique,MaxLength(30)]
     public string? Name { get; set; }
     [MaxLength(200)]
     public string? Note { get; set; }
