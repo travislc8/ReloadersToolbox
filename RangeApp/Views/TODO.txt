@@ -58,10 +58,10 @@ Day entry page options to create new sess or edit current
 Home Page 
 	What is it for 
 
-Async Database 
-
-Firgure out load wait animation
-	Preload page?
+Loading Speed
+	Async Database 
+	Firgure out load wait animation
+		Preload page?
 
 
 New database stuff

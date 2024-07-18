@@ -1,6 +1,4 @@
-*.sln
 .vscode/
 .vs/
 RangeApp/bin/
 RangeApp/obj/
-RangeApp/Platforms/
