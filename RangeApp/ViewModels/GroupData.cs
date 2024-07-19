@@ -9,6 +9,6 @@ public class GroupData
     public int? FirearmId { get; set; }
     public string? RoundName {  get; set; }
     public int? RoundId {  get; set; }
-    public int? AverageVelocity { get; set; }
-    public int? StDev { get; set; }
+    public float? AverageVelocity { get; set; }
+    public float? StDev { get; set; }
 }

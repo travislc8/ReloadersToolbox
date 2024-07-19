@@ -14,8 +14,8 @@ public class Group
     [MaxLength(100)]
     public string? Note { get; set; }
     public int? SessionId { get; set; }
-    public int? AverageVelocity { get; set; }
-    public int? StDev { get; set; }
+    public float? AverageVelocity { get; set; }
+    public float? StDev { get; set; }
 
     public Group()
     {

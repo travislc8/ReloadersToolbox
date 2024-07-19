@@ -7,9 +7,9 @@
              x:DataType="viewmodel:NewGroupPageViewModel"
              Padding="10,20,10,0"
              Title="Group Page">
-    <ScrollView>
+    <ScrollView >
 
-        <VerticalStackLayout>
+        <VerticalStackLayout MinimumHeightRequest="1000">
             <Grid ColumnDefinitions="Auto, *, Auto, *"
               ColumnSpacing="10">
                 <Label Text="Firearm:"
@@ -82,6 +82,7 @@
                                         <Label Text="{Binding Id}"/>
                                         <Label Text="{Binding VelocityPre}"/>
                                         <Label Text="{Binding Velocity}"/>
+                                        <Label Text=" FPS"/>
                                     </HorizontalStackLayout>
                                     <HorizontalStackLayout>
                                         <Label Text="{Binding NotePre}"/>
@@ -123,13 +124,20 @@
                 <Label Text="{Binding MinVelocity}"
                    Grid.Row="0"
                    Grid.Column="3"/>
-                <Label Text="Standard Deviation:"
+                <Label Text="Standard Deviation: "
                      TextDecorations="Underline"
                      Grid.Row="1"
                      Grid.Column="0"/>
                 <Label Text="{Binding StDev}"
                      Grid.Row="1"
                    Grid.Column="1"/>
+                <Label Text="Average: "
+                       TextDecorations="Underline"
+                       Grid.Row="1"
+                       Grid.Column="2"/>
+                <Label Text="{Binding AverageVelocity}"
+                       Grid.Row="1"
+                       Grid.Column="3"/>
             </Grid>
 
             <Border>
@@ -146,7 +154,8 @@
                 Grid.Column="0"
                         Command="{Binding SaveGroupCommand}"/>
                 <Button Text="Delete Group"
-                Grid.Column="1"/>
+                Grid.Column="1"
+                        Clicked="DeleteGroupClicked"/>
             </Grid>
         </VerticalStackLayout>
     </ScrollView>

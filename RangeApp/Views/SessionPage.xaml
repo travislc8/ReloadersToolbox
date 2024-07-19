@@ -23,10 +23,23 @@
                             <ViewCell>
                                 <VerticalStackLayout>
                                     <HorizontalStackLayout>
-                                        <Label Text="Group: "/>
+                                        <Label Text="Group: "
+                                               FontAttributes="Bold"/>
                                         <Label Text="{Binding GroupNum}"/>
-                                        <Label Text=" Firearm: "/>
+                                        <Label Text="     Firearm: "
+                                               FontAttributes="Bold"/>
                                         <Label Text="{Binding FirearmName}"/>
+                                        <Label Text="      Round: "
+                                               FontAttributes="Bold"/>
+                                        <Label Text="{Binding RoundName}"/>
+                                    </HorizontalStackLayout>
+                                    <HorizontalStackLayout>
+                                        <Label Text="Average Velocity: "
+                                               FontAttributes="Bold"/>
+                                        <Label Text="{Binding AverageVelocity}"/>
+                                        <Label Text="    Standard Deviation: "
+                                               FontAttributes="Bold"/>
+                                        <Label Text="{Binding StDev}" />
                                     </HorizontalStackLayout>
                                 </VerticalStackLayout>
                             </ViewCell>

@@ -74,6 +74,29 @@ public class SessionRepository
 
         return result;
     }
+    public int AddFirearmToSession(Firearm firearm, int session_id)
+    {
+        int result = 0;
+        try
+        {
+            Init();
+            if (firearm == null || session_id == null)
+                throw new Exception("No Firearm to add or bad session");
+            var fis = new FirearmInSession
+            {
+                FirearmId = firearm.Id,
+                SessionID = session_id
+            };
+            result = conn.Insert(fis);
+            StatusMessage = string.Format("{0} record added.", result);
+            return result;
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = string.Format("Failed to add fiream to session. Error {0}", ex.Message);
+        }
+        return result;
+    }
     public int AddGroup(Group group)
     {
         int result = 0;
@@ -213,7 +236,7 @@ public class SessionRepository
                 var temp = new ViewModel.GroupData
                 {
                     Id = group_list[i].Id,
-                    GroupNum = i,
+                    GroupNum = i + 1,
                     SessionId = session_id,
                     FirearmName = App.FirearmRepo.GetFirearmNameFromId(group_list[i].FirearmId),
                     FirearmId = group_list[i].FirearmId,

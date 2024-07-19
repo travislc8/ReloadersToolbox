@@ -70,8 +70,7 @@ public partial class SessionPage : ContentPage
 
     async private void FirearmChangeCreateNew(object sender, EventArgs e)
     {
-		//TODO
-        await Shell.Current.GoToAsync("NewGroupPage");
+        await Shell.Current.GoToAsync("NewFirearmPage");
     }
 
     async private void RoundChangeCreateNew(object sender, EventArgs e)

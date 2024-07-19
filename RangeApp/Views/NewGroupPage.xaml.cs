@@ -1,4 +1,3 @@
-using Android.Provider;
 using CommunityToolkit.Mvvm.Messaging;
 using RangeApp.Models;
 namespace RangeApp.Views;
@@ -24,7 +23,7 @@ public partial class NewGroupPage : ContentPage
 
     private void UnitPickerIndexChanged(object sender, EventArgs e)
     {
-		VM.UnitChanged(UnitPicker.Title);
+		VM.UnitChanged((string)UnitPicker.ItemsSource[UnitPicker.SelectedIndex]);
     }
 
     private void OnShotSelected(object sender, SelectedItemChangedEventArgs e)
@@ -56,5 +55,10 @@ public partial class NewGroupPage : ContentPage
 		CancelUpdateShotButton.IsVisible = false;
 		AddShotButton.IsVisible = true;
 	}
+
+    private void DeleteGroupClicked(object sender, EventArgs e)
+    {
+		Shell.Current.GoToAsync("..");
+    }
 }
 

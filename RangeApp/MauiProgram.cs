@@ -28,6 +28,7 @@ public static class MauiProgram
 		//Page Routes
 		Routing.RegisterRoute("NewGroupPage", typeof(Views.NewGroupPage));
 		Routing.RegisterRoute("SessionPage", typeof(Views.SessionPage));
+		Routing.RegisterRoute("NewFirearmPage", typeof(Views.NewFirearmPage));
 
 #if DEBUG
 		builder.Logging.AddDebug();

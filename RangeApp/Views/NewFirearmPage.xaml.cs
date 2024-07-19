@@ -8,7 +8,7 @@ public partial class NewFirearmPage : ContentPage
 	{
 		InitializeComponent();
 		VM = vm;
-		BindingContext = vm;
+		BindingContext = VM;
 		textColor = NewFirearmName.TextColor;	
 		WeakReferenceMessenger.Default.Register<Models.SendItemMessage>(this, (r, m) =>
             {
@@ -16,6 +16,16 @@ public partial class NewFirearmPage : ContentPage
 
             });  
 	}
+	public NewFirearmPage()
+	{
+		InitializeComponent();
+
+		VM = new ViewModel.NewFirearmPageViewModel();
+		BindingContext = VM;
+		textColor = NewFirearmName.TextColor;
+		sessionAdd = true;
+	}
+	private bool sessionAdd = false;
 	private ViewModel.NewFirearmPageViewModel VM;
 	private Color? textColor = null;
 	private bool AddFirearmParamtersPass = false;
@@ -241,9 +251,20 @@ public partial class NewFirearmPage : ContentPage
 
         App.FirearmRepo.AddNewFirearm(new_firearm);
 
-        WeakReferenceMessenger.Default.Send(new SendItemMessage(NewFirearmName.Text));	
-		Navigation.PopAsync();
-	}
+		if (!sessionAdd)
+		{
+			WeakReferenceMessenger.Default.Send(new SendItemMessage(NewFirearmName.Text));
+			Navigation.PopAsync();
+		}
+		else
+		{
+            var navigationParamenter = new Dictionary<string, object>
+			{
+			    {"firearm", new_firearm }
+			};
+            Shell.Current.GoToAsync("..", navigationParamenter);
+        }
+    }
 	private void CancelSaveFirearm(object sender, EventArgs e)
 	{
 		Navigation.PopAsync();

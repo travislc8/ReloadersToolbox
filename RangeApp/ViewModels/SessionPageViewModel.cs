@@ -3,20 +3,21 @@ using Microsoft.Maui.Controls;
 using CommunityToolkit.Mvvm.Messaging;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.Input;
+using AndroidX.Lifecycle;
 
 namespace RangeApp.ViewModel;
 
 //session_id must be initialized
-[QueryProperty(nameof(SessionName), "name")]
-public partial class SessionPageViewModel : ObservableObject 
+public partial class SessionPageViewModel : ObservableObject , IQueryAttributable
 {
     public SessionPageViewModel()
     {
-        CurrentFirearm = "Test FirearmName";
+        CurrentFirearm = string.Empty;
         CurrentRound = "Test Round";
         GroupData = App.SessionRepo.GetGroupData(session_id);
         RefinedFirearms = [];
         RefinedRounds = [];
+
 
     }
 
@@ -29,11 +30,7 @@ public partial class SessionPageViewModel : ObservableObject
         }
         set
         {
-            if (value != null)
-                _SessionName = value;
-            session_id = App.SessionRepo.GetSessionIdFromName(SessionName);
-            UpdateFirearmData();
-            UpdateGroupData();
+            _SessionName = value;
         }
     }
 
@@ -60,15 +57,45 @@ public partial class SessionPageViewModel : ObservableObject
         SessionName = sessionName;
     }
     [RelayCommand]
-    //TODO Default pick of firearm
+    public void ApplyQueryAttributes(IDictionary<string, object> attributes)
+    {
+        if (attributes == null)
+            return;
+        if (attributes.ContainsKey("firearm"))
+        {
+            var firearm = attributes["firearm"] as Models.Firearm;
+            if (firearm == null)
+                return;
+            App.SessionRepo.AddFirearmToSession(firearm, session_id);
+            UpdateFirearmData();
+        }
+        if (attributes.ContainsKey("name"))
+        {
+            _SessionName = attributes["name"] as string;
+            session_id = App.SessionRepo.GetSessionIdFromName(SessionName);
+            UpdateFirearmData();
+            UpdateGroupData();
+            if (RefinedFirearms != null && RefinedFirearms.Count != 0)
+                CurrentFirearm = RefinedFirearms[0].Name;
+        }
+        
+        if (attributes.ContainsKey("ShotAdded"))
+        {
+            if ((attributes["ShotAdded"] as string) != "0")
+                UpdateGroupData();
+
+
+        }
+        attributes.Clear();
+    }
+    [RelayCommand]
     async public Task NewGroup()
     {
         if (CurrentFirearm == null || CurrentRound == null)
             return;
-        //TODO
         int group_num = 0;
         if (GroupData != null)
-            group_num = GroupData.Count();
+            group_num = GroupData.Count;
         session_id = App.SessionRepo.GetSessionIdFromName(SessionName);
         var group_data = new GroupData
         {
@@ -108,6 +135,7 @@ public partial class SessionPageViewModel : ObservableObject
     {
         if (SelectedGroup != null)
             App.SessionRepo.DeleteGroup(SelectedGroup.Id);
+        UpdateGroupData();
     }
     public void SetCurrentFirearm(int index)
     {

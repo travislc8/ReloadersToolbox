@@ -1,26 +1,23 @@
 ﻿Session Page
-	Default firearm/round
+	Default round
 	Save Session Button 
-		Delete Button
+		Delete Button !
 	field data verification
 	Firearm list without check for in session
 		create new button
+        cancel button
 	Round List 
 	Edit Group Button 
-	display 1 for first group on list (not 0)
 	Group List data displayed
 	Delete Group update list
+	Add Firearm Button
 
 Group Page
-	FPS/MPS Adjustment
-	scroll with keyboard
-	stdev
-	average into dbs and display
 	field data verification
-	display 1 for first shot on list (not 0)
 
 Session Options 
 	Complete Data into session
+    handle no chioce for firearm/session
 
 
 

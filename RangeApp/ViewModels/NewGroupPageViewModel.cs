@@ -3,6 +3,7 @@ using Microsoft.Maui.Controls;
 using CommunityToolkit.Mvvm.Messaging;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Maui.Converters;
 
 namespace RangeApp.ViewModel;
 
@@ -77,7 +78,7 @@ public partial class NewGroupPageViewModel :ObservableObject, IQueryAttributable
     
     public void UnitChanged(string unit)
     {
-        //TODO
+        Unit = unit;
     }
     public void ShotSelected(int index)
     {
@@ -89,17 +90,19 @@ public partial class NewGroupPageViewModel :ObservableObject, IQueryAttributable
     {
         if (VelocityEntry == string.Empty)
             return;
-        int velo = 0;
+        float velo = 0;
         string note = string.Empty;
         string note_pre = string.Empty;
         if (VelocityEntry != string.Empty)
-            velo = int.Parse(VelocityEntry);
+            velo = float.Parse(VelocityEntry);
+        if (Unit == "MPS")
+            velo = velo * 3.281f;
         if (ShotNote != string.Empty)
         {
             note_pre = "Note: "; 
             note = ShotNote;
         }
-        var shot = new ViewModel.ShotData(Shots.Count, velo, note, note_pre); 
+        var shot = new ViewModel.ShotData((Shots.Count + 1), velo, note, note_pre); 
         Shots.Add(shot);
         UpdateStats();
 
@@ -114,7 +117,6 @@ public partial class NewGroupPageViewModel :ObservableObject, IQueryAttributable
         if (Shots != null && ShotSelectedIndex != -1)
         {
             string note = Shots[ShotSelectedIndex].Note;
-            note = note.Remove(0, 6);
             VelocityEntry = Shots[ShotSelectedIndex].Velocity.ToString();
             ShotNote = note;
             UpdateStats();
@@ -135,11 +137,11 @@ public partial class NewGroupPageViewModel :ObservableObject, IQueryAttributable
     
     public void UpdateShot()
     {
-        int velo = 0;
+        float velo = 0;
         string note = string.Empty;
         string note_pre = string.Empty;
         if (VelocityEntry != string.Empty)
-            velo = int.Parse(VelocityEntry);
+            velo = float.Parse(VelocityEntry);
         if (ShotNote != string.Empty)
         {
             note_pre = "Note: "; 
@@ -167,8 +169,8 @@ public partial class NewGroupPageViewModel :ObservableObject, IQueryAttributable
             StDev = string.Empty;
             return;
         }
-        int start = Shots[0].Velocity;
-        int max = start, min = start, sum = 0;
+        float start = Shots[0].Velocity;
+        float max = start, min = start, sum = 0;
         foreach (var shot in Shots )
         {
             if (shot.Velocity > max)
@@ -178,21 +180,30 @@ public partial class NewGroupPageViewModel :ObservableObject, IQueryAttributable
             sum += shot.Velocity;
 
         }
+        float avg = sum / Shots.Count;
 
-        MaxVelocity = max.ToString();
-        MinVelocity = min.ToString();
-        StDev = sum.ToString();
+        double stdev_sum = 0;
+        foreach (var shot in Shots )
+        {
+            stdev_sum += Math.Pow(shot.Velocity - avg, 2);
+        }
+
+        double dStdev = Math.Sqrt(stdev_sum / (Shots.Count - 1)); 
+        MaxVelocity = max.ToString("F1");
+        MinVelocity = min.ToString("F1");
+        AverageVelocity = avg.ToString("F1");
+        StDev = dStdev.ToString("F1");
     }
     [RelayCommand]
     public void SaveGroup()
     {
         //Group
-        int avg = 0;
+        float avg = 0;
         if (AverageVelocity != string.Empty && AverageVelocity != null)
-            avg = int.Parse(AverageVelocity);
-        int stdev = 0;
+            avg = float.Parse(AverageVelocity);
+        float stdev = 0;
         if (StDev != string.Empty && StDev != null)
-            avg = int.Parse(StDev);
+            stdev = float.Parse(StDev);
         var group = new Models.Group
         {
             RoundId = Round_Id,
@@ -201,6 +212,7 @@ public partial class NewGroupPageViewModel :ObservableObject, IQueryAttributable
             Note = GroupNote,
             AverageVelocity = avg,
             StDev = stdev,
+            
         };
         if (GroupName != string.Empty)
             group.Name = GroupName;
@@ -220,6 +232,7 @@ public partial class NewGroupPageViewModel :ObservableObject, IQueryAttributable
 
         App.SessionRepo.AddGroupToSession(group_in_session);
 
+        int result = 0;
         foreach (var shot_data in Shots)
         {
             var shot = new Models.Shot
@@ -231,8 +244,13 @@ public partial class NewGroupPageViewModel :ObservableObject, IQueryAttributable
                 Note = shot_data.Note
             };
 
-            App.SessionRepo.AddShot(shot);
+            result = App.SessionRepo.AddShot(shot);
         }
-        Shell.Current.GoToAsync("..");
+        
+        var navigationParamenter = new Dictionary<string, object>
+        {
+            {"ShotAdded",  result.ToString()}
+        };
+        Shell.Current.GoToAsync("..", navigationParamenter);
     }
 }
