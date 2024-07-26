@@ -7,5 +7,10 @@ public partial class HomePage : ContentPage
 	{
 		InitializeComponent();
 	}
+
+    private void RoundBuilderClicked(object sender, EventArgs e)
+    {
+		Shell.Current.GoToAsync("NewRoundPage");
+    }
 }
 

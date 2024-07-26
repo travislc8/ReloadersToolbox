@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodel="clr-namespace:RangeApp.ViewModel"
+             x:Class="RangeApp.Views.NewRoundPage"
+             x:DataType="viewmodel:NewRoundPageViewModel"
+             Padding="10,20,10,0"
+             Title="Round Builder">
+    <ScrollView>
+        <VerticalStackLayout Padding="10,0,10,500">
+            <HorizontalStackLayout>
+                <CheckBox CheckedChanged="QueueCheckBoxChanged"
+                      IsChecked="True"/>
+                <Label Text="Add To Testing Queue"
+                   VerticalOptions="Center"/>
+            </HorizontalStackLayout>
+
+            <Grid ColumnDefinitions="100,*"
+               ColumnSpacing="10"
+               RowDefinitions="40,40,40,40,40,40,40">
+                <Label Text="Round Name:"
+                   VerticalOptions="Center"
+                   HorizontalOptions="End"
+                   Grid.Row="0"
+                   Grid.Column="0"/>
+                <Entry Placeholder="Name"
+                   Text="{Binding NameEntry }"
+                   MinimumWidthRequest="250"
+                   MaxLength="50"
+                   Grid.Row="0"
+                   Grid.Column="1"/>
+
+                <Label Text="Caliber:"
+                   VerticalOptions="Center"
+                   HorizontalOptions="End"
+                   Grid.Row="1"
+                   Grid.Column="0"/>
+                <Entry Placeholder="Caliber"
+                   Text="{Binding CaliberEntry }"
+                   MaxLength="20"
+                   MinimumWidthRequest="250"
+                   Grid.Row="1"
+                   Grid.Column="1"/>
+
+                <Label Text="Case:"
+                   VerticalOptions="Center"
+                   HorizontalOptions="End"
+                   Grid.Row="2"
+                   Grid.Column="0"/>
+                <Entry Placeholder="Name"
+                   Text="{Binding CaseNameEntry }"
+                   MaxLength="50"
+                   MinimumWidthRequest="250"
+                   Grid.Row="2"
+                   Grid.Column="1"/>
+
+                <Label Text="Overall Length:"
+                   VerticalOptions="Center"
+                   HorizontalOptions="End"
+                   Grid.Row="3"
+                   Grid.Column="0"/>
+                <Entry Placeholder="inches"
+                   Text="{Binding LengthEntry }"
+                   MaxLength="50"
+                   MinimumWidthRequest="250"
+                   Keyboard="Numeric"
+                   Grid.Row="3"
+                   Grid.Column="1"/>
+
+                <Label Text="Primer"
+                   VerticalOptions="Center"
+                   HorizontalOptions="End"
+                   Grid.Row="4"
+                   Grid.Column="0"/>
+                <Entry Placeholder="Name"
+                   Text="{Binding PrimerEntry }"
+                   MinimumWidthRequest="250"
+                   MaxLength="50"
+                   Grid.Row="4"
+                   Grid.Column="1"/>
+
+                <Label Text="Powder Weight"
+                   VerticalOptions="Center"
+                   HorizontalOptions="End"
+                   Grid.Row="5"
+                   Grid.Column="0"/>
+                <Entry Placeholder="Grains"
+                   Text="{Binding PowderWeightEntry }"
+                   MinimumWidthRequest="250"
+                   MaxLength="50"
+                   Grid.Row="5"
+                   Grid.Column="1"/>
+
+            </Grid>
+
+            <Grid ColumnDefinitions="100,*,100"
+                  ColumnSpacing="10"
+                  Padding="0,0,0,10">
+                <Label Text="Powder:"
+                   VerticalOptions="Center"
+                   Grid.Column="0"
+                   HorizontalOptions="End"/>
+                <Entry Placeholder="Name"
+                        Text="{Binding PowderEntry }"
+                        TextChanged="PowderNameTextChanged"
+                        Grid.Column="1"
+                        MinimumWidthRequest="200"/>
+                <Button Text="New" 
+                    Grid.Column="2"
+                    Command="{Binding NewPowderCommand}"
+                    HorizontalOptions="FillAndExpand"/>
+            </Grid>
+
+            <Border>
+                <ScrollView Padding="0,0,0,0">
+                    <ListView x:Name="PowdersListView" 
+                      ItemsSource="{Binding RefinedPowders}"
+                      ItemSelected="PowderSelected"
+                      x:DataType="{x:Null}"
+                      MaximumHeightRequest="200">
+                        <ListView.ItemTemplate>
+                            <DataTemplate >
+                                <ViewCell>
+                                    <VerticalStackLayout>
+                                        <HorizontalStackLayout>
+                                            <Label Text="Name: "/>
+                                            <Label Text="{Binding Name}"/>
+                                            <Label Text="Powder Type: "
+                                           Padding="20,0,0,0"/>
+                                            <Label Text="{Binding PowderType}"/>
+                                        </HorizontalStackLayout>
+                                        <HorizontalStackLayout>
+                                            <Label Text="Manufacturer: "/>
+                                            <Label Text="{Binding PowderManufacturer}"/>
+                                        </HorizontalStackLayout>
+                                    </VerticalStackLayout>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </ScrollView>
+            </Border>
+
+            <Grid ColumnDefinitions="100,*,100"
+                  ColumnSpacing="10"
+                  Padding="0,10,0,10">
+                <Label Text="Bullet:"
+                   VerticalOptions="Center"
+                   Grid.Column="0"
+                   HorizontalOptions="End"/>
+                <Entry Placeholder="Name"
+                        Text="{Binding BulletEntry }"
+                        TextChanged="BulletNameTextChanged"
+                        Grid.Column="1"
+                        MinimumWidthRequest="200"
+                       ClearButtonVisibility="WhileEditing"/>
+                <Button Text="New" 
+                    Grid.Column="2"
+                    Command="{Binding NewBulletCommand}"
+                    HorizontalOptions="FillAndExpand"/>
+            </Grid>
+
+            <Border Padding="10,0,10,10">
+                <VerticalStackLayout>
+
+                    <HorizontalStackLayout x:Name="BulletByCaliberCheckBoxStack"
+                                           Padding="0">
+                        <CheckBox IsChecked="False"
+                          CheckedChanged="BulletByCaliberCheckBoxChanged"/>
+                        <Label Text="Filter by Caliber"
+                               VerticalOptions="Center"
+                               TextDecorations="Underline"/>
+                    </HorizontalStackLayout>
+
+                    <ScrollView Padding="0,0,0,0">
+                        <ListView x:Name="BulletListView" 
+                      ItemsSource="{Binding RefinedBullets}"
+                      ItemSelected="BulletSelected"
+                      x:DataType="{x:Null}"
+                      MaximumHeightRequest="200">
+                            <ListView.ItemTemplate>
+                                <DataTemplate >
+                                    <ViewCell>
+                                        <VerticalStackLayout>
+                                            <HorizontalStackLayout>
+                                                <Label Text="Name: "/>
+                                                <Label Text="{Binding Name}"/>
+                                                <Label Text="Caliber"
+                                           Padding="20,0,0,0"/>
+                                                <Label Text="{Binding Caliber}"/>
+                                                <Label Text="Grains: "
+                                           Padding="20,0,0,0"/>
+                                                <Label Text="{Binding BulletGrains}"/>
+
+                                            </HorizontalStackLayout>
+                                            <HorizontalStackLayout>
+                                                <Label Text="Manufacturer: "/>
+                                                <Label Text="{Binding BulletManufacturer}"/>
+                                            </HorizontalStackLayout>
+                                        </VerticalStackLayout>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </ScrollView>
+                </VerticalStackLayout>
+            </Border>
+
+            <Grid ColumnDefinitions="100,*,100"
+                  ColumnSpacing="10"
+                  Padding="0,10,0,10">
+                <Label Text="Firearm For:"
+                   VerticalOptions="Center"
+                   Grid.Column="0"
+                   HorizontalOptions="End"/>
+                <Entry Placeholder="Name"
+                        Text="{Binding FirearmEntry }"
+                        TextChanged="FirearmNameTextChanged"
+                        Grid.Column="1"
+                        MinimumWidthRequest="200"
+                       ClearButtonVisibility="WhileEditing"/>
+                <Button Text="New" 
+                    Grid.Column="2"
+                    Command="{Binding NewFirearmCommand}"
+                    HorizontalOptions="FillAndExpand"/>
+            </Grid>
+
+            <Border>
+                <ScrollView Padding="0,0,0,0">
+                    <ListView x:Name="FirearmListView" 
+                      ItemsSource="{Binding RefinedFirearms}"
+                      ItemSelected="FirearmSelected"
+                      x:DataType="{x:Null}"
+                      MaximumHeightRequest="200">
+                        <ListView.ItemTemplate>
+                            <DataTemplate >
+                                <ViewCell>
+                                    <VerticalStackLayout>
+                                        <HorizontalStackLayout>
+                                            <Label Text="Name: "/>
+                                            <Label Text="{Binding Name}"/>
+                                            <Label Text="Caliber: "
+                                                   Padding="20,0,0,0"/>
+                                            <Label Text="{Binding Caliber}"/>
+                                        </HorizontalStackLayout>
+
+                                        <HorizontalStackLayout>
+                                            <Label Text="Manufacturer: "/>
+                                            <Label Text="{Binding Manufacturer}"/>
+                                        </HorizontalStackLayout>
+                                    </VerticalStackLayout>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </ScrollView>
+            </Border>
+
+            <Grid ColumnDefinitions="*,*"
+                  ColumnSpacing="10"
+                  Padding="0,40,0,0">
+                <Button Text="Save"
+                    Command="{ Binding SaveCommand }"
+                    Grid.Column="0"/>
+                <Button Text="Cancel"
+                    Grid.Column="1"
+                        Command="{Binding CancelCommand}"/>
+            </Grid>
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

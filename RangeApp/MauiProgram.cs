@@ -24,10 +24,15 @@ public static class MauiProgram
 		builder.Services.AddSingleton<Models.FirearmRepository>(s => ActivatorUtilities.CreateInstance<Models.FirearmRepository>(s, dbPath));
 		builder.Services.AddSingleton<Models.LocationRepository>(s => ActivatorUtilities.CreateInstance<Models.LocationRepository>(s, dbPath));
 		builder.Services.AddSingleton<Models.SessionRepository>(s => ActivatorUtilities.CreateInstance<Models.SessionRepository>(s, dbPath));
+		builder.Services.AddSingleton<Models.RoundRepository>(s => ActivatorUtilities.CreateInstance<Models.RoundRepository>(s, dbPath));
 
 		//Page Routes
 		Routing.RegisterRoute("NewGroupPage", typeof(Views.NewGroupPage));
 		Routing.RegisterRoute("SessionPage", typeof(Views.SessionPage));
+		Routing.RegisterRoute("NewFirearmPage", typeof(Views.NewFirearmPage));
+		Routing.RegisterRoute("NewRoundPage", typeof(Views.NewRoundPage));
+		Routing.RegisterRoute("NewPowderPage", typeof(Views.NewPowderPage));
+		Routing.RegisterRoute("NewBulletPage", typeof(Views.NewBulletPage));
 		Routing.RegisterRoute("NewFirearmPage", typeof(Views.NewFirearmPage));
 
 #if DEBUG

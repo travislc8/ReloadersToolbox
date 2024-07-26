@@ -61,7 +61,8 @@
                   ColumnDefinitions="*,*,100"
                   Padding="0,20,0,20">
 
-                <Label Text="Current Firearm: "
+                <Label x:Name="CurrentFirearmTitle"
+                       Text="Current Firearm: "
                        VerticalTextAlignment="Center"
                        Grid.Column="0"/>
                 <Label Text="{Binding CurrentFirearm}"
@@ -81,13 +82,16 @@
                                FontSize="Medium"/>
                     <Grid ColumnSpacing="10"
                         ColumnDefinitions="30,Auto,*">
-                        <CheckBox Grid.Column="0"
-                                  IsChecked="True"/>
+                        <CheckBox x:Name="FirearmsInSessionCheckBox"
+                                  CheckedChanged="OnFirearmInSessionCheckBoxChanged"
+                                  Grid.Column="0"/>
                         <Label Text="Firearms In Session"
                                Grid.Column="1"
                                VerticalOptions="Center"
                                FontSize="Small"/>
                         <Entry Placeholder="Search Firearms"
+                               Text="{Binding FirearmSearchEntry}"
+                               TextChanged="SearchFirearmTextChanged"
                                Grid.Column="2"/>
                     </Grid>
                     <ScrollView>

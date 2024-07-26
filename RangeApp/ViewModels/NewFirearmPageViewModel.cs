@@ -4,7 +4,7 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace RangeApp.ViewModel;
 
-public partial class NewFirearmPageViewModel : ObservableObject
+public partial class NewFirearmPageViewModel : ObservableObject 
 {
     public NewFirearmPageViewModel()
     {
@@ -13,6 +13,8 @@ public partial class NewFirearmPageViewModel : ObservableObject
         StatusMessage = App.FirearmRepo.StatusMessage;
     }
 
+    [ObservableProperty]
+    public string caliber = string.Empty;
     [ObservableProperty]
     ObservableCollection<Models.Firearm>? allFirearms;
     [ObservableProperty]

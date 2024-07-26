@@ -26,6 +26,15 @@
     <MauiXaml Update="Views\NewLocationPage.xaml">
       <SubType>Designer</SubType>
     </MauiXaml>
+    <MauiXaml Update="Views\RoundBuilder\NewBulletPage.xaml">
+      <SubType>Designer</SubType>
+    </MauiXaml>
+    <MauiXaml Update="Views\RoundBuilder\NewPowderPage.xaml">
+      <SubType>Designer</SubType>
+    </MauiXaml>
+    <MauiXaml Update="Views\RoundBuilder\NewRoundPage.xaml">
+      <SubType>Designer</SubType>
+    </MauiXaml>
     <MauiXaml Update="Views\SessionPage.xaml">
       <SubType>Designer</SubType>
     </MauiXaml>

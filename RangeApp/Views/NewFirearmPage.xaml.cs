@@ -14,7 +14,7 @@ public partial class NewFirearmPage : ContentPage
             {
 				PopulateWithFirearm(m.Value);	
 
-            });  
+            });
 	}
 	public NewFirearmPage()
 	{
@@ -24,6 +24,7 @@ public partial class NewFirearmPage : ContentPage
 		BindingContext = VM;
 		textColor = NewFirearmName.TextColor;
 		sessionAdd = true;
+		NewFirearmCaliber.Text = VM.Caliber;
 	}
 	private bool sessionAdd = false;
 	private ViewModel.NewFirearmPageViewModel VM;
@@ -267,6 +268,6 @@ public partial class NewFirearmPage : ContentPage
     }
 	private void CancelSaveFirearm(object sender, EventArgs e)
 	{
-		Navigation.PopAsync();
+		Shell.Current.GoToAsync("..");
 	}
 }

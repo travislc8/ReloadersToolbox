@@ -80,11 +80,39 @@ public class SessionRepository
         try
         {
             Init();
-            if (firearm == null || session_id == null)
+            if (firearm == null )
                 throw new Exception("No Firearm to add or bad session");
+            if (IsFirearmInSession(firearm.Name, session_id))
+                return result;
             var fis = new FirearmInSession
             {
                 FirearmId = firearm.Id,
+                SessionID = session_id
+            };
+            result = conn.Insert(fis);
+            StatusMessage = string.Format("{0} record added.", result);
+            return result;
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = string.Format("Failed to add fiream to session. Error {0}", ex.Message);
+        }
+        return result;
+    }
+    public int AddFirearmToSession(string firearm, int session_id)
+    {
+        int result = 0;
+        try
+        {
+            Init();
+            if (firearm == null )
+                throw new Exception("No Firearm to add or bad session");
+            if (IsFirearmInSession(firearm, session_id))
+                return result;
+            var firearm_id = App.FirearmRepo.GetFirearmFromName(firearm).Id;
+            var fis = new FirearmInSession
+            {
+                FirearmId = firearm_id,
                 SessionID = session_id
             };
             result = conn.Insert(fis);
@@ -374,5 +402,26 @@ public class SessionRepository
             StatusMessage = string.Format("Failed to retrieve data. {0}", ex.Message);
         }
         return Id;
+    }
+    public bool IsFirearmInSession(string firearm_name, int session_id)
+    {
+        bool check = false;
+        try
+        {
+            var firearm = App.FirearmRepo.GetFirearmFromName(firearm_name);
+            var result = from c in conn.Table<FirearmInSession>()
+                         where c.FirearmId == firearm.Id
+                         where c.SessionID == session_id
+                         select c;
+            if (result.FirstOrDefault().FirearmId == firearm.Id)
+                check = true;
+            else
+                check = false;
+        } 
+        catch (Exception ex)
+        {
+            string.Format("Failed to retrieve data. Error {0}", ex.Message);
+        }
+        return check;
     }
 }

@@ -11,23 +11,25 @@ public class FirearmRepository
     public FirearmRepository(string dbPath)
     {
         _dbPath = dbPath;
+        Init();
     }
     private void Init()
     {
         if (conn != null)
-            return; 
-            conn = new SQLiteConnection(_dbPath);
-            conn.CreateTable<Firearm>();
-       
+            return;
+        conn = new SQLiteConnection(_dbPath);
+        conn.CreateTable<Firearm>();
+
     }
-    public int AddNewFirearm(Firearm firearm) {
+    public int AddNewFirearm(Firearm firearm)
+    {
         int result = 0;
         try
         {
             Init();
 
             if (firearm == null)
-                throw new Exception("Valid name required");
+                throw new Exception("Valid nameEntry required");
             if (firearm.Id != 0)
                 result = conn.Update(firearm);
             else
@@ -39,7 +41,7 @@ public class FirearmRepository
         {
             StatusMessage = string.Format("Failed to add {0}. Error: {1}", firearm.Name, ex.Message);
         }
-        return result; 
+        return result;
 
     }
     public int RemoveFirearm(Firearm firearm)
@@ -50,12 +52,12 @@ public class FirearmRepository
             Init();
             result = conn.Delete(firearm);
             StatusMessage = string.Format("{0} record(s) removed (Name: {1})", result, firearm.Name);
-        } 
+        }
         catch (Exception ex)
         {
             StatusMessage = string.Format("Failed to remove {0}. Error: {1}", firearm.Name, ex.Message);
         }
-        return result; 
+        return result;
     }
     public int EditFirearm(Firearm firearm)
     {
@@ -64,16 +66,16 @@ public class FirearmRepository
         {
             Init();
             result = conn.Update(firearm);
-                       
+
             StatusMessage = string.Format("{0} record(s) updated (Name: {1})", result, firearm.Name);
         }
         catch (Exception ex)
         {
             StatusMessage = string.Format("Failed to update {0}. Error: {1}", firearm.Name, ex.Message);
         }
-        return result; 
+        return result;
     }
-    
+
 
     public List<Firearm> GetAllFirearms()
     {

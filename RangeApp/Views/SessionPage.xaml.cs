@@ -9,12 +9,14 @@ public partial class SessionPage : ContentPage
 		InitializeComponent();
 		VM = vm;
 		BindingContext = vm;
+        FirearmsInSessionCheckBox.IsChecked = true;
 	}
 	public SessionPage()
 	{
 		InitializeComponent();
 		VM = new ViewModel.SessionPageViewModel();
 		BindingContext = VM;
+        FirearmsInSessionCheckBox.IsChecked = true;
 	}
 	private ViewModel.SessionPageViewModel VM { get; set; }
 
@@ -75,8 +77,7 @@ public partial class SessionPage : ContentPage
 
     async private void RoundChangeCreateNew(object sender, EventArgs e)
     {
-		//TODO
-        await Shell.Current.GoToAsync("NewGroupPage");
+        await Shell.Current.GoToAsync("NewRoundPage");
     }
 
     private void EditGroupButtonClicked(object sender, EventArgs e)
@@ -87,5 +88,15 @@ public partial class SessionPage : ContentPage
     private void DeleteGroupButtonClicked(object sender, EventArgs e)
     {
         VM.DeleteGroup();
+    }
+
+    private void SearchFirearmTextChanged(object sender, TextChangedEventArgs e)
+    {
+        VM.FirearmSearchEntryTextChanged();
+    }
+
+    private void OnFirearmInSessionCheckBoxChanged(object sender, CheckedChangedEventArgs e)
+    {
+        VM.FirearmsInSessionCheckBoxChanged(FirearmsInSessionCheckBox.IsChecked);
     }
 }

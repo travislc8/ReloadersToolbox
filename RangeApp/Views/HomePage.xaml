@@ -7,10 +7,12 @@
              x:Class="RangeApp.Views.HomePage"
              >
     <VerticalStackLayout>
-        <Label
+        <Label Padding="0,0,0,20"
             Text="Welcome To The Range Day App"
             FontSize="32"
             />
+        <Button Text="Round Builder" 
+                Clicked="RoundBuilderClicked"/>
     </VerticalStackLayout>
 
 </ContentPage>

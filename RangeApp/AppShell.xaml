@@ -15,11 +15,8 @@
             <ShellContent ContentTemplate="{DataTemplate local:Views.HomePage}"/>
         </Tab>
     </FlyoutItem>
-    <FlyoutItem Title="DayEntry"
-                Icon="home.png">
-        <Tab>
-            <ShellContent ContentTemplate="{DataTemplate local:Views.DayEntryPage}"/>
-        </Tab>
+    <FlyoutItem Title="DayEntry">
+        <ShellContent ContentTemplate="{DataTemplate local:Views.DayEntryPage}"/>
     </FlyoutItem>
     <FlyoutItem Title="Session Page">
         <ShellContent ContentTemplate="{DataTemplate local:Views.SessionPage}"/>
@@ -34,6 +31,9 @@
             <ShellContent ContentTemplate="{DataTemplate local:Views.LocationListPage}"
                           Title="Location Edit"/>
         </Tab>
+    </FlyoutItem>
+    <FlyoutItem Title="Round Builder">
+        <ShellContent ContentTemplate="{DataTemplate local:Views.NewRoundPage}"/>
     </FlyoutItem>
 
 

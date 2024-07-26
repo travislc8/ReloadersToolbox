@@ -28,7 +28,7 @@ public class LocationRepository
             Init();
 
             if (location == null)
-                throw new Exception("Valid name required");
+                throw new Exception("Valid nameEntry required");
             if (location.Id != 0)
                 result = conn.Update(location);
             else

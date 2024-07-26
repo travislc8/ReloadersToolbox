@@ -49,7 +49,7 @@ public class RangeDayRepository
             Init();
 
             if (firearm == null)
-                throw new Exception("Valid name required");
+                throw new Exception("Valid nameEntry required");
             if (firearm.Id != 0)
                 result = conn.Update(firearm);
             else

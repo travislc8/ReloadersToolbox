@@ -75,6 +75,6 @@ public partial class SessionOptions : ContentPage
 	{
 		 VM.Save(NameEntry.Text, NoteEntry.Text);
 		var name = NameEntry.Text;
-		await Shell.Current.GoToAsync($"SessionPage?name={name}");
+		await Shell.Current.GoToAsync($"SessionPage?nameEntry={name}");
 	}
 }

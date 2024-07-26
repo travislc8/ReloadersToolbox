@@ -1,16 +1,16 @@
-﻿Session Page
+﻿Entry
+    Max length on entries
+    Return key
+
+Session Page
 	Default round
 	Save Session Button 
-		Delete Button !
 	field data verification
-	Firearm list without check for in session
-		create new button
-        cancel button
 	Round List 
+        All
 	Edit Group Button 
 	Group List data displayed
-	Delete Group update list
-	Add Firearm Button
+    Stop Duplicate rounds and firearms in list
 
 Group Page
 	field data verification
@@ -19,6 +19,13 @@ Session Options
 	Complete Data into session
     handle no chioce for firearm/session
 
+NewPowderPage
+    Check.... doesn't check if Available is null, should
+    Pass bullet name back
+    Pass powder name back
+
+NewBulletPage
+    Fill Caliber from round builder
 
 
 Add Round list in session page 
