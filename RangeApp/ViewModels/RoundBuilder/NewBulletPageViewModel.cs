@@ -76,7 +76,7 @@ public partial class NewBulletPageViewModel : ObservableObject
     {
         if (Caliber.Length > 20)
         {
-            StatusMessage = "Caliber Name is too long";
+            StatusMessage = "Diameter Name is too long";
             return false;
         }
         else
@@ -127,7 +127,7 @@ public partial class NewBulletPageViewModel : ObservableObject
             var bullet = new Models.Bullet
             {
                 Name = this.Name,
-                Caliber = this.Caliber,
+                Diameter = this.Caliber,
                 BulletManufacturer = Mfg,
                 BulletGrains = weight
             };

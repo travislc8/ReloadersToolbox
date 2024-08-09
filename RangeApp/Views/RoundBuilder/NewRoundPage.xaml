@@ -104,6 +104,7 @@
                         Text="{Binding PowderEntry }"
                         TextChanged="PowderNameTextChanged"
                         Grid.Column="1"
+                        Keyboard="Numeric"
                         MinimumWidthRequest="200"/>
                 <Button Text="New" 
                     Grid.Column="2"

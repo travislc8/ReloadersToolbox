@@ -10,7 +10,7 @@ public class Bullet
     [MaxLength(50),Unique]
     public string? Name { get; set; }
     [MaxLength(20)]
-    public string? Caliber { get; set; }
+    public string? Diameter { get; set; }
     public int? BulletGrains { get; set; }
     [MaxLength(50)]
     public string? BulletManufacturer { get; set; }

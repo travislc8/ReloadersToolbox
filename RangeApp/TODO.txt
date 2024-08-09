@@ -2,6 +2,16 @@
     Max length on entries
     Return key
 
+NewRoundPage
+    Select proper when returning from newpowder...
+
+ROund List Page
+    Filter
+        queue
+        caliber
+        bullet
+        ....
+
 Session Page
 	Default round
 	Save Session Button 

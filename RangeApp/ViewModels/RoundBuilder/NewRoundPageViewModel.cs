@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.Input;
-using System.Runtime.CompilerServices;
 
 namespace RangeApp.ViewModel;
 
@@ -26,7 +25,7 @@ public partial class NewRoundPageViewModel : ObservableObject, IQueryAttributabl
     List<Models.Firearm> AllFirearms = new List<Models.Firearm>();
     private bool QueueCheckBox = true;
     private bool BulletByCaliber = false;
-
+    private int RoundId = 0;
     [ObservableProperty]
     string nameEntry = string.Empty;
     [ObservableProperty]
@@ -75,7 +74,7 @@ public partial class NewRoundPageViewModel : ObservableObject, IQueryAttributabl
         {
             foreach (var bullet in AllBullets)
             {
-                if (bullet.Caliber == CaliberEntry  && bullet.Name != null && bullet.Name.Contains((string)this.BulletEntry ))
+                if (bullet.Diameter == CaliberEntry  && bullet.Name != null && bullet.Name.Contains((string)this.BulletEntry ))
                     RefinedBullets.Add(bullet);
             }
         }
@@ -148,6 +147,43 @@ public partial class NewRoundPageViewModel : ObservableObject, IQueryAttributabl
             if (temp != null)
             {
                 UpdateFirearms();
+            }
+        }
+        if (attributes.ContainsKey("RoundData"))
+        {
+            var data = attributes["RoundData"] as ViewModel.RoundData;
+            if (data != null)
+            {
+                RoundId = data.RoundId;
+                if (data.Name != null)
+                    NameEntry = data.Name;
+                if (data.Caliber != null)
+                    CaliberEntry = data.Caliber;
+                if (data.CaseName != null)
+                    CaseNameEntry = data.CaseName;
+                if (data.TotalLength != null)
+                    LengthEntry = data.TotalLength.ToString();
+                if (data.Primer != null)
+                    PrimerEntry = data.Primer;
+                if (data.PowderWeight != null)
+                    PowderWeightEntry = data.PowderWeight.ToString();
+
+                if (data.PowderId != null)
+                {
+                    SelectedPowder = App.RoundRepo.GetPowder(data.PowderId);
+                    if (SelectedPowder != null && SelectedPowder.Name != null)
+                        PowderEntry = SelectedPowder.Name;
+                }
+                if (data.BulletId != null)
+                {
+                    SelectedBullet = App.RoundRepo.GetBullet(data.BulletId);
+                    if (SelectedBullet != null && SelectedBullet.Name != null)
+                        BulletEntry = SelectedBullet.Name;
+                }
+                SelectedFirearm = App.RoundRepo.GetFirearmForRound(data.RoundId);
+                if (SelectedFirearm != null && SelectedFirearm.Name != null)
+                    FirearmEntry = SelectedFirearm.Name;
+
             }
         }
     }
@@ -223,7 +259,7 @@ public partial class NewRoundPageViewModel : ObservableObject, IQueryAttributabl
         {
             weight = 0;
         }
-        check = int.TryParse(LengthEntry, out int length);
+        check = decimal.TryParse(LengthEntry, out decimal length);
         if (!check)
         {
             length = 0;
@@ -236,9 +272,9 @@ public partial class NewRoundPageViewModel : ObservableObject, IQueryAttributabl
         int powder_id = 0;
         if (SelectedPowder != null)
             powder_id = SelectedPowder.Id;
-
         var round = new Models.Round
         {
+            Id = RoundId,    
             Name = NameEntry,
             BulletId = bullet_id,
             Caliber = CaliberEntry,
@@ -246,17 +282,24 @@ public partial class NewRoundPageViewModel : ObservableObject, IQueryAttributabl
             PowderId = powder_id,
             CaseName = CaseNameEntry,
             Primer = PrimerEntry,
-            OverallLength = length,
+            TotalLength = length,
             InQueue = QueueCheckBox
         };
         App.RoundRepo.AddNewRound(round);
 
+        int round_id = App.RoundRepo.GetRoundId(round);
+
         if (SelectedFirearm != null)
         {
-            App.RoundRepo.AddRoundToFirearm(SelectedFirearm.Id, App.RoundRepo.GetRoundId(round));
+            App.RoundRepo.AddRoundToFirearm(SelectedFirearm.Id, round_id);
         }
 
-        Shell.Current.GoToAsync("..");
+        var NavigationParemeter = new Dictionary<string, object>
+        {
+            {"AddedRound", round_id }
+        };
+        
+        Shell.Current.GoToAsync("..",NavigationParemeter);
     }
     [RelayCommand]
     public void Cancel()

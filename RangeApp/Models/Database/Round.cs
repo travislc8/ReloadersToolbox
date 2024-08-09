@@ -18,6 +18,6 @@ public class Round
     public string? CaseName { get; set; }
     [MaxLength (50)]
     public string? Primer { get; set; }
-    public Decimal? OverallLength { get; set; }
+    public decimal? TotalLength { get; set; }
     public bool? InQueue { get; set; }
 }

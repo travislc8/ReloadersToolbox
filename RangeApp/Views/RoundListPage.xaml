@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:viewmodel="clr-namespace:RangeApp.ViewModel"
+             x:Class="RangeApp.Views.RoundListPage"
+             x:DataType="viewmodel:RoundListPageViewModel"
+             Title="Round List Page">
+    <ContentPage.Resources>
+        <Style TargetType="Grid">
+            <Setter Property="VisualStateManager.VisualStateGroups">
+                <VisualStateGroupList>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal" />
+                        <VisualState x:Name="Selected">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor"
+                                        Value="LightSkyBlue" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </Setter>
+        </Style>
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="5">
+            <Entry Placeholder="Search"
+                Text="{Binding RoundSearchEntry}"
+               MaxLength="50"
+                   >
+                <Entry.Behaviors>
+                    <toolkit:EventToCommandBehavior 
+                        EventName="TextChanged"
+                        Command="{Binding SearchTextChangedCommand}"/>
+                </Entry.Behaviors>
+            </Entry>
+            <Label Text="{Binding SearchStatus}"
+                   TextColor="Red"
+                   Margin="0,-5,0,5"/>
+
+            <Grid ColumnDefinitions="1.2*,*,*,67"
+                ColumnSpacing="-3"
+              RowDefinitions="30">
+                <Border Stroke="Black"
+                    StrokeThickness="2"
+                    Grid.Column="0"
+                    >
+                    <Label Text="Name"
+                   TextDecorations="Underline"
+                   FontSize="Medium"
+                   HorizontalOptions="Center"/>
+                </Border>
+                <Border Stroke="Black"
+                    StrokeThickness="2"
+                   Grid.Column="1"
+                    >
+                    <Label Text="Caliber"
+                   TextDecorations="Underline"
+                   FontSize="Medium"
+                   HorizontalOptions="Center"/>
+                </Border>
+                <Border Stroke="Black"
+                    StrokeThickness="2"
+                    Grid.Column="2"
+                    >
+                    <Label Text="Powder"
+                   TextDecorations="Underline"
+                   FontSize="Medium"
+                   HorizontalOptions="Center"/>
+                </Border>
+                <Border Stroke="Black"
+                    StrokeThickness="2"
+                    Grid.Column="3">
+                    <Label Text="Queue"
+                   TextDecorations="Underline"
+                   FontSize="Medium"
+                   HorizontalOptions="Center"/>
+                </Border>
+            </Grid>
+            <Border>
+                <ScrollView Padding="0,0,0,0">
+                    <CollectionView x:Name="RoundListView" 
+                      ItemsSource="{Binding RefinedRoundData}"
+                      SelectedItem="{Binding SelectedRoundData, Mode=TwoWay}"
+                      SelectionMode="Single"
+                      x:DataType="{x:Null}"
+                      MaximumHeightRequest="200"
+                      >
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid ColumnDefinitions="1.2*,*,*,65"
+                                      MinimumHeightRequest="25"
+                                      >
+                                    <Border Grid.Column="0"
+                                            Stroke="Black"
+                                            Margin="-1"
+                                            >
+                                    <Label Text="{Binding Name}"
+                                               VerticalOptions="Center"
+                                               HorizontalOptions="Center"
+                                               Grid.Column="0"
+                                               FontAttributes="Bold"/>
+                                    </Border>
+                                    <Border Grid.Column="1"
+                                            Stroke="Black"
+                                            Margin="-1"
+                                            >
+                                    <Label Text="{Binding Caliber}"
+                                               VerticalOptions="Center"
+                                               HorizontalOptions="Center"
+                                               Grid.Column="1"
+                                               FontAttributes="Bold"/>
+                                    </Border>
+                                    <Border Grid.Column="2"
+                                            Stroke="Black"
+                                            Margin="-1"
+                                            >
+                                    <Label Text="{Binding PowderName}"
+                                               VerticalOptions="Center"
+                                               HorizontalOptions="Center"
+                                               Grid.Column="2"
+                                               FontAttributes="Bold"/>
+                                    </Border>
+                                    <CheckBox IsChecked="{Binding InQueue}"
+                                              Grid.Column="3"/>
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </ScrollView>
+            </Border>
+
+            <Grid ColumnDefinitions="*,*,*"
+              ColumnSpacing="5"
+              Margin="0,5,0,0">
+                <Button Text="New Round"
+                    Grid.Column="0"
+                    Command="{Binding NewRoundCommand}"/>
+                <Button Text="Edit Selected"
+                    Grid.Column="1"
+                    Command="{Binding EditRoundCommand}"/>
+                <Button Text="Delete Selecte"
+                    Grid.Column="2"
+                    Command="{Binding DeleteRoundCommand}"/>
+            </Grid>
+            <Border StrokeThickness="5"
+                Margin="0,20,0,0">
+                <VerticalStackLayout>
+
+                    <Label Text="Round Data"
+               HorizontalOptions="Center"
+               FontSize="Medium"
+               TextDecorations="Underline"/>
+                    <Grid ColumnDefinitions="60,*,65,*"
+              RowDefinitions="20,20,20,20" 
+              Padding="10">
+
+                        <Label Text="Name: "
+                     HorizontalOptions="Start"
+                     Grid.Row="0"
+                     Grid.Column="0"/>
+                        <Label Text="{Binding SelectedRoundData.Name}"
+                     Grid.Row="0"
+                   Grid.Column="1"/>
+
+                        <Label Text="ID: "
+                     HorizontalOptions="Start"
+                     Grid.Row="0"
+                     Grid.Column="2"/>
+                        <Label Text="{Binding SelectedRoundData.RoundId}"
+                     Grid.Row="0"
+                   Grid.Column="3"/>
+
+                        <Label Text="Caliber: "
+                     HorizontalOptions="Start"
+                     Grid.Row="1"
+                     Grid.Column="0"/>
+                        <Label Text="{Binding SelectedRoundData.Caliber}"
+                     Grid.Row="1"
+                   Grid.Column="1"/>
+
+                        <Label Text="Primer: "
+                     HorizontalOptions="Start"
+                     Grid.Row="1"
+                     Grid.Column="2"/>
+                        <Label Text="{Binding SelectedRoundData.Primer}"
+                     Grid.Row="1"
+                   Grid.Column="3"/>
+
+                        <Label Text="Length: "
+                     HorizontalOptions="Start"
+                     Grid.Row="2"
+                     Grid.Column="0"/>
+                        <Label Text="{Binding SelectedRoundData.TotalLength}"
+                     Grid.Row="2"
+                   Grid.Column="1"/>
+
+                        <Label Text="Case: "
+                     HorizontalOptions="Start"
+                     Grid.Row="2"
+                     Grid.Column="2"/>
+                        <Label Text="{Binding SelectedRoundData.CaseName}"
+                     Grid.Row="2"
+                   Grid.Column="3"/>
+
+                        <Label Text="Avg Velo: "
+                     HorizontalOptions="Start"
+                     Grid.Row="3"
+                     Grid.Column="0"/>
+                        <Label Text="{Binding SelectedRoundData.AverageVelocity}"
+                     Grid.Row="3"
+                   Grid.Column="1"/>
+
+                        <Label Text="Stdev: "
+                     HorizontalOptions="Start"
+                     Grid.Row="3"
+                     Grid.Column="2"/>
+                        <Label Text="{Binding SelectedRoundData.AverageStDev}"
+                     Grid.Row="3"
+                   Grid.Column="3"/>
+
+
+                    </Grid>
+                    <Label Text="Bullet Data"
+               HorizontalOptions="Center"
+               FontSize="Medium"
+                           Margin="0,0,0,-10" 
+                           />
+                    <Grid ColumnDefinitions="60,*,65,*"
+              RowDefinitions="20,20" 
+              Padding="10">
+
+                        <Label Text="Name: "
+                     HorizontalOptions="Start"
+                     Grid.Row="0"
+                     Grid.Column="0"/>
+                        <Label Text="{Binding SelectedRoundData.BulletName}"
+                     Grid.Row="0"
+                   Grid.Column="1"/>
+
+                        <Label Text="Weight: "
+                     HorizontalOptions="Start"
+                     Grid.Row="0"
+                     Grid.Column="2"/>
+                        <HorizontalStackLayout Grid.Column="3"
+                                   Grid.Row="0">
+                            <Label Text="{Binding SelectedRoundData.BulletGrains}"/>
+                            <Label Text=" grains"/>
+                        </HorizontalStackLayout>
+
+                        <Label Text="MFG: "
+                     HorizontalOptions="Start"
+                     Grid.Row="1"
+                     Grid.Column="0"/>
+                        <Label Text="{Binding SelectedRoundData.BulletManufacturer}"
+                     Grid.Row="1"
+                   Grid.Column="1"/>
+
+                        <Label Text="Diameter:"
+                     HorizontalOptions="Start"
+                     Grid.Row="1"
+                     Grid.Column="2"/>
+                        <Label Text="{Binding SelectedRoundData.BulletDiameter}"
+                     Grid.Row="1"
+                   Grid.Column="3"/>
+
+                    </Grid>
+
+                    <Label Text="Powder Data"
+                            HorizontalOptions="Center"
+                            FontSize="Medium"
+                           Margin="0,0,0,-10"
+                    />
+                    <Grid ColumnDefinitions="60,*,65,*"
+              RowDefinitions="20,20" 
+              Padding="10">
+
+                        <Label Text="Name: "
+                     HorizontalOptions="Start"
+                     Grid.Row="0"
+                     Grid.Column="0"/>
+                        <Label Text="{Binding SelectedRoundData.PowderName}"
+                     Grid.Row="0"
+                   Grid.Column="1"/>
+
+                        <Label Text="Weight: "
+                     HorizontalOptions="Start"
+                     Grid.Row="0"
+                     Grid.Column="2"/>
+                        <HorizontalStackLayout Grid.Column="3"
+                                   Grid.Row="0">
+                            <Label Text="{Binding SelectedRoundData.PowderWeight}"/>
+                            <Label Text=" grains"/>
+                        </HorizontalStackLayout>
+
+                        <Label Text="MFG: "
+                     HorizontalOptions="Start"
+                     Grid.Row="1"
+                     Grid.Column="0"/>
+                        <Label Text="{Binding SelectedRoundData.PowderManufacturer}"
+                     Grid.Row="1"
+                   Grid.Column="1"/>
+
+                        <Label Text="Type:"
+                     HorizontalOptions="Start"
+                     Grid.Row="1"
+                     Grid.Column="2"/>
+                        <Label Text="{Binding SelectedRoundData.PowderType}"
+                     Grid.Row="1"
+                   Grid.Column="3"/>
+
+                    </Grid>
+                </VerticalStackLayout>
+            </Border>
+            <Button Text="Round Group Data"
+                    Command="{Binding RoundDetailedViewCommand}"
+                    Margin="0,10,0,0"/>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

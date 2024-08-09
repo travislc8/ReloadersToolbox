@@ -21,6 +21,7 @@ public class RoundRepository
         conn.CreateTable<FirearmToRound>();
         conn.CreateTable<Powder>();
         conn.CreateTable<Bullet>();
+        conn.CreateTable<Group>();
     }
 
     public int GetRoundId(Round round)
@@ -39,7 +40,7 @@ public class RoundRepository
                          where c.PowderId == round.PowderId
                          where c.CaseName == round.CaseName
                          where c.Primer == round.Primer
-                         where c.OverallLength == round.OverallLength
+                         where c.TotalLength == round.TotalLength
                          select c.Id;
             id = result.FirstOrDefault(-1);
             StatusMessage = string.Format("Retrieved round id: {0}, for round {1}.", id, round.Name);
@@ -196,7 +197,125 @@ public class RoundRepository
         }
         return new List<Bullet>();
     }
+    public Powder GetPowder(int? id)
+    {
+        if (id == null)
+            return new Powder();
+        try
+        {
+            var result = from c in conn.Table<Powder>()
+                         where c.Id == id
+                         select c;
+            StatusMessage = string.Format("Retrieved {0} Powder", result.Count());
+            return result.FirstOrDefault(new Powder());
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = string.Format("Could not retrieve Powder. Error {0}", ex.Message);
+        }
+        return new Powder();
+    }
+    public Bullet GetBullet(int? id)
+    {
+        if (id == null)
+            return new Bullet();
+        try
+        {
+            var result = from c in conn.Table<Bullet>()
+                         where c.Id == id
+                         select c;
+            StatusMessage = string.Format("Retrieved {0} Bullet", result.Count());
+            return result.FirstOrDefault(new Bullet());
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = string.Format("Could not retrieve Bullet. Error {0}", ex.Message);
+        }
+        return new Bullet();
+    }
+    public List<ViewModel.RoundData> GetRoundData()
+    {
+        List<ViewModel.RoundData> round_data_list = [];
+        try
+        {
+            Init();
 
+            var result = conn.Table<Round>().ToList();
+
+            foreach(var round in result)
+            {
+                Powder powder = GetPowder(round.PowderId);
+                Bullet bullet = GetBullet(round.BulletId);
+                //velo and stdev
+                var groups = from c in conn.Table<Group>()
+                             where c.RoundId == round.Id
+                             select c;
+                var list = groups.ToList();
+                float? avg_velo = 0, avg_stdev = 0;
+                if (list != null)
+                {
+                    foreach (var group in list)
+                    {
+                        avg_velo += group.AverageVelocity;
+                        avg_stdev += group.StDev;
+                    }
+                    avg_velo /= list.Count;
+                    avg_stdev /= list.Count;
+                }
+
+                var round_data = new ViewModel.RoundData
+                {
+                    RoundId = round.Id,
+                    Name = round.Name,
+                    Caliber = round.Caliber,
+                    PowderWeight = round.PowderGrains,
+                    CaseName = round.CaseName,
+                    Primer = round.Primer,
+                    TotalLength = round.TotalLength,
+                    InQueue = round.InQueue,
+                    PowderId = round.PowderId,
+                    PowderName = powder.Name,
+                    PowderManufacturer = powder.PowderManufacturer,
+                    PowderType = powder.PowderType,
+                    BulletId = round.BulletId,
+                    BulletName = bullet.Name,
+                    BulletDiameter = bullet.Diameter,
+                    BulletGrains = bullet.BulletGrains,
+                    BulletManufacturer = bullet.BulletManufacturer,
+                    AverageVelocity = avg_velo,
+                    AverageStDev = avg_stdev
+                };
+                round_data_list.Add(round_data);
+            }
+            StatusMessage = string.Format("Retrieved {0} round data.", round_data_list.Count());
+            return round_data_list;
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = string.Format("Could not retrieve Round Data. Error {0}.", ex.Message);
+        }
+        return new List<ViewModel.RoundData>();
+    }
+    public Firearm GetFirearmForRound(int round_id)
+    {
+        try
+        {
+            Init();
+            var result = from c in conn.Table<FirearmToRound>()
+                         from d in conn.Table<Firearm>()
+                         where c.RoundId == round_id
+                         where d.Id == c.FirearmId
+                         select d;
+            StatusMessage = string.Format("Retrieved Firearm from round id.");
+            return result.FirstOrDefault(new Firearm());
+
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = string.Format("Could not retrieved firearm from round id. Error {0}", ex.Message);
+        }
+        return new Firearm();
+    }
     public int DeleteRound(Round round)
     {
         int result = 0;
@@ -206,6 +325,25 @@ public class RoundRepository
             if (round == null)
                 throw new Exception("Invalid round");
             result = conn.Delete(round);
+            StatusMessage = string.Format("Removed {0} items.", result);
+            return result;
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = string.Format("Failed to remove round. Error {0}", ex.Message);
+        }
+        return result;
+    }
+    public int DeleteRound(int round_id)
+    {
+        int result = 0;
+        try
+        {
+            Init();
+            var round = from c in conn.Table<Round>()
+                        where c.Id == round_id
+                        select c;
+            result = conn.Delete(round.FirstOrDefault());
             StatusMessage = string.Format("Removed {0} items.", result);
             return result;
         }
