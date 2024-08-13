@@ -123,8 +123,13 @@
                                                Grid.Column="2"
                                                FontAttributes="Bold"/>
                                     </Border>
-                                    <CheckBox IsChecked="{Binding InQueue}"
-                                              Grid.Column="3"/>
+                                    <Border Grid.Column="3"
+                                            Stroke="Black"
+                                            Margin="-1"
+                                            >
+                                        <CheckBox IsChecked="{Binding InQueue}"
+                                                  CheckedChanged="InQueueChanged"/>
+                                    </Border>
                                 </Grid>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
@@ -141,7 +146,7 @@
                 <Button Text="Edit Selected"
                     Grid.Column="1"
                     Command="{Binding EditRoundCommand}"/>
-                <Button Text="Delete Selecte"
+                <Button Text="Delete Selected"
                     Grid.Column="2"
                     Command="{Binding DeleteRoundCommand}"/>
             </Grid>

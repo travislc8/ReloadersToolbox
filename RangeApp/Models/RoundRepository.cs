@@ -389,4 +389,24 @@ public class RoundRepository
         }
         return result;
     }
+    public int UpdateQueue(int id, bool check)
+    {
+        int result = 0;
+        try
+        {
+            Init();
+            var round_table = from c in conn.Table<Round>()
+                        where c.Id == id
+                        select c;
+            Round round = round_table.First();
+            round.InQueue = check;
+            conn.Update(round);
+            StatusMessage = string.Format("Updated {0} round.", 1);
+        }
+        catch (Exception e)
+        {
+            StatusMessage = string.Format("Failed to update round");
+        }
+        return result;
+    }
 }

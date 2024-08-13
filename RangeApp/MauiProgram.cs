@@ -35,6 +35,8 @@ public static class MauiProgram
 		Routing.RegisterRoute("NewBulletPage", typeof(Views.NewBulletPage));
 		Routing.RegisterRoute("NewFirearmPage", typeof(Views.NewFirearmPage));
 		Routing.RegisterRoute("RoundListPage", typeof(Views.RoundListPage));
+		Routing.RegisterRoute("NewLocationPage", typeof(Views.NewLocationPage));
+
 
 #if DEBUG
 		builder.Logging.AddDebug();

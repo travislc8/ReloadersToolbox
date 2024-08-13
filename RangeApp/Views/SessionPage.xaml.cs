@@ -49,6 +49,7 @@ public partial class SessionPage : ContentPage
     private void OnRoundSelected(object sender, SelectedItemChangedEventArgs e)
     {
         VM.SetCurrentRound(e.SelectedItemIndex);
+        RoundChange.IsVisible = false;
     }
 
     private void RoundChangeSave(object sender, EventArgs e)
@@ -98,5 +99,15 @@ public partial class SessionPage : ContentPage
     private void OnFirearmInSessionCheckBoxChanged(object sender, CheckedChangedEventArgs e)
     {
         VM.FirearmsInSessionCheckBoxChanged(FirearmsInSessionCheckBox.IsChecked);
+    }
+
+    private void RoundsSearchEntryTextChanged(object sender, TextChangedEventArgs e)
+    {
+        VM.RoundSearchEntryTextChanged();
+    }
+
+    private void RoundsInTestQueueChanged(object sender, CheckedChangedEventArgs e)
+    {
+        VM.RoundsInTestQueueChanged();
     }
 }

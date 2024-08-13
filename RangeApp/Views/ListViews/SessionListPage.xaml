@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:viewmodel="clr-namespace:RangeApp.ViewModel"
+             x:Class="RangeApp.Views.SessionListPage"
+             x:DataType="viewmodel:SessionListPageViewModel"
+             Title="Session List Page">
+    <ContentPage.Resources>
+        <Style TargetType="Grid">
+            <Setter Property="VisualStateManager.VisualStateGroups">
+                <VisualStateGroupList>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal" />
+                        <VisualState x:Name="Selected">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor"
+                                        Value="{StaticResource SelectedItem}" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </Setter>
+        </Style>
+    </ContentPage.Resources>
+
+    <VerticalStackLayout Padding="10">
+
+        <HorizontalStackLayout >
+            <Label Text="Search:"
+                   Padding="0,0,10,0"
+                   VerticalOptions="Center"/>
+            <Entry Placeholder="Name"
+                   MinimumWidthRequest="200">
+                <Entry.Behaviors>
+                    <toolkit:EventToCommandBehavior
+                        EventName="TextChanged"
+                        Command="{Binding SessionSearchTextChangedCommand}"/>
+                </Entry.Behaviors>
+            </Entry>
+        </HorizontalStackLayout>
+
+        <Border MinimumHeightRequest="20">
+            <ScrollView Padding="0,0,0,0">
+                <CollectionView x:Name="RoundListView" 
+                      ItemsSource="{Binding RefinedSessionData}"
+                      SelectedItem="{Binding SelectedSession, Mode=TwoWay}"
+                      SelectionMode="Single"
+                      x:DataType="{x:Null}"
+                      MaximumHeightRequest="200"
+                      >
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+
+                            <Grid ColumnDefinitions="50,*,50,*"
+                                          RowDefinitions="*,*"
+                                  Padding="5">
+                            <Label Text="Name: "
+                                   Grid.Column="0"
+                                   Grid.Row="0"/>
+                                <Label Text="{Binding Name}"
+                                       Grid.Column="1"
+                                       Grid.Row="0"/>
+                                <Label Text="Date: "
+                                       Grid.Column="2"
+                                       Grid.Row="0"
+                                       Margin="5,0,0,0"/>
+                                <Label Text="{Binding Date}"
+                                       Grid.Column="3"
+                                       Grid.Row="0"/>
+                                <Label Text="Shots: "
+                                       Grid.Column="0"
+                                       Grid.Row="1"/>
+                                <Label Text="{Binding NumShots}"
+                                       Grid.Column="1"
+                                       Grid.Row="1"/>
+                            </Grid>
+
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </ScrollView>
+        </Border>
+
+        <Grid ColumnDefinitions="*,*"
+              ColumnSpacing="5"
+              Margin="0,5,0,0">
+            <Button Text="Edit Session"
+                    Command="{Binding EditSessionSelectedCommand}"
+                    Grid.Column="0"/>
+            <Button Text="Delete Session"
+                    Command="{Binding DeleteSelectedCommand}"
+                    Grid.Column="1"/>
+        </Grid>
+        <Label Text="{Binding StatusMessage}"/>
+
+        <Border StrokeThickness="5"
+                Margin="0,20,0,0">
+            <VerticalStackLayout>
+
+                <Label Text="Session Data"
+                       HorizontalOptions="Center"
+                       FontSize="Medium"
+                       TextDecorations="Underline"/>
+                <Grid ColumnDefinitions="60,*,65,*"
+                      RowDefinitions="20,20,20,20" 
+                      Padding="10">
+
+                    <Label Text="Name: "
+                           HorizontalOptions="Start"
+                           Grid.Row="0"
+                           Grid.Column="0"/>
+                    <Label Text="{Binding SelectedSession.Name}"
+                           Grid.Row="0"
+                           Grid.Column="1"/>
+
+                    <Label Text="ID: "
+                           HorizontalOptions="Start"
+                           Grid.Row="0"
+                           Grid.Column="2"/>
+                    <Label Text="{Binding SelectedSession.SessionId}"
+                           Grid.Row="0"
+                           Grid.Column="3"/>
+
+                    <Label Text="Date: "
+                           HorizontalOptions="Start"
+                           Grid.Row="1"
+                           Grid.Column="0"/>
+                    <Label Text="{Binding SelectedSession.Date}"
+                           Grid.Row="1"
+                           Grid.Column="1"/>
+
+                    <Label Text="Shots: "
+                           HorizontalOptions="Start"
+                           Grid.Row="1"
+                           Grid.Column="2"/>
+                    <Label Text="{Binding SelectedSession.NumShots}"
+                           Grid.Row="1"
+                           Grid.Column="3"/>
+
+                    <Label Text="Location: "
+                           HorizontalOptions="Start"
+                           Grid.Row="2"
+                           Grid.Column="0"/>
+                    <Label Text="{Binding SelectedSession.Location.Name}"
+                           Grid.Row="2"
+                           Grid.Column="1"/>
+
+
+                </Grid>
+            </VerticalStackLayout>
+        </Border>
+
+        <Border MinimumHeightRequest="20"
+                Margin="0,10,0,0"
+                StrokeThickness="5">
+            <VerticalStackLayout>
+                <Label Text="Firearms In Session"
+                       FontSize="Medium"
+                       HorizontalOptions="Center"
+                       TextDecorations="Underline"
+                       />
+                <ScrollView Padding="0,0,0,0">
+                <CollectionView x:Name="FirearmList" 
+                      SelectionMode="Single"
+                      x:DataType="{x:Null}"
+                      MaximumHeightRequest="200"
+                      >
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Label Text="Test"/>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </ScrollView>
+                
+            </VerticalStackLayout>
+        </Border>
+    </VerticalStackLayout>
+</ContentPage>

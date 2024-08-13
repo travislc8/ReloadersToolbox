@@ -23,6 +23,8 @@
     </FlyoutItem>
     <FlyoutItem Title="Lists">
         <Tab>
+            <ShellContent ContentTemplate="{DataTemplate local:Views.SessionListPage}"
+                          Title="Sessions List"/>
             <ShellContent ContentTemplate="{DataTemplate local:Views.RoundListPage}"
                           Title="Rounds List"/>
             <ShellContent ContentTemplate="{DataTemplate local:Views.FirearmListPage}"

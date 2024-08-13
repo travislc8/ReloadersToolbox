@@ -70,7 +70,7 @@
 	  <Compile Update="Views\NewFirearmPage.xaml.cs">
 	    <DependentUpon>NewFirearmPage.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="Views\FirearmListPage.xaml.cs">
+	  <Compile Update="Views\ListViews\FirearmListPage.xaml.cs">
 	    <DependentUpon>FirearmListPage.xaml</DependentUpon>
 	  </Compile>
 	  <Compile Update="Views\SessionOptions.xaml.cs">
@@ -79,13 +79,16 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Views\LocationListPage.xaml">
+	  <MauiXaml Update="Views\ListViews\LocationListPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\ListViews\SessionListPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\NewFirearmPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\FirearmListPage.xaml">
+	  <MauiXaml Update="Views\ListViews\FirearmListPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\NewGroupPage.xaml">
@@ -103,7 +106,7 @@
 	  <MauiXaml Update="Views\RoundBuilder\NewRoundPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\RoundListPage.xaml">
+	  <MauiXaml Update="Views\ListViews\RoundListPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\SessionPage.xaml">

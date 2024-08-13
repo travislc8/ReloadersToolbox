@@ -121,11 +121,27 @@ public class LocationRepository
                          select c;
             StatusMessage = string.Format("Found Item {0}", name);
             return choice.FirstOrDefault();
-            ;
         }
         catch (Exception ex)
         {
             StatusMessage = string.Format("Failed to retrieve data. {0}", ex.Message);
+        }
+        return new Location();
+    }
+    public Location GetLocationFromId(int id)
+    {
+        try
+        {
+            Init();
+            var location = from c in conn.Table<Location>()
+                           where c.Id == id
+                           select c;
+            StatusMessage = string.Format("Retrieved {0} location.", location.Count());
+            return location.FirstOrDefault();
+        }
+        catch(Exception ex)
+        {
+            StatusMessage = string.Format("Failed to retrieve location from id. Error {0}", ex.Message);
         }
         return new Location();
     }

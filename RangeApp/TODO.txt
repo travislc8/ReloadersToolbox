@@ -14,10 +14,9 @@ ROund List Page
 
 Session Page
 	Default round
+    Add more Round List data 
 	Save Session Button 
 	field data verification
-	Round List 
-        All
 	Edit Group Button 
 	Group List data displayed
     Stop Duplicate rounds and firearms in list

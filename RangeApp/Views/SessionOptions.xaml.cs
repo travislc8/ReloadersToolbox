@@ -23,7 +23,7 @@ public partial class SessionOptions : ContentPage
 	private async void NewLocation(object sender, EventArgs e)
 	{
 		var vm = new ViewModel.NewLocationPageViewModel();
-		await Navigation.PushAsync(new Views.NewLocationPage(vm));
+		await Shell.Current.GoToAsync("NewLocationPage");
 		VM.UpdateLocations();
 	}
     private async void AddFirearm(object sender, EventArgs e)

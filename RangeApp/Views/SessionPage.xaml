@@ -148,15 +148,19 @@
                 <VerticalStackLayout>
                     <Label Text="Rounds For Current Firearm"
                            FontSize="Medium"
-                   HorizontalOptions="Center"/>
+                           HorizontalOptions="Center"/>
                     <Grid ColumnSpacing="10"
-                  ColumnDefinitions="30,Auto,*">
-                        <CheckBox Grid.Column="0"/>
+                          ColumnDefinitions="30,Auto,*">
+                        <CheckBox Grid.Column="0"
+                                  IsChecked="{Binding RoundsInTestQueue}"
+                                  CheckedChanged="RoundsInTestQueueChanged"/>
                         <Label Text="Rounds In Test Queue" 
                        Grid.Column="1"
                        VerticalOptions="Center"/>
                         <Entry Grid.Column="2" 
-                       Placeholder="Search Rounds"/>
+                               Text="{Binding RoundSearchEntry}"
+                               TextChanged="RoundsSearchEntryTextChanged"
+                               Placeholder="Search Rounds"/>
 
                     </Grid>
                     <ScrollView>
@@ -186,7 +190,7 @@
                                 Clicked="RoundChangeCancel"/>
                         <Button Text="Create New"
                                 Grid.Column="2"
-                                Clicked="RoundChangeCreateNew"/>
+                                Command="{Binding RoundChangeNewCommand}"/>
                     </Grid>
                 </VerticalStackLayout>
             </Border>

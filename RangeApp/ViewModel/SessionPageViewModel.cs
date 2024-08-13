@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.Input;
 using RangeApp.Models;
+using System.ComponentModel.Design;
 
 namespace RangeApp.ViewModel;
 
@@ -16,7 +17,7 @@ public partial class SessionPageViewModel : ObservableObject , IQueryAttributabl
         CurrentRound = string.Empty;
         GroupData = App.SessionRepo.GetGroupData(session_id);
         RefinedFirearms = [];
-        AllFirearms = [];
+        UpdateAllRoundsList();
         RefinedRounds = [];
         UpdateAllFirearmsList();
     }
@@ -37,6 +38,7 @@ public partial class SessionPageViewModel : ObservableObject , IQueryAttributabl
     private int session_id = 0;
     public GroupData? SelectedGroup;
     private List<Firearm> AllFirearms;
+    private List<Round> AllRounds;
     private bool FirearmsInSessionChecked = true;
 
     [ObservableProperty]
@@ -44,7 +46,7 @@ public partial class SessionPageViewModel : ObservableObject , IQueryAttributabl
     [ObservableProperty]
     ObservableCollection<Models.Firearm>? refinedFirearms;
     [ObservableProperty]
-    ObservableCollection<Models.Round>? refinedRounds;
+    ObservableCollection<Models.Round> refinedRounds = new ObservableCollection<Round>();
     [ObservableProperty]
     string? currentFirearm;
     [ObservableProperty]
@@ -53,6 +55,8 @@ public partial class SessionPageViewModel : ObservableObject , IQueryAttributabl
     string firearmSearchEntry = string.Empty;
     [ObservableProperty]
     string roundSearchEntry = string.Empty;
+    [ObservableProperty]
+    bool roundsInTestQueue = false;
 
     public void SetSessionName(string sessionName)
     {
@@ -88,6 +92,10 @@ public partial class SessionPageViewModel : ObservableObject , IQueryAttributabl
 
 
         }
+        if (attributes.ContainsKey("AddedRound"))
+        {
+            UpdateAllRoundsList(); 
+        }
         attributes.Clear();
     }
     [RelayCommand]
@@ -116,6 +124,11 @@ public partial class SessionPageViewModel : ObservableObject , IQueryAttributabl
         };
         await Shell.Current.GoToAsync("NewGroupPage", navigationParamenter);
         UpdateGroupData();
+    }
+    [RelayCommand]
+    async Task RoundChangeNew()
+    {
+        await Shell.Current.GoToAsync("NewRoundPage");
     }
     private void UpdateGroupData()
     {
@@ -191,7 +204,41 @@ public partial class SessionPageViewModel : ObservableObject , IQueryAttributabl
     {
         FirearmsInSessionChecked = is_checked;
         UpdateAllFirearmsList();
-    } 
+    }
+    public void RoundSearchEntryTextChanged()
+    {
+        UpdateRefinedRoundData();
+    }
+    public void RoundsInTestQueueChanged()
+    {
+        UpdateRefinedRoundData();
+    }
+    
+    private void UpdateAllRoundsList()
+    {
+        AllRounds = App.RoundRepo.GetRounds();
+        UpdateRefinedRoundData();
+    }
+    private void UpdateRefinedRoundData()
+    {
+        if (RoundSearchEntry == string.Empty && RoundsInTestQueue == false)
+        {
+            RefinedRounds = new ObservableCollection<Round>(AllRounds);
+            return;
+        }
+
+        RefinedRounds.Clear();
+        foreach (var round in AllRounds)
+        {
+            if (RoundsInTestQueue == true)
+            {
+                if (round.InQueue != true)
+                    continue;
+            }
+            if (round.Name != null && round.Name.Contains(RoundSearchEntry))
+                RefinedRounds.Add(round);
+        }
+    }
     public void UpdateAllFirearmsList()
     {
         if (FirearmsInSessionChecked)
@@ -204,6 +251,7 @@ public partial class SessionPageViewModel : ObservableObject , IQueryAttributabl
         }
         UpdateRefinedFirearmData();
     }
+
     private void UpdateRefinedFirearmData()
     {
         if (RefinedFirearms == null)

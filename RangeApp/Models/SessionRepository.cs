@@ -248,6 +248,39 @@ public class SessionRepository
         }
         return result;
     }
+    public int DeleteSession(int id)
+    {
+        int result = 0;
+        try
+        {
+            Init();
+            var session = from c in conn.Table<Session>()
+                          where c.Id == id
+                          select c;
+            result = conn.Delete(session.FirstOrDefault());
+            StatusMessage = string.Format("Removed {0} session.", result);
+        }
+        catch(Exception ex)
+        {
+            StatusMessage = string.Format("Failed to remove session. Error {0}", ex.Message);
+        }
+        return result;
+    }
+    public int DeleteSession(Session session)
+    {
+        int result = 0;
+        try
+        {
+            Init();
+            result = conn.Delete(session);
+            StatusMessage = string.Format("Removed {0} session.", result);
+        }
+        catch(Exception ex)
+        {
+            StatusMessage = string.Format("Failed to remove session. Error {0}", ex.Message);
+        }
+        return result;
+    }
     public ObservableCollection<ViewModel.GroupData> GetGroupData(int session_id)
     {
 
@@ -402,6 +435,43 @@ public class SessionRepository
             StatusMessage = string.Format("Failed to retrieve data. {0}", ex.Message);
         }
         return Id;
+    }
+    public List<ViewModel.SessionData> GetSessionData()
+    {
+        Init();
+        List<ViewModel.SessionData> DataList = [];
+        try
+        {
+            var sessions = conn.Table<Session>().ToList();
+            foreach(var session in sessions)
+            {
+                var data = new ViewModel.SessionData();
+                data.Name = session.Name;
+                data.SessionId = session.Id;
+                data.Note = session.Note;
+                data.Date = session.Date_Time;
+                data.Location = App.LocationRepo.GetLocationFromId(session.Id);
+                data.Firearms = App.FirearmRepo.GetFirearmsInSession(session.Id);
+                var group = from c in conn.Table<Group>()
+                             where c.SessionId == session.Id
+                             select c;
+                var shots = from shot in conn.Table<Shot>()
+                            from groups in conn.Table<Group>()
+                            where groups.SessionId == session.Id
+                            where shot.GroupId == groups.Id
+                            select shot;
+                data.NumShots = shots.Count();
+                data.NumGroups = group.Count();
+
+                DataList.Add(data);
+            }
+            return DataList;
+        }
+        catch (Exception e)
+        {
+            StatusMessage = string.Format("Failed to retrieve Session Data. Error {0}", e.Message);
+        }
+        return DataList;
     }
     public bool IsFirearmInSession(string firearm_name, int session_id)
     {

@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Messaging;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.Input;
 using Model.Utils;
@@ -124,5 +123,15 @@ public partial class RoundListPageViewModel : ObservableObject, IQueryAttributab
     public void RoundDetailedView()
     {
         //TODO
+    }
+    public void InQueueChanged()
+    {
+        foreach (var item in RefinedRoundData) 
+        {
+            if (item.InQueue != null)
+            {
+                App.RoundRepo.UpdateQueue(item.RoundId, (bool)item.InQueue);
+            }
+        }
     }
 }

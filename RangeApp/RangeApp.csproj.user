@@ -11,13 +11,16 @@
     <DebuggerFlavor>ProjectDebugger</DebuggerFlavor>
   </PropertyGroup>
   <ItemGroup>
-    <MauiXaml Update="Views\LocationListPage.xaml">
+    <MauiXaml Update="Views\ListViews\LocationListPage.xaml">
+      <SubType>Designer</SubType>
+    </MauiXaml>
+    <MauiXaml Update="Views\ListViews\SessionListPage.xaml">
       <SubType>Designer</SubType>
     </MauiXaml>
     <MauiXaml Update="Views\NewFirearmPage.xaml">
       <SubType>Designer</SubType>
     </MauiXaml>
-    <MauiXaml Update="Views\FirearmListPage.xaml">
+    <MauiXaml Update="Views\ListViews\FirearmListPage.xaml">
       <SubType>Designer</SubType>
     </MauiXaml>
     <MauiXaml Update="Views\NewGroupPage.xaml">
@@ -35,7 +38,7 @@
     <MauiXaml Update="Views\RoundBuilder\NewRoundPage.xaml">
       <SubType>Designer</SubType>
     </MauiXaml>
-    <MauiXaml Update="Views\RoundListPage.xaml">
+    <MauiXaml Update="Views\ListViews\RoundListPage.xaml">
       <SubType>Designer</SubType>
     </MauiXaml>
     <MauiXaml Update="Views\SessionPage.xaml">

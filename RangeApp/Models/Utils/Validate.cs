@@ -22,6 +22,25 @@ public static class Validate
         return check;
     }
 
+    //just checks for a pass
+    public static bool IntFromString(string value)
+    {
+        bool check = false;
+        check = int.TryParse(value, out int num);
+        if (check == true)
+        {
+            if (num <= int.MaxValue)
+            {
+                check = true;
+            }
+            else
+            {
+                check = false;
+            }
+        }
+
+        return check;
+    }
     public static bool IntFromString(string value, ref string status)
     {
         bool check = false;
@@ -46,6 +65,7 @@ public static class Validate
 
         return check;
     }
+    //gets the number from the string
     public static bool IntFromString(string value, out int num, ref string status)
     {
         bool check = false;
@@ -65,6 +85,7 @@ public static class Validate
         }
         else
         {
+            num = 0;
             status = "Entry is not a number";
         }
 

@@ -1,5 +1,3 @@
-using CommunityToolkit.Mvvm.Input;
-
 namespace RangeApp.Views;
 
 public partial class RoundListPage : ContentPage
@@ -18,4 +16,8 @@ public partial class RoundListPage : ContentPage
 	}
 	private readonly ViewModel.RoundListPageViewModel VM;
 
+    private void InQueueChanged(object sender, CheckedChangedEventArgs e)
+    {
+		VM.InQueueChanged();
+    }
 }

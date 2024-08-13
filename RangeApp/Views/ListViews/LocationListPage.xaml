@@ -47,7 +47,7 @@
                 Clicked="AddNew"/>
         <Button x:Name="Edit"
                 Text="Edit Selected"
-                Clicked="EditSelected"
+                Command="{Binding EditSelectedCommand}"
                 />
         <Button x:Name="Delete"
                 Text="Delete Selected"

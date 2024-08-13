@@ -6,7 +6,7 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace RangeApp.ViewModel;
 
-public partial class LocationListPageViewModel : ObservableObject
+public partial class LocationListPageViewModel : ObservableObject , IQueryAttributable
 {
     public LocationListPageViewModel()
     {
@@ -14,17 +14,12 @@ public partial class LocationListPageViewModel : ObservableObject
         RefinedLocations = new ObservableCollection<Models.Location>(AllLocations);
 
         StatusMessage = App.LocationRepo.StatusMessage;
-		WeakReferenceMessenger.Default.Register<Models.SendItemMessage>(this, (r, m) =>
-            {
-                UpdateList();
-                RefineSearch();
-            });  
     }
     private Models.Location? selected_location;
 
     List<Models.Location>? AllLocations;
     [ObservableProperty]
-    ObservableCollection<Models.Location>? refinedLocations;
+    ObservableCollection<Models.Location> refinedLocations;
     
     [ObservableProperty]
     string statusMessage = string.Empty;
@@ -37,6 +32,16 @@ public partial class LocationListPageViewModel : ObservableObject
     [ObservableProperty] 
     string searchInputText =string.Empty;
 
+    public void ApplyQueryAttributes(IDictionary<string, object> attributes)
+    {
+        if (attributes == null)
+            return;
+        if (attributes.ContainsKey("AddedLocation"))
+        {
+            UpdateList();
+        }
+        attributes.Clear();
+    }
     void AddAllToRefined()
     {
         RefinedLocations.Clear();
@@ -99,6 +104,17 @@ public partial class LocationListPageViewModel : ObservableObject
             SelectedId = selected.Id.ToString();
         }
         selected_location = selected;
+    }
+    [RelayCommand]
+    async Task EditSelected()
+    {
+        if (selected_location == null)
+            return;
+        var NavigationParameter = new Dictionary<string, object>
+        {
+            {"Location", selected_location }
+        };
+        await Shell.Current.GoToAsync("NewLocationPage", NavigationParameter);
     }
 }
 

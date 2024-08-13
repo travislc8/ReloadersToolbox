@@ -13,6 +13,7 @@
     <Color x:Key="Secondary">#DFD8F7</Color>
     <Color x:Key="SecondaryDarkText">#8083FF</Color>
     <Color x:Key="Tertiary">#0004A2</Color>
+    <Color x:Key="SelectedItem">LightSkyBlue</Color>
 
     <Color x:Key="White">White</Color>
     <Color x:Key="Black">Black</Color>

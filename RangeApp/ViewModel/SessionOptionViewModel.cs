@@ -4,7 +4,7 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace RangeApp.ViewModel;
 
-public partial class SessionOptionsViewModel : ObservableObject
+public partial class SessionOptionsViewModel : ObservableObject , IQueryAttributable
 {
 	public SessionOptionsViewModel()
 	{
@@ -14,7 +14,7 @@ public partial class SessionOptionsViewModel : ObservableObject
 		SessionNames = new ObservableCollection<string>(App.SessionRepo.GetSessionNames());
 	}
 	private int LocationId = -1;
-	private string SessionName;
+	private string? SessionName;
 	[ObservableProperty]
 	ObservableCollection<RangeApp.Models.Firearm> firearmsInSession;
 	[ObservableProperty]
@@ -31,6 +31,19 @@ public partial class SessionOptionsViewModel : ObservableObject
 	ObservableCollection<string> sessionNames;
 	[ObservableProperty]
 	string firearmPickerPlaceholder = "Select a FirearmName From Existing";
+
+	 public void ApplyQueryAttributes(IDictionary<string, object> attributes)
+	{
+		if (attributes == null)
+			return;
+		if (attributes.ContainsKey("AddedLocation"))
+		{
+			if (attributes["AddedLocation"].ToString() == "1")
+			{
+				UpdateLocations();	
+            }
+        }
+	}
 
 
 	public void SetSessionName(string sessionName)
@@ -72,7 +85,8 @@ public partial class SessionOptionsViewModel : ObservableObject
 	}
 	public void Save(string location_name, string note)
 	{
-
+		if (SessionName == null)
+			return;
 		var session = new Models.Session
 		{
 			LocationId = LocationId,
