@@ -1,162 +1,162 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-			 xmlns:SessionPage="clr-namespace:RangeApp"
+             xmlns:SessionPage="clr-namespace:RangeApp"
              x:Class="RangeApp.Views.NewGroupPage"
              xmlns:viewmodel="clr-namespace:RangeApp.ViewModel"
              x:DataType="viewmodel:NewGroupPageViewModel"
              Padding="10,20,10,0"
              Title="Group Page">
-    <ScrollView >
+       <ScrollView>
 
-        <VerticalStackLayout MinimumHeightRequest="1000">
-            <Grid ColumnDefinitions="Auto, *, Auto, *"
-              ColumnSpacing="10">
-                <Label Text="Firearm:"
-                   Grid.Column="0"
-                   TextDecorations="Underline"/>
-                <Label Text="{Binding FirearmName}"
-                   Grid.Column="1"/>
-                <Label Text="Round:"
-                          Grid.Column="2"
-                   TextDecorations="Underline"/>
-                <Label Text="{Binding RoundName}"
-                   Grid.Column="3"/>
-            </Grid>
+              <VerticalStackLayout MinimumHeightRequest="1000">
+                     <Grid ColumnDefinitions="Auto, *, Auto, *"
+                           ColumnSpacing="10">
+                            <Label Text="Firearm:"
+                                   Grid.Column="0"
+                                   TextDecorations="Underline"/>
+                            <Label Text="{Binding Group.FirearmName}"
+                                   Grid.Column="1"/>
+                            <Label Text="Round:"
+                                   Grid.Column="2"
+                                   TextDecorations="Underline"/>
+                            <Label Text="{Binding Group.RoundName}"
+                                   Grid.Column="3"/>
+                     </Grid>
 
-            <Grid ColumnDefinitions="*,80"
-              ColumnSpacing="10"
-              Padding="0,20,0,0">
-                <Entry Placeholder="Velocity"
-                   Text="{Binding VelocityEntry, Mode=TwoWay}"
-                   Keyboard="Numeric"
-                   Grid.Column="0"/>
-                <Picker x:Name="UnitPicker"
-                Grid.Column="1"
-                    SelectedIndexChanged="UnitPickerIndexChanged">
-                    <Picker.ItemsSource>
-                        <x:Array Type="{x:Type x:String}">
-                            <x:String>FPS</x:String>
-                            <x:String>MPS</x:String>
-                        </x:Array>
-                    </Picker.ItemsSource>
-                </Picker>
+                     <Grid ColumnDefinitions="*,80"
+                           ColumnSpacing="10"
+                           Padding="0,20,0,0">
+                            <Entry Placeholder="Velocity"
+                                   Text="{Binding VelocityEntry, Mode=TwoWay}"
+                                   Keyboard="Numeric"
+                                   Grid.Column="0"/>
+                            <Picker x:Name="UnitPicker"
+                                    Grid.Column="1"
+                                    SelectedIndexChanged="UnitPickerIndexChanged">
+                                   <Picker.ItemsSource>
+                                          <x:Array Type="{x:Type x:String}">
+                                                 <x:String>FPS</x:String>
+                                                 <x:String>MPS</x:String>
+                                          </x:Array>
+                                   </Picker.ItemsSource>
+                            </Picker>
 
-            </Grid>
-            <Entry Placeholder="Shot Note"
-               Text="{Binding ShotNote, Mode=TwoWay}"/>
-            <Button x:Name="AddShotButton"
-                Text="Add Shot"
-                Command="{Binding AddShotCommand}"
-                IsEnabled="True"
-                IsVisible="Visible"/>
-            <Grid ColumnDefinitions="*,*"
-              ColumnSpacing="10">
-                <Button x:Name="UpdateShotButton"
-                    Text="Update"
-                    Grid.Column="0"
-                    Clicked="UpdateShotClicked"
-                    IsVisible="Hidden"/>
-                <Button x:Name="CancelUpdateShotButton"
-                    Text="Cancel"
-                    Grid.Column="1"
-                    Clicked="CancelUpdateShotClicked"
-                    IsVisible="Hidden"/>
-            </Grid>
-            <Label Text="Shot Data"
-               HorizontalOptions="Center"
-               FontSize="Medium"
-               Padding="0,20,0,0"/>
-            <ScrollView Padding="0,0,0,0">
-                <ListView x:Name="ShotDataListView" 
-                          ItemsSource="{Binding Shots}"
-                          ItemSelected="OnShotSelected"
-                          x:DataType="{x:Null}"
-                          MaximumHeightRequest="200">
-                    <ListView.ItemTemplate>
-                        <DataTemplate >
-                            <ViewCell>
-                                <VerticalStackLayout>
-                                    <HorizontalStackLayout>
-                                        <Label Text="{Binding IdPre}"/>
-                                        <Label Text="{Binding Id}"/>
-                                        <Label Text="{Binding VelocityPre}"/>
-                                        <Label Text="{Binding Velocity}"/>
-                                        <Label Text=" FPS"/>
-                                    </HorizontalStackLayout>
-                                    <HorizontalStackLayout>
-                                        <Label Text="{Binding NotePre}"/>
-                                        <Label Text="{Binding Note}"/>
-                                    </HorizontalStackLayout>
-                                </VerticalStackLayout>
-                            </ViewCell>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </ScrollView>
-            <Grid ColumnDefinitions="*,*"
-              ColumnSpacing="10">
-                <Button Text="Edit Selected"
-                    Grid.Column="0"
-                    Clicked="EditShotClicked"/>
-                <Button Text="Delete Selected"
-                    Grid.Column="1"
-                    Command="{Binding DeleteShotCommand}"/>
+                     </Grid>
+                     <Entry Placeholder="Shot Note"
+                            Text="{Binding ShotNote, Mode=TwoWay}"/>
+                     <Button x:Name="AddShotButton"
+                             Text="Add Shot"
+                             Command="{Binding AddShotCommand}"
+                             IsEnabled="True"
+                             IsVisible="Visible"/>
+                     <Grid ColumnDefinitions="*,*"
+                           ColumnSpacing="10">
+                            <Button x:Name="UpdateShotButton"
+                                    Text="Update"
+                                    Grid.Column="0"
+                                    Clicked="UpdateShotClicked"
+                                    IsVisible="Hidden"/>
+                            <Button x:Name="CancelUpdateShotButton"
+                                    Text="Cancel"
+                                    Grid.Column="1"
+                                    Clicked="CancelUpdateShotClicked"
+                                    IsVisible="Hidden"/>
+                     </Grid>
+                     <Label Text="Shot Data"
+                            HorizontalOptions="Center"
+                            FontSize="Medium"
+                            Padding="0,20,0,0"/>
+                     <ScrollView Padding="0,0,0,0">
+                            <ListView x:Name="ShotDataListView"
+                                      ItemsSource="{Binding Shots}"
+                                      ItemSelected="OnShotSelected"
+                                      x:DataType="{x:Null}"
+                                      MaximumHeightRequest="200">
+                                   <ListView.ItemTemplate>
+                                          <DataTemplate>
+                                                 <ViewCell>
+                                                        <VerticalStackLayout>
+                                                               <HorizontalStackLayout>
+                                                                      <Label Text="{Binding NumPre}"/>
+                                                                      <Label Text="{Binding Num}"/>
+                                                                      <Label Text="{Binding VelocityPre}"/>
+                                                                      <Label Text="{Binding Velocity}"/>
+                                                                      <Label Text=" FPS"/>
+                                                               </HorizontalStackLayout>
+                                                               <HorizontalStackLayout>
+                                                                      <Label Text="{Binding NotePre}"/>
+                                                                      <Label Text="{Binding Note}"/>
+                                                               </HorizontalStackLayout>
+                                                        </VerticalStackLayout>
+                                                 </ViewCell>
+                                          </DataTemplate>
+                                   </ListView.ItemTemplate>
+                            </ListView>
+                     </ScrollView>
+                     <Grid ColumnDefinitions="*,*"
+                           ColumnSpacing="10">
+                            <Button Text="Edit Selected"
+                                    Grid.Column="0"
+                                    Clicked="EditShotClicked"/>
+                            <Button Text="Delete Selected"
+                                    Grid.Column="1"
+                                    Command="{Binding DeleteShotCommand}"/>
 
 
-            </Grid>
+                     </Grid>
 
-            <Grid ColumnDefinitions="Auto,*,Auto,*"
-              ColumnSpacing="10"
-              RowDefinitions="Auto,Auto"
-              Padding="0,20,0,20">
-                <Label Text="Max:"
-                     TextDecorations="Underline"
-                     Grid.Row="0"
-                     Grid.Column="0"/>
-                <Label Text="{Binding MaxVelocity}"
-                   Grid.Row="0"
-                   Grid.Column="1"/>
-                <Label Text="Min:"
-                     TextDecorations="Underline"
-                     Grid.Row="0"
-                     Grid.Column="2"/>
-                <Label Text="{Binding MinVelocity}"
-                   Grid.Row="0"
-                   Grid.Column="3"/>
-                <Label Text="Standard Deviation: "
-                     TextDecorations="Underline"
-                     Grid.Row="1"
-                     Grid.Column="0"/>
-                <Label Text="{Binding StDev}"
-                     Grid.Row="1"
-                   Grid.Column="1"/>
-                <Label Text="Average: "
-                       TextDecorations="Underline"
-                       Grid.Row="1"
-                       Grid.Column="2"/>
-                <Label Text="{Binding AverageVelocity}"
-                       Grid.Row="1"
-                       Grid.Column="3"/>
-            </Grid>
+                     <Grid ColumnDefinitions="Auto,*,Auto,*"
+                           ColumnSpacing="10"
+                           RowDefinitions="Auto,Auto"
+                           Padding="0,20,0,20">
+                            <Label Text="Max:"
+                                   TextDecorations="Underline"
+                                   Grid.Row="0"
+                                   Grid.Column="0"/>
+                            <Label Text="{Binding MaxVelocity}"
+                                   Grid.Row="0"
+                                   Grid.Column="1"/>
+                            <Label Text="Min:"
+                                   TextDecorations="Underline"
+                                   Grid.Row="0"
+                                   Grid.Column="2"/>
+                            <Label Text="{Binding MinVelocity}"
+                                   Grid.Row="0"
+                                   Grid.Column="3"/>
+                            <Label Text="Standard Deviation: "
+                                   TextDecorations="Underline"
+                                   Grid.Row="1"
+                                   Grid.Column="0"/>
+                            <Label Text="{Binding Group.StDev}"
+                                   Grid.Row="1"
+                                   Grid.Column="1"/>
+                            <Label Text="Average: "
+                                   TextDecorations="Underline"
+                                   Grid.Row="1"
+                                   Grid.Column="2"/>
+                            <Label Text="{Binding Group.AverageVelocity}"
+                                   Grid.Row="1"
+                                   Grid.Column="3"/>
+                     </Grid>
 
-            <Border>
-                <Entry Placeholder="Group Note"
-                       Text="{Binding GroupNote}"
-               VerticalTextAlignment="End"
-               MinimumHeightRequest="100"/>
-            </Border>
+                     <Border>
+                            <Entry Placeholder="Group Note"
+                                   Text="{Binding Group.Note}"
+                                   VerticalTextAlignment="End"
+                                   MinimumHeightRequest="100"/>
+                     </Border>
 
-            <Grid ColumnDefinitions="*,*"
-              ColumnSpacing="10"
-              Padding="0,20,0,0">
-                <Button Text="Save Group"
-                Grid.Column="0"
-                        Command="{Binding SaveGroupCommand}"/>
-                <Button Text="Delete Group"
-                Grid.Column="1"
-                        Clicked="DeleteGroupClicked"/>
-            </Grid>
-        </VerticalStackLayout>
-    </ScrollView>
+                     <Grid ColumnDefinitions="*,*"
+                           ColumnSpacing="10"
+                           Padding="0,20,0,0">
+                            <Button Text="Save Group"
+                                    Grid.Column="0"
+                                    Command="{Binding SaveGroupCommand}"/>
+                            <Button Text="Delete Group"
+                                    Grid.Column="1"
+                                    Clicked="DeleteGroupClicked"/>
+                     </Grid>
+              </VerticalStackLayout>
+       </ScrollView>
 </ContentPage>

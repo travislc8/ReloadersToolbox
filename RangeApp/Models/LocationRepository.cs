@@ -21,7 +21,11 @@ public class LocationRepository
         conn.CreateTable<Location>();
 
     }
-    public int AddNewLocation(Location location) {
+    /**
+    *@brief: Adds a new location to the database
+    */
+    public int AddNewLocation(Location location)
+    {
         int result = 0;
         try
         {
@@ -40,7 +44,7 @@ public class LocationRepository
         {
             StatusMessage = string.Format("Failed to add {0}. Error: {1}", location.Name, ex.Message);
         }
-        return result; 
+        return result;
 
     }
     public int RemoveLocation(Location location)
@@ -51,12 +55,12 @@ public class LocationRepository
             Init();
             result = conn.Delete(location);
             StatusMessage = string.Format("{0} record(s) removed (Name: {1})", result, location.Name);
-        } 
+        }
         catch (Exception ex)
         {
             StatusMessage = string.Format("Failed to remove {0}. Error: {1}", location.Name, ex.Message);
         }
-        return result; 
+        return result;
     }
     public int EditLocation(Location location)
     {
@@ -65,17 +69,22 @@ public class LocationRepository
         {
             Init();
             result = conn.Update(location);
-                       
+
             StatusMessage = string.Format("{0} record(s) updated (Name: {1})", result, location.Name);
         }
         catch (Exception ex)
         {
             StatusMessage = string.Format("Failed to update {0}. Error: {1}", location.Name, ex.Message);
         }
-        return result; 
+        return result;
     }
-    
 
+    /// <summary>
+    ///     Returns a list of all locations in the database
+    /// </summary>
+    /// <returns>
+    ///     List of Locations objects
+    /// </returns>
     public List<Location> GetAllLocations()
     {
         // TODO: Init then retrieve a list of Location objects from the database into a list
@@ -139,7 +148,7 @@ public class LocationRepository
             StatusMessage = string.Format("Retrieved {0} location.", location.Count());
             return location.FirstOrDefault();
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             StatusMessage = string.Format("Failed to retrieve location from id. Error {0}", ex.Message);
         }

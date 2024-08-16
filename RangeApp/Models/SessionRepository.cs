@@ -19,6 +19,7 @@ public class SessionRepository
             return;
         conn = new SQLiteConnection(_dbPath);
         conn.CreateTable<Session>();
+        conn.CreateTable<GroupInSessison>();
         conn.CreateTable<FirearmInSession>();
         conn.CreateTable<Group>();
         conn.CreateTable<Round>();
@@ -46,7 +47,7 @@ public class SessionRepository
         {
             StatusMessage = string.Format("Failed to add {0}. Error: {1}", session.Name, ex.Message);
         }
-        return result; 
+        return result;
 
     }
     public int AddFirearmsToSession(List<Firearm> firearms, int session_id)
@@ -59,7 +60,8 @@ public class SessionRepository
                 throw new Exception("No Firearms To Add or bad session_id");
             for (int i = 0; i < firearms.Count; i++)
             {
-                var fis = new FirearmInSession {
+                var fis = new FirearmInSession
+                {
                     FirearmId = firearms[i].Id,
                     SessionID = session_id,
                 };
@@ -80,7 +82,7 @@ public class SessionRepository
         try
         {
             Init();
-            if (firearm == null )
+            if (firearm == null)
                 throw new Exception("No Firearm to add or bad session");
             if (IsFirearmInSession(firearm.Name, session_id))
                 return result;
@@ -105,7 +107,7 @@ public class SessionRepository
         try
         {
             Init();
-            if (firearm == null )
+            if (firearm == null)
                 throw new Exception("No Firearm to add or bad session");
             if (IsFirearmInSession(firearm, session_id))
                 return result;
@@ -158,8 +160,8 @@ public class SessionRepository
         {
             Init();
             var result = from c in conn.Table<Group>()
-                           where c.Name == group_name
-                           select c.Id;
+                         where c.Name == group_name
+                         select c.Id;
             StatusMessage = string.Format("Retrieved Group Id: {0}, With Group Name {1}.", result.FirstOrDefault(), group_name);
             return result.FirstOrDefault();
         }
@@ -169,6 +171,34 @@ public class SessionRepository
         }
 
         return group_id;
+    }
+    public List<ViewModel.ShotData> GetGroupShotData(int group_id)
+    {
+        var list = new List<ViewModel.ShotData>();
+        try
+        {
+            Init();
+            var result = from c in conn.Table<Shot>()
+                         where c.GroupId == group_id
+                         select c;
+            var shots = result.ToList();
+            int i = 1;
+            foreach (var shot in shots)
+            {
+                var data = new ViewModel.ShotData();
+                data.Id = shot.Id;
+                data.Num = i++;
+                if (shot.Velocity != null)
+                    data.Velocity = (float)shot.Velocity;
+                data.Note = shot.Note;
+                list.Add(data);
+            }
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = string.Format("Could not get shot data. Error: ", ex.Message);
+        }
+        return list;
     }
     public int AddGroupToSession(Models.GroupInSessison group_in_session)
     {
@@ -260,7 +290,7 @@ public class SessionRepository
             result = conn.Delete(session.FirstOrDefault());
             StatusMessage = string.Format("Removed {0} session.", result);
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             StatusMessage = string.Format("Failed to remove session. Error {0}", ex.Message);
         }
@@ -275,7 +305,7 @@ public class SessionRepository
             result = conn.Delete(session);
             StatusMessage = string.Format("Removed {0} session.", result);
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             StatusMessage = string.Format("Failed to remove session. Error {0}", ex.Message);
         }
@@ -286,7 +316,7 @@ public class SessionRepository
 
         try
         {
-            var group_data_list = new ObservableCollection<ViewModel.GroupData>(); 
+            var group_data_list = new ObservableCollection<ViewModel.GroupData>();
 
             var choice = from c in conn.Table<Group>()
                          where c.SessionId == session_id
@@ -297,8 +327,10 @@ public class SessionRepository
                 var temp = new ViewModel.GroupData
                 {
                     Id = group_list[i].Id,
-                    GroupNum = i + 1,
+                    Name = session_id.ToString() + "-" + (i + 1).ToString(),
                     SessionId = session_id,
+                    GroupNum = i + 1,
+                    Note = group_list[i].Note,
                     FirearmName = App.FirearmRepo.GetFirearmNameFromId(group_list[i].FirearmId),
                     FirearmId = group_list[i].FirearmId,
                     RoundName = GetRoundNameFromId(group_list[i].RoundId),
@@ -306,8 +338,8 @@ public class SessionRepository
                     AverageVelocity = group_list[i].AverageVelocity,
                     StDev = group_list[i].StDev
                 };
-                group_data_list.Add(temp); 
-                
+                group_data_list.Add(temp);
+
             }
             return group_data_list;
         }
@@ -399,7 +431,7 @@ public class SessionRepository
         try
         {
             Init();
-            var choice = from c in conn.Table<FirearmInSession>() 
+            var choice = from c in conn.Table<FirearmInSession>()
                          where c.SessionID == session_id
                          from f in conn.Table<Firearm>()
                          where f.Id == c.FirearmId
@@ -416,6 +448,11 @@ public class SessionRepository
         }
         return new List<Firearm>();
     }
+    /// <summary>
+    /// Gets the session id for the given session name
+    /// </summary>
+    /// <param name="name">Name of the session to find the id for</param>
+    /// <returns>Session id or -1 if not found</returns>
     public int GetSessionIdFromName(string name)
     {
         int Id = -1;
@@ -436,6 +473,54 @@ public class SessionRepository
         }
         return Id;
     }
+    /// <summary>
+    /// Returns the Session name from a given Id
+    /// </summary>
+    /// <param name="id">
+    /// Id to find the name of.</param>
+    /// <returns>
+    /// Session name or empty string.</returns>
+    public string GetSessionNameFromId(int id)
+    {
+        string name = string.Empty;
+        try
+        {
+            Init();
+            var result = from c in conn.Table<Session>()
+                         where c.Id == id
+                         select c.Name;
+            StatusMessage = string.Format("Found {0} session name from session id.", result.Count());
+            name = result.FirstOrDefault("");
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = string.Format("Failed to retrieve session name from session id. Error: {0}", ex.Message);
+        }
+        return name;
+    }
+    /// <summary>
+    /// Gets the number of groups in the session.
+    /// </summary>
+    /// <returns>
+    /// Number of Groups in the session</returns>
+    public int GetGroupCount(int session_id)
+    {
+        int count = 0;
+        try
+        {
+            Init();
+            var result = from c in conn.Table<GroupInSessison>()
+                         where c.SessisonId == session_id
+                         select c;
+            count = result.Count();
+            StatusMessage = string.Format("Found {0} groups in the session.", count);
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = string.Format("Could not find Groups in session. Error {0}", ex.Message);
+        }
+        return count;
+    }
     public List<ViewModel.SessionData> GetSessionData()
     {
         Init();
@@ -443,7 +528,7 @@ public class SessionRepository
         try
         {
             var sessions = conn.Table<Session>().ToList();
-            foreach(var session in sessions)
+            foreach (var session in sessions)
             {
                 var data = new ViewModel.SessionData();
                 data.Name = session.Name;
@@ -453,8 +538,8 @@ public class SessionRepository
                 data.Location = App.LocationRepo.GetLocationFromId(session.Id);
                 data.Firearms = App.FirearmRepo.GetFirearmsInSession(session.Id);
                 var group = from c in conn.Table<Group>()
-                             where c.SessionId == session.Id
-                             select c;
+                            where c.SessionId == session.Id
+                            select c;
                 var shots = from shot in conn.Table<Shot>()
                             from groups in conn.Table<Group>()
                             where groups.SessionId == session.Id
@@ -487,7 +572,7 @@ public class SessionRepository
                 check = true;
             else
                 check = false;
-        } 
+        }
         catch (Exception ex)
         {
             string.Format("Failed to retrieve data. Error {0}", ex.Message);

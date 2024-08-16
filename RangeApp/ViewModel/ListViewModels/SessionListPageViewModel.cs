@@ -16,6 +16,8 @@ public partial class SessionListPageViewModel : ObservableObject, IQueryAttribut
     {
         if (attributes == null)
             return;
+        UpdateAllSessionData();
+        attributes.Clear();
     }
 
     List<ViewModel.SessionData> AllSessionData;
@@ -56,10 +58,18 @@ public partial class SessionListPageViewModel : ObservableObject, IQueryAttribut
         }
     }
     [RelayCommand]
-    void EditSessionSelected()
+    async Task EditSessionSelected()
     {
         //TODO
-        StatusMessage = "Not Implemented";
+        if (SelectedSession == null)
+        {
+            StatusMessage = "No Session Selected";
+            return;
+        }
+        var NavigationParameter = new Dictionary<string, object> {
+            {"SessionId", SelectedSession.SessionId}
+        };
+        await Shell.Current.GoToAsync("SessionPage", NavigationParameter);
     }
     [RelayCommand]
     void ViewFirearmSelected()
@@ -67,7 +77,7 @@ public partial class SessionListPageViewModel : ObservableObject, IQueryAttribut
         //TODO
         StatusMessage = "Not Implemented";
     }
-    [RelayCommand] 
+    [RelayCommand]
     void SessionSearchTextChanged()
     {
         UpdateRefinedSessionData();

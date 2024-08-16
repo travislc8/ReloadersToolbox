@@ -1,4 +1,5 @@
-﻿using System; using SQLite;
+﻿using System;
+using SQLite;
 
 namespace RangeApp.Models;
 [Table("Group")]
@@ -7,6 +8,9 @@ public class Group
 {
     [PrimaryKey, AutoIncrement]
     public int Id { get; set; }
+    /// <summary>
+    /// Name = SessionId + "-" + (Group number in group)
+    /// </summary>
     [Unique]
     public string Name { get; set; }
     public int? RoundId { get; set; }
