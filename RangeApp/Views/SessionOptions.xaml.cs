@@ -5,6 +5,18 @@ namespace RangeApp.Views;
 public partial class SessionOptions : ContentPage
 {
 
+	public SessionOptions()
+	{
+		InitializeComponent();
+		VM = new ViewModel.SessionOptionsViewModel();
+		BindingContext = VM;
+		locations = [];
+		TextColor = NameEntry.TextColor;
+		WeakReferenceMessenger.Default.Register<SendItemMessage>(this, (r, m) =>
+			{
+				VM.AddToFirearmsInSession(m.Value.ToString());
+			});
+	}
 	public SessionOptions(ViewModel.SessionOptionsViewModel vm)
 	{
 		InitializeComponent();
@@ -13,9 +25,9 @@ public partial class SessionOptions : ContentPage
 		locations = [];
 		TextColor = NameEntry.TextColor;
 		WeakReferenceMessenger.Default.Register<SendItemMessage>(this, (r, m) =>
-            {
+			{
 				VM.AddToFirearmsInSession(m.Value.ToString());
-            });  
+			});
 	}
 	private List<Models.Location> locations { get; set; }
 	private ViewModel.SessionOptionsViewModel VM;
@@ -26,16 +38,16 @@ public partial class SessionOptions : ContentPage
 		await Shell.Current.GoToAsync("NewLocationPage");
 		VM.UpdateLocations();
 	}
-    private async void AddFirearm(object sender, EventArgs e)
-    {
+	private async void AddFirearm(object sender, EventArgs e)
+	{
 		var vm = new ViewModel.NewFirearmPageViewModel();
 		await Navigation.PushAsync(new Views.NewFirearmPage(vm));
-		
-    }
+
+	}
 
 
-    private void OnNameTextChanged(object sender, TextChangedEventArgs e)
-    {
+	private void OnNameTextChanged(object sender, TextChangedEventArgs e)
+	{
 		if (NameEntry.Text.Length > 0)
 		{
 			if (VM.NameDuplicateCheck(NameEntry.Text))
@@ -70,11 +82,14 @@ public partial class SessionOptions : ContentPage
 		{
 			VM.SetStatusMessage("");
 		}
-    }
+	}
 	async private void SaveButtonClicked(object sender, EventArgs args)
 	{
-		 VM.Save(NameEntry.Text, NoteEntry.Text);
-		var name = NameEntry.Text;
-		await Shell.Current.GoToAsync($"SessionPage?nameEntry={name}");
+		VM.Save(NameEntry.Text, NoteEntry.Text);
+		var NavigationParameter = new Dictionary<string, object>
+		{
+			{"NameEntry", NameEntry.Text}
+		};
+		await Shell.Current.GoToAsync("SessionPage", NavigationParameter);
 	}
 }

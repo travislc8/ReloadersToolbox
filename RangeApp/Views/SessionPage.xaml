@@ -67,10 +67,10 @@
                   Padding="0,20,0,20">
 
                 <Label x:Name="CurrentFirearmTitle"
-                       Text="Current Firearm: "
+                       Text="Selected Firearm: "
                        VerticalTextAlignment="Center"
                        Grid.Column="0"/>
-                <Label Text="{Binding CurrentFirearm}"
+                <Label Text="{Binding SelectedFirearm.Name}"
                        VerticalTextAlignment="Center"
                        Grid.Column="1"/>
 
@@ -99,22 +99,52 @@
                                TextChanged="SearchFirearmTextChanged"
                                Grid.Column="2"/>
                     </Grid>
-                    <ScrollView>
-                        <ListView x:Name="FirearmListView"
-                                  ItemsSource="{Binding RefinedFirearms}"
-                                  ItemSelected="OnFirearmSelected"
-                                  x:DataType="{x:Null}"
-                                  MaximumHeightRequest="200">
-                            <ListView.ItemTemplate>
+                    <ScrollView Margin="0,0,0,10">
+                        <CollectionView x:Name="FirearmListView"
+                                        ItemsSource="{Binding RefinedFirearms}"
+                                        SelectedItem="{Binding SelectedFirearm, Mode=TwoWay}"
+                                        SelectionMode="Single"
+                                        x:DataType="{x:Null}"
+                                        MaximumHeightRequest="200">
+                            <CollectionView.ItemTemplate>
                                 <DataTemplate>
-                                    <ViewCell>
-                                        <VerticalStackLayout>
-                                            <Label Text="{Binding Name}"/>
-                                        </VerticalStackLayout>
-                                    </ViewCell>
+                                    <VerticalStackLayout>
+                                        <Border Margin="0,-1,0,-1"
+                                                Stroke="Black"
+                                                StrokeThickness="1"
+                                                Padding="5">
+                                            <Grid ColumnDefinitions="50,*,60,*"
+                                                  RowDefinitions="20,20">
+                                                <Label Text="Name: "
+                                                       Grid.Column="0"
+                                                       Grid.Row="0"/>
+                                                <Label Text="{Binding Name}"
+                                                       Grid.Column="1"
+                                                       Grid.Row="0"/>
+                                                <Label Text="Caliber: "
+                                                       Grid.Column="2"
+                                                       Grid.Row="0"/>
+                                                <Label Text="{Binding Caliber}"
+                                                       Grid.Column="3"
+                                                       Grid.Row="0"/>
+                                                <Label Text="Mfg: "
+                                                       Grid.Column="0"
+                                                       Grid.Row="1"/>
+                                                <Label Text="{Binding Manufacturer}"
+                                                       Grid.Column="1"
+                                                       Grid.Row="1"/>
+                                                <Label Text="Barrel Length: "
+                                                       Grid.Column="2"
+                                                       Grid.Row="1"/>
+                                                <Label Text="{Binding BarrelLength}"
+                                                       Grid.Column="3"
+                                                       Grid.Row="1"/>
+                                            </Grid>
+                                        </Border>
+                                    </VerticalStackLayout>
                                 </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
                     </ScrollView>
                     <Grid ColumnDefinitions="*,*,*"
                           ColumnSpacing="10">
@@ -139,7 +169,7 @@
                 <Label Text="Selected Round: "
                        Grid.Column="0"
                        VerticalTextAlignment="Center"/>
-                <Label Text="{Binding CurrentRound}"
+                <Label Text="{Binding SelectedRound.Name}"
                        Grid.Column="1"
                        VerticalTextAlignment="Center"/>
                 <Button Text="Change"
@@ -169,21 +199,48 @@
 
                     </Grid>
                     <ScrollView>
-                        <ListView x:Name="RoundListView"
-                                  ItemsSource="{Binding RefinedRounds}"
-                                  ItemSelected="OnRoundSelected"
-                                  x:DataType="{x:Null}"
-                                  MaximumHeightRequest="200">
-                            <ListView.ItemTemplate>
+                        <CollectionView x:Name="RoundListView"
+                                        ItemsSource="{Binding RefinedRounds}"
+                                        SelectedItem="{Binding SelectedRound}"
+                                        x:DataType="{x:Null}"
+                                        MaximumHeightRequest="200">
+                            <CollectionView.ItemTemplate>
                                 <DataTemplate>
-                                    <ViewCell>
-                                        <VerticalStackLayout>
-                                            <Label Text="{Binding Name}"/>
-                                        </VerticalStackLayout>
-                                    </ViewCell>
+                                    <Border Margin="0,-1,0,-1"
+                                            Stroke="Black"
+                                            StrokeThickness="1"
+                                            Padding="5">
+                                        <Grid ColumnDefinitions="50,*,60,*,60,*"
+                                              RowDefinitions="20,20">
+                                            <Label Text="Name: "
+                                                   Grid.Column="0"
+                                                   Grid.Row="0"/>
+                                            <Label Text="{Binding Name}"
+                                                   Grid.Column="1"
+                                                   Grid.Row="0"/>
+                                            <Label Text="Caliber: "
+                                                   Grid.Column="2"
+                                                   Grid.Row="0"/>
+                                            <Label Text="{Binding Caliber}"
+                                                   Grid.Column="3"
+                                                   Grid.Row="0"/>
+                                            <Label Text="Powder (g): "
+                                                   Grid.Column="0"
+                                                   Grid.Row="1"/>
+                                            <Label Text="{Binding PowderGrains}"
+                                                   Grid.Column="1"
+                                                   Grid.Row="1"/>
+                                            <Label Text="Barrel Length: "
+                                                   Grid.Column="2"
+                                                   Grid.Row="1"/>
+                                            <Label Text="{Binding BarrelLength}"
+                                                   Grid.Column="3"
+                                                   Grid.Row="1"/>
+                                        </Grid>
+                                    </Border>
                                 </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
                     </ScrollView>
                     <Grid ColumnDefinitions="*,*,*"
                           ColumnSpacing="10">

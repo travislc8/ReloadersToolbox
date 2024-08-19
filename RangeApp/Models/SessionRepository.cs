@@ -76,7 +76,7 @@ public class SessionRepository
 
         return result;
     }
-    public int AddFirearmToSession(Firearm firearm, int session_id)
+    public int AddFirearmToSession(string firearm, int session_id)
     {
         int result = 0;
         try
@@ -84,11 +84,12 @@ public class SessionRepository
             Init();
             if (firearm == null)
                 throw new Exception("No Firearm to add or bad session");
-            if (IsFirearmInSession(firearm.Name, session_id))
+            if (IsFirearmInSession(firearm, session_id))
                 return result;
+            var firearm_id = App.FirearmRepo.GetFirearmFromName(firearm).Id;
             var fis = new FirearmInSession
             {
-                FirearmId = firearm.Id,
+                FirearmId = firearm_id,
                 SessionID = session_id
             };
             result = conn.Insert(fis);
@@ -101,7 +102,7 @@ public class SessionRepository
         }
         return result;
     }
-    public int AddFirearmToSession(string firearm, int session_id)
+    public int AddFirearmToSession(Firearm? firearm, int session_id)
     {
         int result = 0;
         try
@@ -111,7 +112,7 @@ public class SessionRepository
                 throw new Exception("No Firearm to add or bad session");
             if (IsFirearmInSession(firearm, session_id))
                 return result;
-            var firearm_id = App.FirearmRepo.GetFirearmFromName(firearm).Id;
+            var firearm_id = firearm.Id;
             var fis = new FirearmInSession
             {
                 FirearmId = firearm_id,
@@ -568,6 +569,27 @@ public class SessionRepository
                          where c.FirearmId == firearm.Id
                          where c.SessionID == session_id
                          select c;
+            if (result.FirstOrDefault().FirearmId == firearm.Id)
+                check = true;
+            else
+                check = false;
+        }
+        catch (Exception ex)
+        {
+            string.Format("Failed to retrieve data. Error {0}", ex.Message);
+        }
+        return check;
+    }
+    public bool IsFirearmInSession(Firearm firearm, int session_id)
+    {
+        bool check = false;
+        try
+        {
+            var result = from c in conn.Table<FirearmInSession>()
+                         where c.FirearmId == firearm.Id
+                         where c.SessionID == session_id
+                         select c;
+
             if (result.FirstOrDefault().FirearmId == firearm.Id)
                 check = true;
             else

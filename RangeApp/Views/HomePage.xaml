@@ -5,16 +5,17 @@
              xmlns:viewmodel="clr-namespace:RangeApp.ViewModel"
              x:DataType="viewmodel:HomePageViewModel"
              x:Class="RangeApp.Views.HomePage">
-    <VerticalStackLayout>
-        <Label Padding="0,0,0,20"
-               Text="Welcome To The Range Day App"
-               FontSize="32"/>
-        <Button Text="Round Builder"
-                Clicked="RoundBuilderClicked"/>
-        <Button Text="Continue Session"
-                x:Name="ContinueSessionButton"
-                VerticalOptions="End"
-                Clicked="ContinueSessionClicked"/>
-    </VerticalStackLayout>
+        <VerticalStackLayout Padding="10">
+                <Label Padding="0,0,0,20"
+                       Text="Welcome To The Range Day App"
+                       FontSize="32"/>
+                <Button Text="Round Builder"
+                        Clicked="RoundBuilderClicked"/>
+                <Button Text="Continue Session"
+                        x:Name="ContinueSessionButton"
+                        VerticalOptions="End"
+                        Margin="0,10,0,0"
+                        Clicked="ContinueSessionClicked"/>
+        </VerticalStackLayout>
 
 </ContentPage>

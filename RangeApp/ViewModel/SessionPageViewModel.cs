@@ -42,13 +42,13 @@ public partial class SessionPageViewModel : ObservableObject, IQueryAttributable
     [ObservableProperty]
     ObservableCollection<ViewModel.GroupData> groups;
     [ObservableProperty]
-    ObservableCollection<Models.Firearm>? refinedFirearms;
+    ObservableCollection<Models.Firearm> refinedFirearms = new ObservableCollection<Firearm>();
     [ObservableProperty]
     ObservableCollection<Models.Round> refinedRounds = new ObservableCollection<Round>();
     [ObservableProperty]
-    string currentFirearm = string.Empty;
+    Models.Firearm? selectedFirearm;
     [ObservableProperty]
-    string currentRound = string.Empty;
+    Models.Round? selectedRound;
     [ObservableProperty]
     string firearmSearchEntry = string.Empty;
     [ObservableProperty]
@@ -75,14 +75,14 @@ public partial class SessionPageViewModel : ObservableObject, IQueryAttributable
             App.SessionRepo.AddFirearmToSession(firearm, session_id);
             UpdateAllFirearmsList();
         }
-        if (attributes.ContainsKey("nameEntry"))
+        if (attributes.ContainsKey("NameEntry"))
         {
-            _SessionName = attributes["nameEntry"] as string;
+            _SessionName = attributes["NameEntry"] as string;
             session_id = App.SessionRepo.GetSessionIdFromName(SessionName);
             Preferences.Set("SessionActive", session_id);
             UpdateGroupData();
             if (RefinedFirearms != null && RefinedFirearms.Count != 0)
-                CurrentFirearm = RefinedFirearms[0].Name;
+                SelectedFirearm = RefinedFirearms[0];
         }
 
         if (attributes.ContainsKey("ShotAdded"))
@@ -101,6 +101,7 @@ public partial class SessionPageViewModel : ObservableObject, IQueryAttributable
             {
                 var id = int.Parse(id_string);
                 session_id = id;
+                Preferences.Set("SessionActive", session_id);
                 FillDataFromId(id);
                 UpdateGroupData();
                 App.SessionRepo.GetGroupCount(session_id);
@@ -111,13 +112,13 @@ public partial class SessionPageViewModel : ObservableObject, IQueryAttributable
     [RelayCommand]
     async public Task NewGroup()
     {
-        if (CurrentFirearm == string.Empty || CurrentRound == string.Empty)
+        if (SelectedFirearm == null || SelectedRound == null)
         {
             GroupStatusMessage = "Must select a round and a firearm";
             return;
         }
         GroupStatusMessage = "";
-        App.SessionRepo.AddFirearmToSession(CurrentFirearm, session_id);
+        App.SessionRepo.AddFirearmToSession(SelectedFirearm, session_id);
         int group_num = Groups.Count + 1;
         string group_name = session_id.ToString() + "-" + (Groups.Count + 1).ToString();
         var group_data = new GroupData
@@ -125,10 +126,10 @@ public partial class SessionPageViewModel : ObservableObject, IQueryAttributable
             SessionId = session_id,
             Name = group_name,
             GroupNum = group_num,
-            FirearmName = CurrentFirearm,
-            FirearmId = App.FirearmRepo.GetFirearmFromName(CurrentFirearm).Id,
-            RoundName = CurrentRound,
-            RoundId = App.SessionRepo.GetRoundIdFromName(CurrentRound),
+            FirearmName = SelectedFirearm.Name,
+            FirearmId = SelectedFirearm.Id,
+            RoundName = SelectedRound.Name,
+            RoundId = SelectedRound.Id,
 
         };
         var navigationParamenter = new Dictionary<string, object>
@@ -161,10 +162,6 @@ public partial class SessionPageViewModel : ObservableObject, IQueryAttributable
 
         //Doesn't need to do anything?
     }
-    public void ChangeRound()
-    {
-        //Doesn't need to do anything?
-    }
     async public void EditGroup()
     {
         if (SelectedGroup == null)
@@ -181,26 +178,9 @@ public partial class SessionPageViewModel : ObservableObject, IQueryAttributable
             App.SessionRepo.DeleteGroup(SelectedGroup.Id);
         UpdateGroupData();
     }
-    public void SetCurrentFirearm(int index)
-    {
-        if (RefinedFirearms != null)
-            CurrentFirearm = RefinedFirearms[index].Name;
-    }
-    public void SetCurrentRound(int index)
-    {
-        if (RefinedRounds == null)
-            return;
-        if (RefinedRounds[index].Name != null)
-            CurrentRound = RefinedRounds[index].Name;
-    }
-
     public void SetSelectedGroup(int index)
     {
         SelectedGroup = Groups[index];
-    }
-    private void GetGroupData()
-    {
-
     }
     public void FirearmSearchEntryTextChanged()
     {

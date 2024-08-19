@@ -15,29 +15,19 @@
             <ShellContent ContentTemplate="{DataTemplate local:Views.HomePage}"/>
         </Tab>
     </FlyoutItem>
-    <FlyoutItem Title="DayEntry">
-        <ShellContent ContentTemplate="{DataTemplate local:Views.DayEntryPage}"/>
-    </FlyoutItem>
-    <FlyoutItem Title="Session Page">
-        <ShellContent ContentTemplate="{DataTemplate local:Views.SessionPage}"/>
+    <FlyoutItem Title="Create Session">
+        <ShellContent ContentTemplate="{DataTemplate local:Views.SessionOptions}"/>
     </FlyoutItem>
     <FlyoutItem Title="Lists">
         <Tab>
-            <ShellContent ContentTemplate="{DataTemplate local:Views.SessionListPage}"
-                          Title="Sessions List"/>
             <ShellContent ContentTemplate="{DataTemplate local:Views.RoundListPage}"
                           Title="Rounds List"/>
             <ShellContent ContentTemplate="{DataTemplate local:Views.FirearmListPage}"
                           Title="Firearm List"/>
+            <ShellContent ContentTemplate="{DataTemplate local:Views.SessionListPage}"
+                          Title="Sessions List"/>
             <ShellContent ContentTemplate="{DataTemplate local:Views.LocationListPage}"
                           Title="Location List"/>
-        </Tab>
-    </FlyoutItem>
-    <FlyoutItem Title="Test Page"
-                Icon="home.png">
-        <Tab>
-            <ShellContent ContentTemplate="{DataTemplate local:Views.TestPage}"
-                          Title="TestPage"/>
         </Tab>
     </FlyoutItem>
     <FlyoutItem Title="Round Builder">

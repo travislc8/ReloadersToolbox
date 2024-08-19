@@ -16,7 +16,6 @@ public partial class HomePage : ContentPage
 		}
 
 	}
-
 	private void RoundBuilderClicked(object sender, EventArgs e)
 	{
 
@@ -24,7 +23,11 @@ public partial class HomePage : ContentPage
 	}
 	void ContinueSessionClicked(object sender, EventArgs e)
 	{
-
+		int session_id = Preferences.Get("SessionActive", 0);
+		var NavigationProperty = new Dictionary<string, object> {
+			{"SessionId", session_id}
+		};
+		Shell.Current.GoToAsync("SessionPage", NavigationProperty);
 	}
 }
 
