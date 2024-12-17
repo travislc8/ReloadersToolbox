@@ -4,58 +4,96 @@
              xmlns:SessionOptions="clr-namespace:RangeApp"
              xmlns:viewmodel="clr-namespace:RangeApp.ViewModel"
              x:Class="RangeApp.Views.NewFirearmPage"
+             x:DataType="viewmodel:NewFirearmPageViewModel"
              Title="New Firearm Entry">
 
-    <VerticalStackLayout Padding="20,0,0,0">
-        <Entry x:Name="NewFirearmName"
-               Placeholder="Enter Name For New Firearm"
-               TextChanged="NewFirearmNameTextChanged"
-                HorizontalOptions="{OnPlatform WinUI=Start, Android=Fill}"
-                WidthRequest="{OnPlatform WinUI=400}"
-               />
-        <Entry x:Name="NewFirearmBarrelLength"
-               Placeholder="Enter Barrel Length"
-                HorizontalOptions="{OnPlatform WinUI=Start, Android=Fill}"
-                WidthRequest="{OnPlatform WinUI=400}"
-               TextChanged="NewFirearmBarrelLengthTextChanged"
-               Keyboard="Numeric"/>
-        <Entry x:Name="NewFirearmManufacturer"
-               Placeholder="Enter Manufacturer"
-               TextChanged="NewFirearmManufacturerTextChanged"
-                HorizontalOptions="{OnPlatform WinUI=Start, Android=Fill}"
-                WidthRequest="{OnPlatform WinUI=400}"
-               />
-        <Entry x:Name="NewFirearmCaliber"
-               Placeholder="Enter Caliber"
-               TextChanged="NewFirearmCaliberTextChanged"
-                HorizontalOptions="{OnPlatform WinUI=Start, Android=Fill}"
-                WidthRequest="{OnPlatform WinUI=400}"
-               />
-        <Entry x:Name="NewFirearmScope"
-               Placeholder="Enter Scope Name"
-               TextChanged="NewFirearmScopeTextChanged"
-                HorizontalOptions="{OnPlatform WinUI=Start, Android=Fill}"
-                WidthRequest="{OnPlatform WinUI=400}"
-               />
-        <Grid ColumnDefinitions="{OnPlatform WinUI='200,200', Android='Auto,Auto'}"
-                WidthRequest="{OnPlatform WinUI=400}"
-                HorizontalOptions="{OnPlatform WinUI=Start, Android=Fill}">
+       <VerticalStackLayout Padding="20,0,0,0">
+              <Grid ColumnDefinitions="100,*"
+                    RowDefinitions="40,40,40,40,40">
+                     <Label Text="Name: "
+                            Grid.Column="0"
+                            Grid.Row="0"
+                            HorizontalTextAlignment="End"
+                            VerticalTextAlignment="Center"/>
+                     <Entry x:Name="NewFirearmName"
+                            Text="{Binding Name}"
+                            Grid.Column="1"
+                            Grid.Row="0"
+                            Placeholder="Enter Name For New Firearm"
+                            TextChanged="NewFirearmNameTextChanged"
+                            HorizontalOptions="{OnPlatform WinUI=Start, Android=Fill}"
+                            WidthRequest="{OnPlatform WinUI=400}"/>
+                     <Label Text="Barrel Length: "
+                            Grid.Column="0"
+                            Grid.Row="1"
+                            HorizontalTextAlignment="End"
+                            VerticalTextAlignment="Center"/>
+                     <Entry x:Name="NewFirearmBarrelLength"
+                            Text="{Binding BarrelLength}"
+                            Grid.Column="1"
+                            Grid.Row="1"
+                            Placeholder="Enter Barrel Length"
+                            HorizontalOptions="{OnPlatform WinUI=Start, Android=Fill}"
+                            WidthRequest="{OnPlatform WinUI=400}"
+                            TextChanged="NewFirearmBarrelLengthTextChanged"
+                            Keyboard="Numeric"/>
+                     <Label Text="Manufacture: "
+                            Grid.Column="0"
+                            Grid.Row="2"
+                            HorizontalTextAlignment="End"
+                            VerticalTextAlignment="Center"/>
+                     <Entry x:Name="NewFirearmManufacturer"
+                            Text="{Binding Manufacture}"
+                            Grid.Column="1"
+                            Grid.Row="2"
+                            Placeholder="Enter Manufacturer"
+                            TextChanged="NewFirearmManufacturerTextChanged"
+                            HorizontalOptions="{OnPlatform WinUI=Start, Android=Fill}"
+                            WidthRequest="{OnPlatform WinUI=400}"/>
+                     <Label Text="Caliber: "
+                            Grid.Column="0"
+                            Grid.Row="3"
+                            HorizontalTextAlignment="End"
+                            VerticalTextAlignment="Center"/>
+                     <Entry x:Name="NewFirearmCaliber"
+                            Text="{Binding Caliber}"
+                            Grid.Column="1"
+                            Grid.Row="3"
+                            Placeholder="Enter Caliber"
+                            TextChanged="NewFirearmCaliberTextChanged"
+                            HorizontalOptions="{OnPlatform WinUI=Start, Android=Fill}"
+                            WidthRequest="{OnPlatform WinUI=400}"/>
+                     <Label Text="ScopeId: "
+                            Grid.Column="0"
+                            Grid.Row="4"
+                            HorizontalTextAlignment="End"
+                            VerticalTextAlignment="Center"/>
+                     <Entry x:Name="NewFirearmScope"
+                            Text="{Binding ScopeId}"
+                            Grid.Column="1"
+                            Grid.Row="4"
+                            Placeholder="Enter Scope Name"
+                            TextChanged="NewFirearmScopeTextChanged"
+                            HorizontalOptions="{OnPlatform WinUI=Start, Android=Fill}"
+                            WidthRequest="{OnPlatform WinUI=400}"/>
+              </Grid>
+              <Grid ColumnDefinitions="{OnPlatform WinUI='200,200', Android='*,*'}"
+                    WidthRequest="{OnPlatform WinUI=400}"
+                    HorizontalOptions="{OnPlatform WinUI=Start, Android=Fill}">
 
-            <Button x:Name="saveFirearmButton"
-                Grid.Column="0" 
-                IsEnabled="false"
-                Text="Save Firearm"
-                Clicked="SaveFirearm"
-                />
-            <Button x:Name="cancelSaveFirearmButton"
-                Text="Cancel"
-                Grid.Column="1"
-                Clicked="CancelSaveFirearm"
-               />
+                     <Button x:Name="saveFirearmButton"
+                             Grid.Column="0"
+                             IsEnabled="false"
+                             Text="Save Firearm"
+                             Command="{Binding SaveFirearmCommand}"/>
+                     <Button x:Name="cancelSaveFirearmButton"
+                             Text="Cancel"
+                             Grid.Column="1"
+                             Command="{Binding CancelCommand}"/>
 
-        </Grid>
-        <Label Text="{Binding StatusMessage}"/>
-    </VerticalStackLayout>
+              </Grid>
+              <Label Text="{Binding StatusMessage}"/>
+       </VerticalStackLayout>
 
 </ContentPage>
 
