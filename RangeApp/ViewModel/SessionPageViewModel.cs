@@ -67,9 +67,9 @@ public partial class SessionPageViewModel : ObservableObject, IQueryAttributable
     {
         if (attributes == null)
             return;
-        if (attributes.ContainsKey("firearm"))
+        if (attributes.ContainsKey("Firearm"))
         {
-            var firearm = attributes["firearm"] as Models.Firearm;
+            var firearm = attributes["Firearm"] as Models.Firearm;
             if (firearm == null)
                 return;
             App.SessionRepo.AddFirearmToSession(firearm, session_id);
@@ -77,12 +77,16 @@ public partial class SessionPageViewModel : ObservableObject, IQueryAttributable
         }
         if (attributes.ContainsKey("NameEntry"))
         {
-            _SessionName = attributes["NameEntry"] as string;
-            session_id = App.SessionRepo.GetSessionIdFromName(SessionName);
-            Preferences.Set("SessionActive", session_id);
-            UpdateGroupData();
-            if (RefinedFirearms != null && RefinedFirearms.Count != 0)
-                SelectedFirearm = RefinedFirearms[0];
+            var temp = attributes["NameEntry"] as string;
+            if (temp != null)
+            {
+                _SessionName = temp;
+                session_id = App.SessionRepo.GetSessionIdFromName(SessionName);
+                Preferences.Set("SessionActive", session_id);
+                UpdateGroupData();
+                if (RefinedFirearms != null && RefinedFirearms.Count != 0)
+                    SelectedFirearm = RefinedFirearms[0];
+            }
         }
 
         if (attributes.ContainsKey("ShotAdded"))

@@ -6,6 +6,10 @@ namespace RangeApp.ViewModel;
 public partial class DayEntryViewModel : ObservableObject
 {
 
+    public DayEntryViewModel()
+    {
+        text = "";
+    }
     [ObservableProperty]
     string text;
 

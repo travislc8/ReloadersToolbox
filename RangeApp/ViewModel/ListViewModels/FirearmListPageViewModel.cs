@@ -6,43 +6,33 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace RangeApp.ViewModel;
 
-public partial class FirearmListPageViewModel : ObservableObject
+/// View Model for the Firearm List Page
+public partial class FirearmListPageViewModel : ObservableObject, IQueryAttributable
 {
+    /// Default Constructor for the ViewModel. Retrieves data from the database 
+    /// populate the page.
     public FirearmListPageViewModel()
     {
-        AllFirearms = new List<Models.Firearm>(App.FirearmRepo.GetAllFirearms());
-        RefinedFirearms = new ObservableCollection<Models.Firearm>(AllFirearms);
+        AllFirearms = new List<ViewModel.FirearmData>(App.FirearmRepo.GetAllFirearmData());
+        RefinedFirearms = new ObservableCollection<ViewModel.FirearmData>(AllFirearms);
 
         StatusMessage = App.FirearmRepo.StatusMessage;
-		WeakReferenceMessenger.Default.Register<Models.SendItemMessage>(this, (r, m) =>
-            {
-                UpdateList();
-                RefineSearch();
-            });  
     }
-    private Models.Firearm? selected_firearm;
 
-    List<Models.Firearm>? AllFirearms;
+    List<ViewModel.FirearmData> AllFirearms;
     [ObservableProperty]
-    ObservableCollection<Models.Firearm>? refinedFirearms;
-    
+    ViewModel.FirearmData? selectedFirearm;
+    [ObservableProperty]
+    ObservableCollection<ViewModel.FirearmData> refinedFirearms;
     [ObservableProperty]
     string statusMessage = string.Empty;
-    [ObservableProperty] 
-    string selectedName = string.Empty;
-    [ObservableProperty] 
-    string selectedBarrelLength = string.Empty;
-    [ObservableProperty] 
-    string selectedManufacture = string.Empty;
-    [ObservableProperty] 
-    string selectedCaliber = string.Empty;
-    [ObservableProperty] 
-    string selectedScope = string.Empty;
-    [ObservableProperty] 
-    string selectedId = string.Empty;
-    [ObservableProperty] 
-    string searchInputText =string.Empty;
+    [ObservableProperty]
+    string searchInputText = string.Empty;
 
+    /// <summary> 
+    /// Adds all of the Firearms in the AllFirearms List to the RefinedFirearms 
+    /// collection 
+    /// </summary>
     void AddAllToRefined()
     {
         RefinedFirearms.Clear();
@@ -51,7 +41,12 @@ public partial class FirearmListPageViewModel : ObservableObject
             RefinedFirearms.Add(AllFirearms[i]);
         }
     }
-    public void RefineSearch()
+
+    /// <summary>
+    /// Updates Refined firearms list based on the search text
+    /// </summary>
+    [RelayCommand]
+    public void SearchTextChanged()
     {
         if (AllFirearms == null)
             return;
@@ -62,56 +57,78 @@ public partial class FirearmListPageViewModel : ObservableObject
         else
         {
             RefinedFirearms.Clear();
-            for (int i = 0; i < AllFirearms.Count; i++)
+            foreach (var firearm in AllFirearms)
             {
-                if (AllFirearms[i].Name.Contains(SearchInputText))
-                    RefinedFirearms.Add(AllFirearms[i]);
+                if (firearm.Name != null && firearm.Name.Contains(SearchInputText))
+                    RefinedFirearms.Add(firearm);
             }
         }
     }
-    public void UpdateList()
+    /// <summary>
+    /// Updates the AllFirearms List from the database
+    /// </summary>
+    public void UpdateFirearmList()
     {
-        AllFirearms = new List<Models.Firearm>(App.FirearmRepo.GetAllFirearms());
+        AllFirearms = new List<ViewModel.FirearmData>(App.FirearmRepo.GetAllFirearmData());
         AddAllToRefined();
     }
+
     public void SetStatusMessage(string message)
     {
         StatusMessage = message;
     }
-    void ClearInfo()
-    {
-        SelectedName = string.Empty;
-        SelectedBarrelLength = string.Empty;
-        SelectedManufacture = string.Empty;
-        SelectedCaliber = string.Empty;
-        SelectedScope = string.Empty;
-        SelectedId = string.Empty;
-    }
+
+    /// <summary>
+    /// Starts a new instance of the page to add a firearm
+    /// </summary>
     [RelayCommand]
-    private void DeleteSelected()
+    void NewFirearm()
     {
-        if (selected_firearm != null)
+        Shell.Current.GoToAsync("NewFirearmPage");
+    }
+
+    [RelayCommand]
+    void EditFirearm()
+    {
+        if (SelectedFirearm == null)
+            return;
+        var NavigationParameter = new Dictionary<string, object>
         {
-            AllFirearms.Remove(selected_firearm);
-            App.FirearmRepo.RemoveFirearm(selected_firearm);
+            {"Firearm", SelectedFirearm}
+        };
+        Shell.Current.GoToAsync("NewFirearmPage", NavigationParameter);
+    }
+
+    [RelayCommand]
+    public void DeleteFirearm()
+    {
+        if (SelectedFirearm != null)
+        {
+            AllFirearms.Remove(SelectedFirearm);
+            App.FirearmRepo.RemoveFirearm(SelectedFirearm);
             StatusMessage = App.FirearmRepo.StatusMessage;
-            UpdateList();
-            ClearInfo();
+            UpdateFirearmList();
         }
     }
-    [RelayCommand]
-    private void ItemSelected(Models.Firearm selected)
+
+    public void ApplyQueryAttributes(IDictionary<string, object> attributes)
     {
-        if (selected != null)
+        if (attributes == null)
+            return;
+
+        // catches return from adding/updating a firearm
+        // sets the selected firearm to the one that was added/updated
+        if (attributes.ContainsKey("Firearm"))
         {
-            SelectedName = selected.Name;
-            SelectedBarrelLength = selected.BarrelLength.ToString();
-            SelectedManufacture = selected.Manufacturer;
-            SelectedCaliber = selected.Caliber;
-            SelectedScope = selected.ScopeID;
-            SelectedId = selected.Id.ToString();
+            var result = attributes["Firearm"] as ViewModel.FirearmData;
+            if (result != null)
+            {
+                UpdateFirearmList();
+                SelectedFirearm = null;
+                SelectedFirearm = result;
+            }
+
         }
-        selected_firearm = selected;
     }
 }
 

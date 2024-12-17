@@ -74,7 +74,7 @@ public partial class NewRoundPageViewModel : ObservableObject, IQueryAttributabl
         {
             foreach (var bullet in AllBullets)
             {
-                if (bullet.Diameter == CaliberEntry  && bullet.Name != null && bullet.Name.Contains((string)this.BulletEntry ))
+                if (bullet.Diameter == CaliberEntry && bullet.Name != null && bullet.Name.Contains((string)this.BulletEntry))
                     RefinedBullets.Add(bullet);
             }
         }
@@ -82,7 +82,7 @@ public partial class NewRoundPageViewModel : ObservableObject, IQueryAttributabl
         {
             foreach (var bullet in AllBullets)
             {
-                if (bullet.Name != null && bullet.Name.Contains((string)this.BulletEntry ))
+                if (bullet.Name != null && bullet.Name.Contains((string)this.BulletEntry))
                     RefinedBullets.Add(bullet);
             }
         }
@@ -101,7 +101,7 @@ public partial class NewRoundPageViewModel : ObservableObject, IQueryAttributabl
         RefinedPowders.Clear();
         foreach (var unit in AllPowders)
         {
-            if (unit.Name != null && unit.Name.Contains(PowderEntry ))
+            if (unit.Name != null && unit.Name.Contains(PowderEntry))
             {
                 RefinedPowders.Add(unit);
             }
@@ -140,9 +140,9 @@ public partial class NewRoundPageViewModel : ObservableObject, IQueryAttributabl
                 UpdateBullets();
             }
         }
-        if (attributes.ContainsKey("firearm"))
+        if (attributes.ContainsKey("Firearm"))
         {
-            var temp = attributes["firearm"] as Models.Firearm;
+            var temp = attributes["Firearm"] as Models.Firearm;
 
             if (temp != null)
             {
@@ -187,10 +187,12 @@ public partial class NewRoundPageViewModel : ObservableObject, IQueryAttributabl
             }
         }
     }
-    public void QueueCheckBoxChecked(bool check) {
-        QueueCheckBox = check;  
+    public void QueueCheckBoxChecked(bool check)
+    {
+        QueueCheckBox = check;
     }
-    public void BulletByCaliberCheckBoxChanged(bool check) {
+    public void BulletByCaliberCheckBoxChanged(bool check)
+    {
         BulletByCaliber = check;
         FilterBullets();
     }
@@ -213,7 +215,7 @@ public partial class NewRoundPageViewModel : ObservableObject, IQueryAttributabl
     {
         SelectedPowder = RefinedPowders[index];
         if (SelectedPowder != null && SelectedPowder.Name != null)
-            PowderEntry  = SelectedPowder.Name;
+            PowderEntry = SelectedPowder.Name;
         RefinedPowders.Clear();
         foreach (var unit in AllPowders)
         {
@@ -227,7 +229,7 @@ public partial class NewRoundPageViewModel : ObservableObject, IQueryAttributabl
     {
         SelectedBullet = RefinedBullets[index];
         if (SelectedBullet != null && SelectedBullet.Name != null)
-            BulletEntry  = SelectedBullet.Name;
+            BulletEntry = SelectedBullet.Name;
         RefinedBullets.Clear();
         foreach (var unit in AllBullets)
         {
@@ -274,7 +276,7 @@ public partial class NewRoundPageViewModel : ObservableObject, IQueryAttributabl
             powder_id = SelectedPowder.Id;
         var round = new Models.Round
         {
-            Id = RoundId,    
+            Id = RoundId,
             Name = NameEntry,
             BulletId = bullet_id,
             Caliber = CaliberEntry,
@@ -298,8 +300,7 @@ public partial class NewRoundPageViewModel : ObservableObject, IQueryAttributabl
         {
             {"AddedRound", round_id }
         };
-        
-        Shell.Current.GoToAsync("..",NavigationParemeter);
+        Shell.Current.GoToAsync("..", NavigationParemeter);
     }
     [RelayCommand]
     public void Cancel()

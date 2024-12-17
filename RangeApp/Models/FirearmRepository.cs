@@ -21,6 +21,11 @@ public class FirearmRepository
         conn.CreateTable<Firearm>();
 
     }
+
+    /// <summary>
+    /// Adds a firearm to the database, if the firearm already exists then it 
+    /// is edited 
+    /// </summary>
     public int AddNewFirearm(Firearm firearm)
     {
         int result = 0;
@@ -44,6 +49,24 @@ public class FirearmRepository
         return result;
 
     }
+
+    public int RemoveFirearm(ViewModel.FirearmData firearmData)
+    {
+        int result = 0;
+        var firearm = ViewModel.FirearmData.GetFirearm(firearmData);
+        try
+        {
+            Init();
+            result = conn.Delete(firearm);
+            StatusMessage = string.Format("{0} record(s) removed (Name: {1})", result, firearm.Name);
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = string.Format("Failed to remove {0}. Error: {1}", firearm.Name, ex.Message);
+        }
+        return result;
+    }
+
     public int RemoveFirearm(Firearm firearm)
     {
         int result = 0;
@@ -77,9 +100,30 @@ public class FirearmRepository
     }
 
 
+    public List<ViewModel.FirearmData> GetAllFirearmData()
+    {
+
+        try
+        {
+            Init();
+            var firearms = conn.Table<Firearm>().ToList();
+            var firearmData = new List<ViewModel.FirearmData>();
+            foreach (var firearm in firearms)
+            {
+                firearmData.Add(ViewModel.FirearmData.GetData(firearm));
+            }
+            return firearmData;
+
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = string.Format("Failed to retrieve data. {0}", ex.Message);
+        }
+
+        return new List<ViewModel.FirearmData>();
+    }
     public List<Firearm> GetAllFirearms()
     {
-        // TODO: Init then retrieve a list of Firearm objects from the database into a list
         try
         {
             Init();
