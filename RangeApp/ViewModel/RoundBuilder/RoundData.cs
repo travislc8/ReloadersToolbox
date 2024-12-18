@@ -1,6 +1,8 @@
-﻿namespace RangeApp.ViewModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 
-public class RoundData
+namespace RangeApp.ViewModel;
+public partial class RoundData : ObservableObject
 {
     public RoundData()
     {
@@ -26,4 +28,12 @@ public class RoundData
     public string? BulletManufacturer { get; set; }
     public float? AverageVelocity { get; set; }
     public float? AverageStDev { get; set; }
+
+    [RelayCommand]
+    public void Test()
+    {
+        if (InQueue != null)
+            App.RoundRepo.UpdateQueue(RoundId, (bool)InQueue);
+    }
 }
+

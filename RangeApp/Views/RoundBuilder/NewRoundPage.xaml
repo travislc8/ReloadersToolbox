@@ -1,145 +1,146 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             xmlns:viewmodel="clr-namespace:RangeApp.ViewModel"
-             xmlns:models="clr-namespace:RangeApp.Models"
-             x:Class="RangeApp.Views.NewRoundPage"
-             x:DataType="viewmodel:NewRoundPageViewModel"
-             Padding="10,20,10,0"
-             Title="Round Builder">
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:viewmodel="clr-namespace:RangeApp.ViewModel"
+    xmlns:models="clr-namespace:RangeApp.Models"
+    x:Class="RangeApp.Views.NewRoundPage"
+    x:DataType="viewmodel:NewRoundPageViewModel"
+    Padding="10,20,10,0"
+    Title="Round Builder">
     <ScrollView>
         <VerticalStackLayout Padding="10,0,10,500">
             <HorizontalStackLayout>
-                <CheckBox IsChecked="{Binding QueueCheckBox}"/>
+                <CheckBox IsChecked="{Binding QueueCheckBox}" />
                 <Label Text="Add To Testing Queue"
-                       VerticalOptions="Center"/>
+                    VerticalOptions="Center" />
             </HorizontalStackLayout>
 
             <Grid ColumnDefinitions="100,*"
-                  ColumnSpacing="10"
-                  RowDefinitions="40,40,40,40,40,40,40">
+                ColumnSpacing="10"
+                RowDefinitions="40,40,40,40,40,40,40">
                 <Label Text="Round Name:"
-                       VerticalOptions="Center"
-                       HorizontalOptions="End"
-                       Grid.Row="0"
-                       Grid.Column="0"/>
+                    VerticalOptions="Center"
+                    HorizontalOptions="End"
+                    Grid.Row="0"
+                    Grid.Column="0" />
                 <Entry Placeholder="Name"
-                       Text="{Binding NameEntry }"
-                       MinimumWidthRequest="250"
-                       MaxLength="50"
-                       Grid.Row="0"
-                       Grid.Column="1"/>
+                    Text="{Binding NameEntry }"
+                    MinimumWidthRequest="250"
+                    MaxLength="50"
+                    Grid.Row="0"
+                    Grid.Column="1" />
 
                 <Label Text="Caliber:"
-                       VerticalOptions="Center"
-                       HorizontalOptions="End"
-                       Grid.Row="1"
-                       Grid.Column="0"/>
+                    VerticalOptions="Center"
+                    HorizontalOptions="End"
+                    Grid.Row="1"
+                    Grid.Column="0" />
                 <Entry Placeholder="Caliber"
-                       Text="{Binding CaliberEntry }"
-                       MaxLength="20"
-                       MinimumWidthRequest="250"
-                       Grid.Row="1"
-                       Grid.Column="1"/>
+                    Text="{Binding CaliberEntry }"
+                    MaxLength="20"
+                    MinimumWidthRequest="250"
+                    Grid.Row="1"
+                    Grid.Column="1" />
 
                 <Label Text="Case:"
-                       VerticalOptions="Center"
-                       HorizontalOptions="End"
-                       Grid.Row="2"
-                       Grid.Column="0"/>
+                    VerticalOptions="Center"
+                    HorizontalOptions="End"
+                    Grid.Row="2"
+                    Grid.Column="0" />
                 <Entry Placeholder="Name"
-                       Text="{Binding CaseNameEntry }"
-                       MaxLength="50"
-                       MinimumWidthRequest="250"
-                       Grid.Row="2"
-                       Grid.Column="1"/>
+                    Text="{Binding CaseNameEntry }"
+                    MaxLength="50"
+                    MinimumWidthRequest="250"
+                    Grid.Row="2"
+                    Grid.Column="1" />
 
                 <Label Text="Overall Length:"
-                       VerticalOptions="Center"
-                       HorizontalOptions="End"
-                       Grid.Row="3"
-                       Grid.Column="0"/>
+                    VerticalOptions="Center"
+                    HorizontalOptions="End"
+                    Grid.Row="3"
+                    Grid.Column="0" />
                 <Entry Placeholder="inches"
-                       Text="{Binding LengthEntry }"
-                       MaxLength="50"
-                       MinimumWidthRequest="250"
-                       Keyboard="Numeric"
-                       Grid.Row="3"
-                       Grid.Column="1"/>
+                    Text="{Binding LengthEntry }"
+                    MaxLength="50"
+                    MinimumWidthRequest="250"
+                    Keyboard="Numeric"
+                    Grid.Row="3"
+                    Grid.Column="1" />
 
                 <Label Text="Primer"
-                       VerticalOptions="Center"
-                       HorizontalOptions="End"
-                       Grid.Row="4"
-                       Grid.Column="0"/>
+                    VerticalOptions="Center"
+                    HorizontalOptions="End"
+                    Grid.Row="4"
+                    Grid.Column="0" />
                 <Entry Placeholder="Name"
-                       Text="{Binding PrimerEntry }"
-                       MinimumWidthRequest="250"
-                       MaxLength="50"
-                       Grid.Row="4"
-                       Grid.Column="1"/>
+                    Text="{Binding PrimerEntry }"
+                    MinimumWidthRequest="250"
+                    MaxLength="50"
+                    Grid.Row="4"
+                    Grid.Column="1" />
 
                 <Label Text="Powder Weight"
-                       VerticalOptions="Center"
-                       HorizontalOptions="End"
-                       Grid.Row="5"
-                       Grid.Column="0"/>
+                    VerticalOptions="Center"
+                    HorizontalOptions="End"
+                    Grid.Row="5"
+                    Grid.Column="0" />
                 <Entry Placeholder="Grains"
-                       Text="{Binding PowderWeightEntry }"
-                       MinimumWidthRequest="250"
-                       MaxLength="50"
-                       Keyboard="Numeric"
-                       Grid.Row="5"
-                       Grid.Column="1"/>
+                    Text="{Binding PowderWeightEntry }"
+                    MinimumWidthRequest="250"
+                    MaxLength="50"
+                    Keyboard="Numeric"
+                    Grid.Row="5"
+                    Grid.Column="1" />
 
             </Grid>
 
             <Grid ColumnDefinitions="100,*,100"
-                  ColumnSpacing="10"
-                  Padding="0,0,0,10">
+                ColumnSpacing="10"
+                Padding="0,0,0,10">
                 <Label Text="Powder:"
-                       VerticalOptions="Center"
-                       Grid.Column="0"
-                       HorizontalOptions="End"/>
+                    VerticalOptions="Center"
+                    Grid.Column="0"
+                    HorizontalOptions="End" />
                 <Entry Placeholder="Name"
-                       Text="{Binding PowderEntry }"
-                       Grid.Column="1"
-                       MinimumWidthRequest="200">
+                    Text="{Binding PowderEntry }"
+                    Grid.Column="1"
+                    ClearButtonVisibility="WhileEditing"
+                    MinimumWidthRequest="200">
                     <Entry.Behaviors>
                         <toolkit:EventToCommandBehavior
                             EventName="TextChanged"
-                            Command="{Binding PowderNameTextChangedCommand}"/>
+                            Command="{Binding PowderNameTextChangedCommand}" />
                     </Entry.Behaviors>
                 </Entry>
                 <Button Text="New"
-                        Grid.Column="2"
-                        Command="{Binding NewPowderCommand}"
-                        HorizontalOptions="FillAndExpand"/>
+                    Grid.Column="2"
+                    Command="{Binding NewPowderCommand}"
+                    HorizontalOptions="FillAndExpand" />
             </Grid>
 
             <Border>
                 <ScrollView Padding="0,0,0,0">
                     <CollectionView x:Name="PowdersListView"
-                                    ItemsSource="{Binding RefinedPowders}"
-                                    SelectedItem="{Binding SelectedPowder, Mode=TwoWay}"
-                                    SelectionChangedCommand="{Binding PowderSelectedCommand}"
-                                    SelectionMode="Single">
+                        ItemsSource="{Binding RefinedPowders}"
+                        SelectedItem="{Binding SelectedPowder, Mode=TwoWay}"
+                        SelectionChangedCommand="{Binding PowderSelectedCommand}"
+                        SelectionMode="Single">
 
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="models:Powder">
                                 <Border Margin="-1">
                                     <VerticalStackLayout>
                                         <HorizontalStackLayout>
-                                            <Label Text="Name: "/>
-                                            <Label Text="{Binding Name}"/>
+                                            <Label Text="Name: " />
+                                            <Label Text="{Binding Name}" />
                                             <Label Text="Powder Type: "
-                                                   Padding="20,0,0,0"/>
-                                            <Label Text="{Binding PowderType}"/>
+                                                Padding="20,0,0,0" />
+                                            <Label Text="{Binding PowderType}" />
                                         </HorizontalStackLayout>
                                         <HorizontalStackLayout>
-                                            <Label Text="Manufacturer: "/>
-                                            <Label Text="{Binding PowderManufacturer}"/>
+                                            <Label Text="Manufacturer: " />
+                                            <Label Text="{Binding PowderManufacturer}" />
                                         </HorizontalStackLayout>
                                     </VerticalStackLayout>
                                 </Border>
@@ -152,71 +153,71 @@
             </Border>
 
             <Grid ColumnDefinitions="100,*,100"
-                  ColumnSpacing="10"
-                  Padding="0,10,0,10">
+                ColumnSpacing="10"
+                Padding="0,10,0,10">
                 <Label Text="Bullet:"
-                       VerticalOptions="Center"
-                       Grid.Column="0"
-                       HorizontalOptions="End"/>
+                    VerticalOptions="Center"
+                    Grid.Column="0"
+                    HorizontalOptions="End" />
                 <Entry Placeholder="Name"
-                       Text="{Binding BulletEntry }"
-                       Grid.Column="1"
-                       MinimumWidthRequest="200"
-                       ClearButtonVisibility="WhileEditing">
+                    Text="{Binding BulletEntry }"
+                    Grid.Column="1"
+                    MinimumWidthRequest="200"
+                    ClearButtonVisibility="WhileEditing">
                     <Entry.Behaviors>
                         <toolkit:EventToCommandBehavior
                             EventName="TextChanged"
-                            Command="{Binding BulletNameTextChangedCommand}"/>
+                            Command="{Binding BulletNameTextChangedCommand}" />
                     </Entry.Behaviors>
                 </Entry>
-                    <Button Text="New"
-                        Grid.Column="2"
-                        Command="{Binding NewBulletCommand}"
-                        HorizontalOptions="FillAndExpand"/>
+                <Button Text="New"
+                    Grid.Column="2"
+                    Command="{Binding NewBulletCommand}"
+                    HorizontalOptions="FillAndExpand" />
             </Grid>
 
             <Border Padding="10,0,10,10">
                 <VerticalStackLayout>
 
                     <HorizontalStackLayout x:Name="BulletByCaliberCheckBoxStack"
-                                           Padding="0">
+                        Padding="0">
                         <CheckBox IsChecked="{Binding BulletByCaliber}">
                             <CheckBox.Behaviors>
                                 <toolkit:EventToCommandBehavior
                                     EventName="CheckedChanged"
-                                    Command="{Binding BulletByCaliberCheckBoxCommand}"/>
+                                    Command="{Binding BulletByCaliberCheckBoxCommand}" />
                             </CheckBox.Behaviors>
                         </CheckBox>
                         <Label Text="Filter by Caliber"
-                               VerticalOptions="Center"
-                               TextDecorations="Underline"/>
+                            VerticalOptions="Center"
+                            TextDecorations="Underline" />
                     </HorizontalStackLayout>
 
                     <ScrollView Padding="0,0,0,0">
                         <CollectionView x:Name="BulletListView"
-                                  ItemsSource="{Binding RefinedBullets}"
-                                  SelectionChangedCommand="{Binding BulletSelectedCommand}"
-                                  SelectedItem="{Binding SelectedBullet, Mode=TwoWay}"
-                                  MaximumHeightRequest="200"
-                                        SelectionMode="Single">
+                            ItemsSource="{Binding RefinedBullets}"
+                            SelectionChangedCommand="{Binding BulletSelectedCommand}"
+                            SelectedItem="{Binding SelectedBullet, Mode=TwoWay}"
+                            MaximumHeightRequest="200"
+                            SelectionMode="Single">
                             <CollectionView.ItemTemplate>
                                 <DataTemplate x:DataType="models:Bullet">
-                                    <Border Margin="-1"> 
+                                    <Border Margin="-1">
                                         <VerticalStackLayout>
                                             <HorizontalStackLayout>
-                                                <Label Text="Name: "/>
-                                                <Label Text="{Binding Name}"/>
+                                                <Label Text="Name: " />
+                                                <Label Text="{Binding Name}" />
                                                 <Label Text="Caliber"
-                                                       Padding="20,0,0,0"/>
-                                                <Label Text="{Binding Caliber}"/>
+                                                    Padding="20,0,0,0" />
+                                                <Label Text="{Binding Caliber}" />
                                                 <Label Text="Grains: "
-                                                       Padding="20,0,0,0"/>
-                                                <Label Text="{Binding BulletGrains}"/>
+                                                    Padding="20,0,0,0" />
+                                                <Label Text="{Binding BulletGrains}" />
 
                                             </HorizontalStackLayout>
                                             <HorizontalStackLayout>
-                                                <Label Text="Manufacturer: "/>
-                                                <Label Text="{Binding BulletManufacturer}"/>
+                                                <Label Text="Manufacturer: " />
+                                                <Label Text="{Binding BulletManufacturer}" />
                                             </HorizontalStackLayout>
                                         </VerticalStackLayout>
                                     </Border>
@@ -228,55 +229,55 @@
             </Border>
 
             <Grid ColumnDefinitions="100,*,100"
-                  ColumnSpacing="10"
-                  Padding="0,10,0,10">
+                ColumnSpacing="10"
+                Padding="0,10,0,10">
                 <Label Text="For Firearm:"
-                       VerticalOptions="Center"
-                       Grid.Column="0"
-                       HorizontalOptions="End"/>
+                    VerticalOptions="Center"
+                    Grid.Column="0"
+                    HorizontalOptions="End" />
                 <Entry Placeholder="Name"
-                       Text="{Binding FirearmEntry }"
-                       Grid.Column="1"
-                       MinimumWidthRequest="200"
-                       ClearButtonVisibility="WhileEditing">
+                    Text="{Binding FirearmEntry }"
+                    Grid.Column="1"
+                    MinimumWidthRequest="200"
+                    ClearButtonVisibility="WhileEditing">
                     <Entry.Behaviors>
                         <toolkit:EventToCommandBehavior
                             EventName="TextChanged"
-                            Command="{Binding FirearmNameTextChangedCommand}"/>
+                            Command="{Binding FirearmNameTextChangedCommand}" />
                     </Entry.Behaviors>
                 </Entry>
                 <Button Text="New"
-                        Grid.Column="2"
-                        Command="{Binding NewFirearmCommand}"
-                        HorizontalOptions="FillAndExpand"/>
+                    Grid.Column="2"
+                    Command="{Binding NewFirearmCommand}"
+                    HorizontalOptions="FillAndExpand" />
             </Grid>
 
             <Border>
                 <ScrollView Padding="0,0,0,0">
                     <CollectionView x:Name="FirearmListView"
-                              ItemsSource="{Binding RefinedFirearms}"
-                              SelectedItem="{Binding SelectedFirearm, Mode=TwoWay}"
-                              SelectionChangedCommand="{Binding FirearmSelectedCommand}"
-                              MaximumHeightRequest="200"
-                                    SelectionMode="Single">
+                        ItemsSource="{Binding RefinedFirearms}"
+                        SelectedItem="{Binding SelectedFirearm, Mode=TwoWay}"
+                        SelectionChangedCommand="{Binding FirearmSelectedCommand}"
+                        MaximumHeightRequest="200"
+                        SelectionMode="Single">
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="models:Firearm">
                                 <Border Margin="-1">
                                     <VerticalStackLayout>
                                         <HorizontalStackLayout>
-                                            <Label Text="Name: "/>
-                                            <Label Text="{Binding Name}"/>
+                                            <Label Text="Name: " />
+                                            <Label Text="{Binding Name}" />
                                             <Label Text="Caliber: "
-                                                   Padding="20,0,0,0"/>
-                                            <Label Text="{Binding Caliber}"/>
+                                                Padding="20,0,0,0" />
+                                            <Label Text="{Binding Caliber}" />
                                         </HorizontalStackLayout>
 
                                         <HorizontalStackLayout>
-                                            <Label Text="Manufacturer: "/>
-                                            <Label Text="{Binding Manufacturer}"/>
+                                            <Label Text="Manufacturer: " />
+                                            <Label Text="{Binding Manufacturer}" />
                                         </HorizontalStackLayout>
                                     </VerticalStackLayout>
-</Border>
+                                </Border>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>
@@ -284,16 +285,16 @@
             </Border>
 
             <Grid ColumnDefinitions="*,*"
-                  ColumnSpacing="10"
-                  Padding="0,40,0,0">
+                ColumnSpacing="10"
+                Padding="0,40,0,0">
                 <Button Text="Save"
-                        Command="{ Binding SaveCommand }"
-                        Grid.Column="0"/>
+                    Command="{ Binding SaveCommand }"
+                    Grid.Column="0" />
                 <Button Text="Cancel"
-                        Grid.Column="1"
-                        Command="{Binding CancelCommand}"/>
+                    Grid.Column="1"
+                    Command="{Binding CancelCommand}" />
             </Grid>
-            <Label Text="{Binding StatusMessage}"/>
+            <Label Text="{Binding StatusMessage}" />
         </VerticalStackLayout>
     </ScrollView>
 
