@@ -1,16 +1,16 @@
-﻿using System; using SQLite;
+﻿using SQLite;
 
 namespace RangeApp.Models;
 [Table("Bullet")]
 
 public class Bullet
 {
-    [PrimaryKey, AutoIncrement] 
+    [PrimaryKey, AutoIncrement]
     public int Id { get; set; }
-    [MaxLength(50),Unique]
+    [MaxLength(50), Unique]
     public string? Name { get; set; }
     [MaxLength(20)]
-    public string? Diameter { get; set; }
+    public string? Caliber { get; set; }
     public int? BulletGrains { get; set; }
     [MaxLength(50)]
     public string? BulletManufacturer { get; set; }

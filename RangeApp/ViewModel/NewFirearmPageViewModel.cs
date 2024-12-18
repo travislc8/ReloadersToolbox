@@ -56,11 +56,16 @@ public partial class NewFirearmPageViewModel : ObservableObject, IQueryAttributa
     {
         if (firearm == null)
             return;
-        Name = firearm.Name;
-        BarrelLength = firearm.BarrelLength.ToString();
-        Manufacture = firearm.Manufacturer;
-        Caliber = firearm.Caliber;
-        ScopeId = firearm.ScopeID;
+        if (firearm.Name != null)
+            Name = firearm.Name;
+        if (firearm.BarrelLength != null)
+            BarrelLength = firearm.BarrelLength.ToString();
+        if (firearm.Manufacturer != null)
+            Manufacture = firearm.Manufacturer;
+        if (firearm.Caliber != null)
+            Caliber = firearm.Caliber;
+        if (firearm.ScopeID != null)
+            ScopeId = firearm.ScopeID;
     }
     /// <summary>
     /// Sets the status message for errors

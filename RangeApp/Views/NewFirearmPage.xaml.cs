@@ -177,13 +177,13 @@ public partial class NewFirearmPage : ContentPage
         if (NewFirearmCaliber.Text.Length > 20)
         {
             NewFirearmCaliber.TextColor = Colors.Red;
-            VM.SetStatusMessage("Diameter Name To Long");
+            VM.SetStatusMessage("Caliber Name To Long");
             NewFirearmCaliberPass = false;
         }
         else if (NewFirearmCaliber.Text.Length < 1)
         {
             VM.SetStatusMessage("");
-            NewFirearmCaliber.Placeholder = "Enter Diameter";
+            NewFirearmCaliber.Placeholder = "Enter Caliber";
             NewFirearmCaliberPass = false;
         }
         else

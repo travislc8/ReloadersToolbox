@@ -17,15 +17,22 @@ public partial class NewRoundPageViewModel : ObservableObject, IQueryAttributabl
         UpdateFirearms();
     }
 
-    private Models.Powder? SelectedPowder;
-    private Models.Bullet? SelectedBullet;
-    private Models.Firearm? SelectedFirearm;
+    private int RoundId = 0;
     List<Models.Powder> AllPowders = new List<Models.Powder>();
     List<Models.Bullet> AllBullets = new List<Models.Bullet>();
     List<Models.Firearm> AllFirearms = new List<Models.Firearm>();
-    private bool QueueCheckBox = true;
-    private bool BulletByCaliber = false;
-    private int RoundId = 0;
+
+
+    [ObservableProperty]
+    Models.Powder? selectedPowder;
+    [ObservableProperty]
+    Models.Bullet? selectedBullet;
+    [ObservableProperty]
+    Models.Firearm? selectedFirearm;
+    [ObservableProperty]
+    bool bulletByCaliber = false;
+    [ObservableProperty]
+    bool queueCheckBox = true;
     [ObservableProperty]
     string nameEntry = string.Empty;
     [ObservableProperty]
@@ -44,6 +51,8 @@ public partial class NewRoundPageViewModel : ObservableObject, IQueryAttributabl
     string bulletEntry = string.Empty;
     [ObservableProperty]
     string firearmEntry = string.Empty;
+    [ObservableProperty]
+    string statusMessage = string.Empty;
 
     [ObservableProperty]
     ObservableCollection<Models.Powder> refinedPowders;
@@ -52,80 +61,11 @@ public partial class NewRoundPageViewModel : ObservableObject, IQueryAttributabl
     [ObservableProperty]
     ObservableCollection<Models.Firearm> refinedFirearms;
 
-    private void UpdatePowders()
-    {
-        AllPowders = App.RoundRepo.GetPowders();
-        FilterPowders();
-    }
-    private void UpdateBullets()
-    {
-        AllBullets = App.RoundRepo.GetBullets();
-        FilterBullets();
-    }
-    private void UpdateFirearms()
-    {
-        AllFirearms = App.FirearmRepo.GetAllFirearms();
-        FilterFirearms();
-    }
-    private void FilterBullets()
-    {
-        RefinedBullets.Clear();
-        if (BulletByCaliber)
-        {
-            foreach (var bullet in AllBullets)
-            {
-                if (bullet.Diameter == CaliberEntry && bullet.Name != null && bullet.Name.Contains((string)this.BulletEntry))
-                    RefinedBullets.Add(bullet);
-            }
-        }
-        else
-        {
-            foreach (var bullet in AllBullets)
-            {
-                if (bullet.Name != null && bullet.Name.Contains((string)this.BulletEntry))
-                    RefinedBullets.Add(bullet);
-            }
-        }
-    }
-    private void FilterFirearms()
-    {
-        RefinedFirearms.Clear();
-        foreach (var firearm in AllFirearms)
-        {
-            if (firearm.Name != null && firearm.Name.Contains((string)this.FirearmEntry))
-                RefinedFirearms.Add(firearm);
-        }
-    }
-    private void FilterPowders()
-    {
-        RefinedPowders.Clear();
-        foreach (var unit in AllPowders)
-        {
-            if (unit.Name != null && unit.Name.Contains(PowderEntry))
-            {
-                RefinedPowders.Add(unit);
-            }
-        }
-    }
-    public bool PowderNameTextChanged()
-    {
-        FilterPowders();
-        return true;
-    }
-    public bool BulletNameTextChanged()
-    {
-        FilterBullets();
-        return true;
-    }
-    public bool FirearmNameTextChanged()
-    {
-        FilterFirearms();
-        return true;
-    }
     public void ApplyQueryAttributes(IDictionary<string, object> attributes)
     {
         if (attributes == null)
             return;
+        // for catching return from NewPowderPage
         if (attributes.ContainsKey("AddedPowder"))
         {
             if (attributes["AddedPowder"].ToString() == "1")
@@ -133,6 +73,7 @@ public partial class NewRoundPageViewModel : ObservableObject, IQueryAttributabl
                 UpdatePowders();
             }
         }
+        // for catching return from NewBulletPage
         if (attributes.ContainsKey("AddedBullet"))
         {
             if (attributes["AddedBullet"].ToString() == "1")
@@ -140,15 +81,17 @@ public partial class NewRoundPageViewModel : ObservableObject, IQueryAttributabl
                 UpdateBullets();
             }
         }
+        // for catching return from NewFirearmPage
         if (attributes.ContainsKey("Firearm"))
         {
-            var temp = attributes["Firearm"] as Models.Firearm;
+            var temp = attributes["Firearm"] as ViewModel.FirearmData;
 
             if (temp != null)
             {
                 UpdateFirearms();
             }
         }
+        // For catching that the page is updating a RoundData instance 
         if (attributes.ContainsKey("RoundData"))
         {
             var data = attributes["RoundData"] as ViewModel.RoundData;
@@ -187,13 +130,107 @@ public partial class NewRoundPageViewModel : ObservableObject, IQueryAttributabl
             }
         }
     }
-    public void QueueCheckBoxChecked(bool check)
+
+    ///<summary>
+    /// Updates the powders in the displayed list
+    ///</summary>
+    private void UpdatePowders()
     {
-        QueueCheckBox = check;
+        AllPowders = App.RoundRepo.GetPowders();
+        FilterPowders();
     }
-    public void BulletByCaliberCheckBoxChanged(bool check)
+
+    ///<summary>
+    /// Updates the bullets in the displayed list
+    ///</summary>
+    private void UpdateBullets()
     {
-        BulletByCaliber = check;
+        AllBullets = App.RoundRepo.GetBullets();
+        FilterBullets();
+    }
+
+    ///<summary>
+    /// Updates the Firearms in the displayed list
+    ///</summary>
+    private void UpdateFirearms()
+    {
+        AllFirearms = App.FirearmRepo.GetAllFirearms();
+        FilterFirearms();
+    }
+
+    ///<summary>
+    /// Filters the AllBullets objects based the filters
+    ///</summary>
+    private void FilterBullets()
+    {
+        RefinedBullets.Clear();
+        if (BulletByCaliber)
+        {
+            foreach (var bullet in AllBullets)
+            {
+                if (bullet.Caliber == CaliberEntry)
+                    RefinedBullets.Add(bullet);
+            }
+        }
+        else
+        {
+            foreach (var bullet in AllBullets)
+            {
+                if (bullet.Name != null && bullet.Name.Contains((string)this.BulletEntry))
+                    RefinedBullets.Add(bullet);
+            }
+        }
+    }
+
+    ///<summary>
+    /// Filters the AllFirearms objects based the filters
+    ///</summary>
+    private void FilterFirearms()
+    {
+        RefinedFirearms.Clear();
+        foreach (var firearm in AllFirearms)
+        {
+            if (firearm.Name != null && firearm.Name.Contains(FirearmEntry))
+                RefinedFirearms.Add(firearm);
+        }
+    }
+
+    ///<summary>
+    /// Filters the AllPowders objects based the filters
+    ///</summary>
+    private void FilterPowders()
+    {
+        RefinedPowders.Clear();
+        foreach (var unit in AllPowders)
+        {
+            if (unit.Name != null && unit.Name.Contains(PowderEntry))
+            {
+                RefinedPowders.Add(unit);
+            }
+        }
+    }
+
+    [RelayCommand]
+    public void BulletNameTextChanged()
+    {
+        FilterBullets();
+    }
+
+    [RelayCommand]
+    public void FirearmNameTextChanged()
+    {
+        FilterFirearms();
+    }
+    [RelayCommand]
+    public void PowderNameTextChanged()
+    {
+        FilterPowders();
+    }
+
+
+    [RelayCommand]
+    public void BulletByCaliberCheckBox()
+    {
         FilterBullets();
     }
     [RelayCommand]
@@ -211,62 +248,55 @@ public partial class NewRoundPageViewModel : ObservableObject, IQueryAttributabl
     {
         await Shell.Current.GoToAsync("NewFirearmPage");
     }
-    public void PowderSelected(int index)
+
+    [RelayCommand]
+    public void PowderSelected()
     {
-        SelectedPowder = RefinedPowders[index];
         if (SelectedPowder != null && SelectedPowder.Name != null)
             PowderEntry = SelectedPowder.Name;
-        RefinedPowders.Clear();
-        foreach (var unit in AllPowders)
-        {
-            if (unit.Name != null && unit.Name == SelectedPowder.Name)
-            {
-                RefinedPowders.Add(unit);
-            }
-        }
     }
-    public void BulletSelected(int index)
+    [RelayCommand]
+    public void BulletSelected()
     {
-        SelectedBullet = RefinedBullets[index];
         if (SelectedBullet != null && SelectedBullet.Name != null)
             BulletEntry = SelectedBullet.Name;
-        RefinedBullets.Clear();
-        foreach (var unit in AllBullets)
-        {
-            if (unit.Name != null && unit.Name == SelectedBullet.Name)
-            {
-                RefinedBullets.Add(unit);
-            }
-        }
     }
-    public void FirearmSelected(int index)
+    [RelayCommand]
+    public void FirearmSelected()
     {
-        SelectedFirearm = RefinedFirearms[index];
         if (SelectedFirearm != null && SelectedFirearm.Name != null)
             FirearmEntry = SelectedFirearm.Name;
-        RefinedFirearms.Clear();
-        foreach (var unit in AllFirearms)
-        {
-            if (unit.Name != null && unit.Name == SelectedFirearm.Name)
-            {
-                RefinedFirearms.Add(unit);
-            }
-        }
+
     }
     [RelayCommand]
     public void Save()
     {
+        // Checks for bad data
+        StatusMessage = string.Empty;
+        if (NameEntry == string.Empty)
+            StatusMessage += "Round must have a name\n";
         var check = int.TryParse(PowderWeightEntry, out int weight);
         if (!check)
         {
-            weight = 0;
+            if (PowderWeightEntry == string.Empty)
+                weight = 0;
+            else
+                StatusMessage += "Invalid Powder Weight (Must be whole numbers)\n";
         }
         check = decimal.TryParse(LengthEntry, out decimal length);
         if (!check)
         {
-            length = 0;
+            if (LengthEntry == string.Empty)
+                length = 0;
+            else
+                StatusMessage += "Invalid Length Entry\n";
         }
 
+        // returns if the data is invalid
+        if (StatusMessage != string.Empty)
+            return;
+
+        // Saves the bullet to the database
         int bullet_id = 0;
         if (SelectedBullet != null)
             bullet_id = SelectedBullet.Id;

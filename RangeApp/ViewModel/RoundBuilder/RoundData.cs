@@ -4,7 +4,7 @@ public class RoundData
 {
     public RoundData()
     {
-        RoundId = 0;     
+        RoundId = 0;
     }
 
     public int RoundId { get; set; }
@@ -21,10 +21,9 @@ public class RoundData
     public string? PowderType { get; set; }
     public int? BulletId { get; set; }
     public string? BulletName { get; set; }
-    public string? BulletDiameter { get; set; }
+    public string? BulletCaliber { get; set; }
     public int? BulletGrains { get; set; }
     public string? BulletManufacturer { get; set; }
     public float? AverageVelocity { get; set; }
     public float? AverageStDev { get; set; }
-   
 }

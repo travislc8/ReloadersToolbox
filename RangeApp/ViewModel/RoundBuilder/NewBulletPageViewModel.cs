@@ -100,8 +100,7 @@ public partial class NewBulletPageViewModel : ObservableObject
         {
             StatusMessage = "";
             return true;
-        } 
-            
+        }
     }
     private bool CheckAll()
     {
@@ -109,14 +108,14 @@ public partial class NewBulletPageViewModel : ObservableObject
             return false;
         if (!CheckMfg())
             return false;
-        if (!CheckCaliber()) 
+        if (!CheckCaliber())
             return false;
         if (!CheckGrains())
             return false;
         return true;
     }
     [RelayCommand]
-    public void SaveButton ()
+    public void SaveButton()
     {
         int bullet_added = 0;
         if (Name != string.Empty && CheckAll())
@@ -127,7 +126,7 @@ public partial class NewBulletPageViewModel : ObservableObject
             var bullet = new Models.Bullet
             {
                 Name = this.Name,
-                Diameter = this.Caliber,
+                Caliber = this.Caliber,
                 BulletManufacturer = Mfg,
                 BulletGrains = weight
             };
@@ -137,8 +136,6 @@ public partial class NewBulletPageViewModel : ObservableObject
         {
             {"AddedBullet", bullet_added }
         };
-        
-        Shell.Current.GoToAsync("..",NavigationParemeter);
+        Shell.Current.GoToAsync("..", NavigationParemeter);
     }
-    
 }

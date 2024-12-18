@@ -22,7 +22,9 @@ public static class Validate
         return check;
     }
 
-    //just checks for a pass
+    ///<summary>
+    /// Checks if the int can be converted to a string
+    ///</summary>
     public static bool IntFromString(string value)
     {
         bool check = false;
@@ -41,6 +43,11 @@ public static class Validate
 
         return check;
     }
+
+    ///<summary>
+    /// checks if the int can be converted from a string and sets the status 
+    /// message
+    ///</summary>
     public static bool IntFromString(string value, ref string status)
     {
         bool check = false;

@@ -1,11 +1,12 @@
-﻿using System; using SQLite;
+﻿using System;
+using SQLite;
 
 namespace RangeApp.Models;
 [Table("Round")]
 
 public class Round
 {
-    [PrimaryKey, AutoIncrement] 
+    [PrimaryKey, AutoIncrement]
     public int Id { get; set; }
     [MaxLength(50)]
     public string? Name { get; set; }
@@ -16,7 +17,7 @@ public class Round
     public int? PowderId { get; set; }
     [MaxLength(50)]
     public string? CaseName { get; set; }
-    [MaxLength (50)]
+    [MaxLength(50)]
     public string? Primer { get; set; }
     public decimal? TotalLength { get; set; }
     public bool? InQueue { get; set; }

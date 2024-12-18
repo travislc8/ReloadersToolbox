@@ -19,6 +19,7 @@ public partial class RoundListPageViewModel : ObservableObject, IQueryAttributab
     ViewModel.RoundData? selectedRoundData;
     [ObservableProperty]
     string roundSearchEntry = string.Empty;
+
     [ObservableProperty]
     string searchStatus = string.Empty;
 
@@ -38,7 +39,6 @@ public partial class RoundListPageViewModel : ObservableObject, IQueryAttributab
                     if (item.RoundId == result)
                         SelectedRoundData = item;
                 }
-                
             }
         }
     }
@@ -98,7 +98,7 @@ public partial class RoundListPageViewModel : ObservableObject, IQueryAttributab
         {
             {"RoundData", SelectedRoundData }
         };
-        Shell.Current.GoToAsync("NewRoundPage",NavigationParemeter);
+        Shell.Current.GoToAsync("NewRoundPage", NavigationParemeter);
 
     }
     [RelayCommand]
@@ -126,7 +126,7 @@ public partial class RoundListPageViewModel : ObservableObject, IQueryAttributab
     }
     public void InQueueChanged()
     {
-        foreach (var item in RefinedRoundData) 
+        foreach (var item in RefinedRoundData)
         {
             if (item.InQueue != null)
             {

@@ -85,7 +85,8 @@
                              Grid.Column="0"
                              IsEnabled="false"
                              Text="Save Firearm"
-                             Command="{Binding SaveFirearmCommand}"/>
+                             Command="{Binding SaveFirearmCommand}"
+                             Padding="10,10,10,10"/>
                      <Button x:Name="cancelSaveFirearmButton"
                              Text="Cancel"
                              Grid.Column="1"

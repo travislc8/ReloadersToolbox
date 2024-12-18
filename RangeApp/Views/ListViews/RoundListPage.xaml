@@ -81,10 +81,9 @@
                         ItemsSource="{Binding RefinedRoundData}"
                         SelectedItem="{Binding SelectedRoundData, Mode=TwoWay}"
                         SelectionMode="Single"
-                        x:DataType="{x:Null}"
                         MaximumHeightRequest="200">
                         <CollectionView.ItemTemplate>
-                            <DataTemplate>
+                            <DataTemplate x:DataType="viewmodel:RoundData">
                                 <Grid ColumnDefinitions="1.2*,*,*,65"
                                     MinimumHeightRequest="25">
                                     <Border Grid.Column="0"
@@ -252,11 +251,11 @@
                             Grid.Row="1"
                             Grid.Column="1" />
 
-                        <Label Text="Diameter:"
+                        <Label Text="Caliber:"
                             HorizontalOptions="Start"
                             Grid.Row="1"
                             Grid.Column="2" />
-                        <Label Text="{Binding SelectedRoundData.BulletDiameter}"
+                        <Label Text="{Binding SelectedRoundData.BulletCaliber}"
                             Grid.Row="1"
                             Grid.Column="3" />
 

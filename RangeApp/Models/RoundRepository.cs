@@ -52,7 +52,8 @@ public class RoundRepository
         }
         return id;
     }
-    public int AddNewRound(Round round) {
+    public int AddNewRound(Round round)
+    {
         int result = 0;
         try
         {
@@ -74,7 +75,8 @@ public class RoundRepository
         return result;
 
     }
-    public int AddNewPowder(Powder powder) {
+    public int AddNewPowder(Powder powder)
+    {
         int result = 0;
         try
         {
@@ -95,7 +97,8 @@ public class RoundRepository
         }
         return result;
     }
-    public int AddNewBullet(Bullet bullet) {
+    public int AddNewBullet(Bullet bullet)
+    {
         int result = 0;
         try
         {
@@ -116,7 +119,7 @@ public class RoundRepository
         }
         return result;
     }
-    public int AddRoundToFirearm(int firearm_id, int round_id) 
+    public int AddRoundToFirearm(int firearm_id, int round_id)
     {
         int result = 0;
 
@@ -242,7 +245,7 @@ public class RoundRepository
 
             var result = conn.Table<Round>().ToList();
 
-            foreach(var round in result)
+            foreach (var round in result)
             {
                 Powder powder = GetPowder(round.PowderId);
                 Bullet bullet = GetBullet(round.BulletId);
@@ -279,7 +282,7 @@ public class RoundRepository
                     PowderType = powder.PowderType,
                     BulletId = round.BulletId,
                     BulletName = bullet.Name,
-                    BulletDiameter = bullet.Diameter,
+                    BulletCaliber = bullet.Caliber,
                     BulletGrains = bullet.BulletGrains,
                     BulletManufacturer = bullet.BulletManufacturer,
                     AverageVelocity = avg_velo,
@@ -396,8 +399,8 @@ public class RoundRepository
         {
             Init();
             var round_table = from c in conn.Table<Round>()
-                        where c.Id == id
-                        select c;
+                              where c.Id == id
+                              select c;
             Round round = round_table.First();
             round.InQueue = check;
             conn.Update(round);
