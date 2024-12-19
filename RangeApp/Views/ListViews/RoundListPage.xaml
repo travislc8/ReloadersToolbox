@@ -28,6 +28,7 @@
         <VerticalStackLayout Padding="5">
             <Entry Placeholder="Search"
                 Text="{Binding RoundSearchEntry}"
+                ClearButtonVisibility="WhileEditing"
                 MaxLength="50">
                 <Entry.Behaviors>
                     <toolkit:EventToCommandBehavior

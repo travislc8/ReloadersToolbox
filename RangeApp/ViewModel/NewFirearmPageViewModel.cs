@@ -40,7 +40,7 @@ public partial class NewFirearmPageViewModel : ObservableObject, IQueryAttributa
     [ObservableProperty]
     string? name = string.Empty;
     [ObservableProperty]
-    string? barrelLength = string.Empty;
+    string barrelLength = string.Empty;
     [ObservableProperty]
     string? manufacture = string.Empty;
     [ObservableProperty]
@@ -119,15 +119,24 @@ public partial class NewFirearmPageViewModel : ObservableObject, IQueryAttributa
     [RelayCommand]
     void SaveFirearm()
     {
-        // creates the Firearm object to save to the database
-        int barrelLength;
-        if (BarrelLength != null)
-            barrelLength = int.Parse(BarrelLength);
+        if (Name == string.Empty)
+        {
+            StatusMessage = "Name must not be blank";
+            return;
+        }
         else
-            barrelLength = 0;
+        {
+            StatusMessage = "Saving Firearm";
+        }
+        // creates the Firearm object to save to the database
+        int barrel_length;
+        if (BarrelLength != string.Empty)
+            barrel_length = int.Parse(BarrelLength);
+        else
+            barrel_length = 0;
         var new_firearm = new Models.Firearm();
         new_firearm.Name = Name;
-        new_firearm.BarrelLength = barrelLength;
+        new_firearm.BarrelLength = barrel_length;
         new_firearm.Manufacturer = Manufacture;
         new_firearm.Caliber = Caliber;
         new_firearm.ScopeID = ScopeId;
@@ -136,7 +145,11 @@ public partial class NewFirearmPageViewModel : ObservableObject, IQueryAttributa
             new_firearm.Id = firearm.Id;
         }
 
-        App.FirearmRepo.AddNewFirearm(new_firearm);
+        int result = App.FirearmRepo.AddNewFirearm(new_firearm);
+        if (result == 0)
+        {
+            StatusMessage = "Could Not Save Firearm";
+        }
 
         // Returns to the calling page
         // if the page is editing a firearm

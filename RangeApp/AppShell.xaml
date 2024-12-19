@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <Shell
     x:Class="RangeApp.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
@@ -7,31 +7,34 @@
     Title="RangeApp">
 
     <Shell.FlyoutHeader>
-        <Image Source="flyout_header.jpg"/>
+        <Image Source="flyout_header.jpg" />
     </Shell.FlyoutHeader>
     <FlyoutItem Title="Home"
-                Icon="home.png">
+        Icon="home.png">
         <Tab>
-            <ShellContent ContentTemplate="{DataTemplate local:Views.HomePage}"/>
+            <ShellContent ContentTemplate="{DataTemplate local:Views.HomePage}" />
         </Tab>
     </FlyoutItem>
     <FlyoutItem Title="Create Session">
-        <ShellContent ContentTemplate="{DataTemplate local:Views.SessionOptions}"/>
+        <ShellContent ContentTemplate="{DataTemplate local:Views.SessionOptions}" />
     </FlyoutItem>
     <FlyoutItem Title="Lists">
         <Tab>
             <ShellContent ContentTemplate="{DataTemplate local:Views.RoundListPage}"
-                          Title="Rounds List"/>
+                Title="Rounds List" />
             <ShellContent ContentTemplate="{DataTemplate local:Views.FirearmListPage}"
-                          Title="Firearm List"/>
+                Title="Firearm List" />
             <ShellContent ContentTemplate="{DataTemplate local:Views.SessionListPage}"
-                          Title="Sessions List"/>
+                Title="Sessions List" />
             <ShellContent ContentTemplate="{DataTemplate local:Views.LocationListPage}"
-                          Title="Location List"/>
+                Title="Location List" />
         </Tab>
     </FlyoutItem>
     <FlyoutItem Title="Round Builder">
-        <ShellContent ContentTemplate="{DataTemplate local:Views.NewRoundPage}"/>
+        <ShellContent ContentTemplate="{DataTemplate local:Views.NewRoundPage}" />
+    </FlyoutItem>
+    <FlyoutItem Title="Location List">
+        <ShellContent ContentTemplate="{DataTemplate local:Views.LocationListPage}" />
     </FlyoutItem>
 
 

@@ -1,8 +1,13 @@
 ﻿namespace Model.Utils;
 public static class Validate
 {
-    public static bool String(string value, ref string status, int length)
+    public static bool String(string? value, ref string status, int length)
     {
+        if (value == null)
+        {
+            status = "Entry must have a value";
+            return false;
+        }
         bool check = false;
         if (value.Length > length)
         {
@@ -25,9 +30,13 @@ public static class Validate
     ///<summary>
     /// Checks if the int can be converted to a string
     ///</summary>
-    public static bool IntFromString(string value)
+    public static bool IntFromString(string? value)
     {
         bool check = false;
+        if (value == null)
+        {
+            return false;
+        }
         check = int.TryParse(value, out int num);
         if (check == true)
         {
@@ -48,9 +57,14 @@ public static class Validate
     /// checks if the int can be converted from a string and sets the status 
     /// message
     ///</summary>
-    public static bool IntFromString(string value, ref string status)
+    public static bool IntFromString(string? value, ref string status)
     {
         bool check = false;
+        if (value == null)
+        {
+            status = "Value is null";
+            return false;
+        }
         check = int.TryParse(value, out int num);
         if (check == true)
         {
@@ -73,9 +87,15 @@ public static class Validate
         return check;
     }
     //gets the number from the string
-    public static bool IntFromString(string value, out int num, ref string status)
+    public static bool IntFromString(string? value, out int num, ref string status)
     {
         bool check = false;
+        if (value == null)
+        {
+            status = "Value is null";
+            num = 0;
+            return false;
+        }
         check = int.TryParse(value, out num);
         if (check == true)
         {

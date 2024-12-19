@@ -1,47 +1,68 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:SessionOptions="clr-namespace:RangeApp"
-             xmlns:viewmodel="clr-namespace:RangeApp.ViewModel"
-             x:Class="RangeApp.Views.NewLocationPage"
-             x:DataType="viewmodel:NewLocationPageViewModel"
-             Title="New Location Entry">
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:SessionOptions="clr-namespace:RangeApp"
+    xmlns:viewmodel="clr-namespace:RangeApp.ViewModel"
+    x:Class="RangeApp.Views.NewLocationPage"
+    x:DataType="viewmodel:NewLocationPageViewModel"
+    Title="New Location Entry">
 
-    <VerticalStackLayout Padding="20,0,0,0">
-        <Entry x:Name="NewLocationName"
-               Text="{Binding Name}"
-               Placeholder="Enter Name For New Location"
-               TextChanged="NewLocationNameTextChanged"
-                HorizontalOptions="{OnPlatform WinUI=Start, Android=Fill}"
-                WidthRequest="{OnPlatform WinUI=400}"
-               />
-        <Label Text="{Binding NameStatus}"
-               TextColor="Red"/>
-        <Entry x:Name="NewShootingDirection"
-               Text="{Binding ShootingDirection}"
-               Placeholder="Enter the Shooting Direction in Degrees"
-                HorizontalOptions="{OnPlatform WinUI=Start, Android=Fill}"
-                WidthRequest="{OnPlatform WinUI=400}"
-               TextChanged="NewShootingDirectionTextChanged"
-               Keyboard="Numeric"/>
-        <Grid ColumnDefinitions="{OnPlatform WinUI='200,200', Android='Auto,Auto'}"
-                WidthRequest="{OnPlatform WinUI=400}"
-                HorizontalOptions="{OnPlatform WinUI=Start, Android=Fill}">
-
+    <VerticalStackLayout Padding="10,0,10,0">
+        <Grid ColumnDefinitions="100,*"
+            RowDefinitions="40,20,40,20">
+            <Label Text="Name: "
+                Grid.Row="0"
+                Grid.Column="0"
+                VerticalTextAlignment="Center"
+                HorizontalOptions="End" />
+            <Entry x:Name="NewLocationName"
+                Grid.Row="0"
+                Grid.Column="1"
+                Text="{Binding Location.Name}"
+                Placeholder="Enter Name For New Location">
+                <Entry.Behaviors>
+                    <toolkit:EventToCommandBehavior
+                    EventName="TextChanged"
+                    Command="{Binding NameTextChangedCommand}"/>
+                </Entry.Behaviors>
+            </Entry>
+            <Label Text="{Binding NameStatus}"
+                Grid.Row="1"
+                Grid.Column="1"
+                TextColor="Red" />
+            <Label Text="Direction: "
+                Grid.Row="2"
+                VerticalTextAlignment="Center"
+                Grid.Column="0"
+                HorizontalOptions="End" />
+            <Entry x:Name="NewShootingDirection"
+                Grid.Row="2"
+                Grid.Column="1"
+                Text="{Binding ShootingDirection}"
+                Placeholder="Enter the Shooting Direction in Degrees"
+                Keyboard="Numeric" />
+            <Label Text="{Binding DirectionStatus}"
+                Grid.Row="3"
+                Grid.Column="1"
+                TextColor="Red" />
+        </Grid>
+        <Grid ColumnDefinitions="*,*"
+        ColumnSpacing="10">
             <Button x:Name="saveLocationButton"
-                Grid.Column="0" 
-                IsEnabled="true"
+                Grid.Column="0"
+                IsEnabled="{Binding AllowSave}"
                 Text="Save Location"
                 Command="{Binding SaveLocationCommand}"
-                />
+            />
             <Button x:Name="cancelSaveLocationButton"
                 Text="Cancel"
                 Grid.Column="1"
-                Clicked="CancelSaveLocation"
-               />
+            Command="{Binding CancelCommand}"
+            />
 
         </Grid>
-        <Label Text="{Binding StatusMessage}"/>
+        <Label Text="{Binding StatusMessage}" />
     </VerticalStackLayout>
 
 </ContentPage>

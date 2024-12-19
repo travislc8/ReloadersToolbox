@@ -1,9 +1,10 @@
-﻿Entry
+﻿Current 
+    Update SessionList
+
+Entry
     Max length on entries
     Return key
 
-NewRoundPage
-    Select proper when returning from newpowder...
 
 ROund List Page
     Filter

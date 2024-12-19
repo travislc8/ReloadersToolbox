@@ -1,4 +1,4 @@
-﻿using System; using SQLite;
+﻿using SQLite;
 
 namespace RangeApp.Models;
 [Table("Location")]
@@ -9,5 +9,5 @@ public class Location
     public int Id { get; set; }
     [Unique]
     public string? Name { get; set; }
-    public int? ShootingDirection  { get; set; }
+    public int? ShootingDirection { get; set; }
 }

@@ -47,6 +47,23 @@ public class LocationRepository
         return result;
 
     }
+
+    public int RemoveLocation(ViewModel.LocationData locationData)
+    {
+        var location = ViewModel.LocationData.GetLocation(locationData);
+        int result = 0;
+        try
+        {
+            Init();
+            result = conn.Delete(location);
+            StatusMessage = string.Format("{0} record(s) removed (Name: {1})", result, location.Name);
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = string.Format("Failed to remove {0}. Error: {1}", location.Name, ex.Message);
+        }
+        return result;
+    }
     public int RemoveLocation(Location location)
     {
         int result = 0;
@@ -100,6 +117,35 @@ public class LocationRepository
         }
 
         return new List<Location>();
+    }
+
+    /// <summary>
+    ///     Returns a list of all locations as LocationData objects
+    /// </summary>
+    /// <returns>
+    ///     List of Locations objects
+    /// </returns>
+    public List<ViewModel.LocationData> GetAllLocationData()
+    {
+        // TODO: Init then retrieve a list of Location objects from the database into a list
+        try
+        {
+            Init();
+            var list = conn.Table<Location>().ToList();
+
+            var data_list = new List<ViewModel.LocationData>();
+            foreach (var item in list)
+            {
+                data_list.Add(ViewModel.LocationData.GetData(item));
+            }
+            return data_list;
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = string.Format("Failed to retrieve data. {0}", ex.Message);
+        }
+
+        return new List<ViewModel.LocationData>();
     }
     public List<String> GetAllLocationNames()
     {
