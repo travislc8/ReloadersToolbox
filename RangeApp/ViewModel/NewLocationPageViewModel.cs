@@ -134,7 +134,7 @@ public partial class NewLocationPageViewModel : ObservableObject, IQueryAttribut
 
         var NavigationParameter = new Dictionary<string, object>
         {
-            {"AddedLocation", ViewModel.LocationData.GetData(new_location) }
+            {"Location", ViewModel.LocationData.GetData(new_location) }
         };
         Shell.Current.GoToAsync("..", NavigationParameter);
     }

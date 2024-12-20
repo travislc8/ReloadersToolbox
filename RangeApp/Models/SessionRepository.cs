@@ -76,6 +76,26 @@ public class SessionRepository
 
         return result;
     }
+    public int RemoveFirearmFromSession(int firearm_id, int session_id)
+    {
+        int result = 0;
+        try
+        {
+            Init();
+            var firearmInSession = from c in conn.Table<FirearmInSession>()
+                                   where c.FirearmId == firearm_id
+                                   where c.SessionID == session_id
+                                   select c;
+            result = conn.Delete(firearmInSession);
+            StatusMessage = string.Format("{0} Firearms Removed From Session", result);
+
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = string.Format("Failed To Remove Firearms From Session. Error {0}", ex.Message);
+        }
+        return result;
+    }
     public int AddFirearmToSession(string firearm, int session_id)
     {
         int result = 0;
@@ -532,12 +552,17 @@ public class SessionRepository
             foreach (var session in sessions)
             {
                 var data = new ViewModel.SessionData();
-                data.Name = session.Name;
+                if (session.Name == null)
+                    data.Name = string.Empty;
+                else
+                    data.Name = session.Name;
                 data.SessionId = session.Id;
                 data.Note = session.Note;
                 data.Date = session.Date_Time;
-                data.Location = App.LocationRepo.GetLocationFromId(session.Id);
-                data.Firearms = App.FirearmRepo.GetFirearmsInSession(session.Id);
+                data.Location = ViewModel.LocationData.GetData(
+                        App.LocationRepo.GetLocationFromId(session.Id));
+                data.Firearms = ViewModel.FirearmData.GetData(
+                        App.FirearmRepo.GetFirearmsInSession(session.Id));
                 var group = from c in conn.Table<Group>()
                             where c.SessionId == session.Id
                             select c;

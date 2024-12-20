@@ -20,7 +20,7 @@
                     Placeholder="Search Locations"
                     Text="{Binding SearchInputText}"
                     Grid.Column="1"
-                       ClearButtonVisibility="WhileEditing">
+                    ClearButtonVisibility="WhileEditing">
                     <Entry.Behaviors>
                         <toolkit:EventToCommandBehavior
                             EventName="TextChanged"
@@ -38,17 +38,17 @@
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="viewmodel:LocationData">
                             <Border Margin="0,-1,0,-1"
-                                    Padding="5">
-                            <Grid ColumnSpacing="5"
-                                  ColumnDefinitions="Auto,*,Auto,*">
+                                Padding="5">
+                                <Grid ColumnSpacing="5"
+                                    ColumnDefinitions="Auto,*,Auto,*">
                                     <Label Text="Name: "
-                                           Grid.Column="0"/>
-                                    <Label Text="{Binding Name}" 
-                                           Grid.Column="1"/>
+                                        Grid.Column="0" />
+                                    <Label Text="{Binding Name}"
+                                        Grid.Column="1" />
                                     <Label Text=" Shooting Direction(deg): "
-                                           Grid.Column="2"/>
+                                        Grid.Column="2" />
                                     <Label Text="{Binding ShootingDirection}"
-                                           Grid.Column="3"/>
+                                        Grid.Column="3" />
                                 </Grid>
                             </Border>
                         </DataTemplate>
@@ -67,12 +67,12 @@
                     Grid.Column="2"
                     Command="{Binding DeleteSelectedCommand}" />
             </Grid>
-            <Label Text="{Binding StatusMessage}"/>
+            <Label Text="{Binding StatusMessage}" />
 
             <Label
                 Text="Selected Info"
                 HorizontalOptions="Center"
-                FontSize="Large"/>
+                FontSize="Large" />
 
             <Label HorizontalOptions="Center"
                 TextDecorations=" Underline"

@@ -42,4 +42,26 @@ public class FirearmData
         return firearm;
 
     }
+
+    public static List<FirearmData> GetData(List<Models.Firearm> firearms)
+    {
+        List<FirearmData> dataList = [];
+        foreach (var firearm in firearms)
+        {
+            dataList.Add(FirearmData.GetData(firearm));
+        }
+
+        return dataList;
+    }
+
+    public static List<Models.Firearm> GetFirearm(List<FirearmData> dataList)
+    {
+        List<Models.Firearm> firearms = [];
+        foreach (var data in dataList)
+        {
+            firearms.Add(FirearmData.GetFirearm(data));
+        }
+
+        return firearms;
+    }
 }

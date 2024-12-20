@@ -23,8 +23,8 @@
                 Placeholder="Enter Name For New Location">
                 <Entry.Behaviors>
                     <toolkit:EventToCommandBehavior
-                    EventName="TextChanged"
-                    Command="{Binding NameTextChangedCommand}"/>
+                        EventName="TextChanged"
+                        Command="{Binding NameTextChangedCommand}" />
                 </Entry.Behaviors>
             </Entry>
             <Label Text="{Binding NameStatus}"
@@ -48,7 +48,7 @@
                 TextColor="Red" />
         </Grid>
         <Grid ColumnDefinitions="*,*"
-        ColumnSpacing="10">
+            ColumnSpacing="10">
             <Button x:Name="saveLocationButton"
                 Grid.Column="0"
                 IsEnabled="{Binding AllowSave}"
@@ -58,7 +58,7 @@
             <Button x:Name="cancelSaveLocationButton"
                 Text="Cancel"
                 Grid.Column="1"
-            Command="{Binding CancelCommand}"
+                Command="{Binding CancelCommand}"
             />
 
         </Grid>

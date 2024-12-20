@@ -156,6 +156,7 @@ public partial class NewFirearmPageViewModel : ObservableObject, IQueryAttributa
         var return_data = ViewModel.FirearmData.GetData(new_firearm);
         if (firearm != null)
         {
+            StatusMessage = string.Format("Edited {0}", new_firearm.Name);
             var navigationParamenter = new Dictionary<string, object>
             {
                 {"Firearm", return_data }
@@ -165,6 +166,7 @@ public partial class NewFirearmPageViewModel : ObservableObject, IQueryAttributa
         // if the page is creating a firearm
         else
         {
+            StatusMessage = string.Format("Created {0}", new_firearm.Name);
             var navigationParamenter = new Dictionary<string, object>
             {
                 {"Firearm", return_data }

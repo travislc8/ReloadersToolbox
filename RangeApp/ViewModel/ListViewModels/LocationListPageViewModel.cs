@@ -27,9 +27,9 @@ public partial class LocationListPageViewModel : ObservableObject, IQueryAttribu
         StatusMessage = string.Empty;
         if (attributes == null)
             return;
-        if (attributes.ContainsKey("AddedLocation"))
+        if (attributes.ContainsKey("Location"))
         {
-            SelectedLocation = (attributes["AddedLocation"] as ViewModel.LocationData);
+            SelectedLocation = (attributes["Location"] as ViewModel.LocationData);
             UpdateList();
         }
         attributes.Clear();

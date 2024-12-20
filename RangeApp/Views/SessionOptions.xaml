@@ -1,87 +1,200 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:SessionOptions="clr-namespace:RangeApp"
-             xmlns:viewmodel="clr-namespace:RangeApp.ViewModel"
-             x:Class="RangeApp.Views.SessionOptions"
-             Title="New Session">
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:viewmodel="clr-namespace:RangeApp.ViewModel"
+    x:Class="RangeApp.Views.SessionOptions"
+    x:DataType="viewmodel:SessionOptionsViewModel"
+    Title="New Session">
 
-    <VerticalStackLayout
-                  Padding="20,0,0,0"
-        >
-        <Label
-            Text="New Session Options"
-            FontSize="32"
-                HorizontalOptions="{OnPlatform WinUI=Start, Android=Center}"
-                WidthRequest="{OnPlatform WinUI=400}"
-                  Padding="0,0,0,20"
-            />
-        <Entry Placeholder="Enter Name For Session"
-                HorizontalOptions="{OnPlatform WinUI=Start, Android=Fill}"
-                WidthRequest="{OnPlatform WinUI=400}"
-                TextChanged="OnNameTextChanged"
-               x:Name="NameEntry"/>
-        <Entry Placeholder="Enter Description"
-                HorizontalOptions="{OnPlatform WinUI=Start, Android=Fill}"
-                WidthRequest="{OnPlatform WinUI=400}"
-               x:Name="NoteEntry"/>
-        <Picker x:Name="LocationPicker"
-                ItemsSource="{Binding AvailableLocations, Mode=TwoWay}"
-                SelectedIndex="{Binding AvailableLocationsIndex, Mode=TwoWay}"
-                ItemDisplayBinding="{Binding Name}"
-                WidthRequest="{OnPlatform WinUI=400}"
-                HorizontalOptions="{OnPlatform WinUI=Start, Android=Fill}"
-                    Title="Select A Location">
-        </Picker>
-        <Button Text="New Location"
-                HorizontalOptions="{OnPlatform WinUI=Start, Android=Fill}"
-                WidthRequest="{OnPlatform WinUI=400}"
-                Clicked="NewLocation"/>
-        <Entry Text="Enter The Name Of The Location"
-               x:Name="LocationEntry"
-               IsVisible="False"/>
-        <Entry Text="Enter The Shooting Direction(Degrees)"
-               x:Name="DirectionEntry"
-               IsVisible="False"/>
-        <Picker
-                ItemsSource="{Binding AvailableFirearms, Mode=TwoWay}"
-                SelectedIndex="{Binding AvailableFirearmIndex, Mode=TwoWay}"
-                ItemDisplayBinding="{Binding Name}"
-                WidthRequest="{OnPlatform WinUI=400}"
-                HorizontalOptions="{OnPlatform WinUI=Start, Android=Fill}"
-                Title="{Binding FirearmPickerPlaceholder}">
-        </Picker>
-        <Button Text="New Firearm"
-                HorizontalOptions="{OnPlatform WinUI=Start, Android=Fill}"
-                WidthRequest="{OnPlatform WinUI=400}"
-                Clicked="AddFirearm"/>
-        <Label Text="Fireamrs Currently In Session"
-                  Padding="0,20,0,0"
-                WidthRequest="{OnPlatform WinUI=400}"
-                HorizontalOptions="{OnPlatform WinUI=Start, Android=Fill}"
-               TextDecorations="Underline"/>
-        <ListView x:Name="FirearmListView"
-                HorizontalOptions="{OnPlatform WinUI=Start, Android=Fill}"
-                WidthRequest="{OnPlatform WinUI=400}"
-                  ItemsSource="{Binding FirearmsInSession}">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <ViewCell>
-                        <VerticalStackLayout>
-                            <Label Text="{Binding Name}"/>
-                        </VerticalStackLayout>
-                    </ViewCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-        <Button x:Name="SaveSessionButton" Text="Start Session"
-                WidthRequest="{OnPlatform WinUI=400}"
-                Clicked="SaveButtonClicked"
-                IsEnabled="False"/>
-        <Label Text="{Binding StatusMessage}"/>
+    <ScrollView>
+        <VerticalStackLayout
+            Padding="10,10,10,400">
+            <Grid ColumnDefinitions="100,*"
+                RowDefinitions="40,40">
+                <Label Text="Name: "
+                    VerticalOptions="Center"
+                    HorizontalOptions="End"
+                    Grid.Column="0"
+                    Grid.Row="0" />
+                <Entry Text="{Binding Session.Name}"
+                    Grid.Column="1"
+                    Grid.Row="0">
+                    <Entry.Behaviors>
+                        <toolkit:EventToCommandBehavior
+                            EventName="TextChanged"
+                            Command="{Binding NameTextChangedCommand}" />
+                    </Entry.Behaviors>
+                </Entry>
+                <Label Text="Description: "
+                    VerticalOptions="Center"
+                    HorizontalOptions="End"
+                    Grid.Column="0"
+                    Grid.Row="1" />
+                <Entry Text="{Binding Session.Note}"
+                    Grid.Column="1"
+                    Grid.Row="1" />
+            </Grid>
+            <Label Text="{Binding NameStatusMessage}"
+                TextColor="Red" />
+            <Label Text="Location"
+                HorizontalOptions="Center"
+                FontSize="Medium" />
+            <Grid ColumnDefinitions="100,*"
+                RowDefinitions="40">
+                <Label Text="Search: "
+                    HorizontalOptions="End"
+                    VerticalOptions="Center"
+                    Grid.Column="0" />
+                <Entry Text="{Binding LocationSearch}"
+                    Grid.Column="1"
+                    ClearButtonVisibility="WhileEditing">
+                    <Entry.Behaviors>
+                        <toolkit:EventToCommandBehavior
+                            EventName="TextChanged"
+                            Command="{Binding LocationSearchTextChangedCommand}" />
+                    </Entry.Behaviors>
+                </Entry>
+            </Grid>
+            <ScrollView Padding="0,0,0,0">
+                <Border>
+                    <CollectionView x:Name="RoundListView"
+                        ItemsSource="{Binding FilteredLocations}"
+                        SelectedItem="{Binding Session.Location, Mode=TwoWay}"
+                        SelectionChangedCommand="{Binding LocationSelectedCommand}"
+                        SelectionMode="Single"
+                        MaximumHeightRequest="150">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="viewmodel:LocationData">
+                                <Border Margin="0,-1,0,-1"
+                                    Padding="5">
+                                    <Grid ColumnSpacing="5"
+                                        ColumnDefinitions="Auto,*,Auto,*">
+                                        <Label Text="Name: "
+                                            Grid.Column="0" />
+                                        <Label Text="{Binding Name}"
+                                            Grid.Column="1" />
+                                        <Label Text=" Shooting Direction(deg): "
+                                            Grid.Column="2" />
+                                        <Label Text="{Binding ShootingDirection}"
+                                            Grid.Column="3" />
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </Border>
+            </ScrollView>
 
+            <Label Text="Firearms"
+                HorizontalOptions="Center"
+                FontSize="Medium"
+                Padding="0,30,0,0" />
+            <Label Text="In Session"
+                HorizontalOptions="Center"
+                TextDecorations="Underline" />
+            <ScrollView>
+                <Border>
+                    <CollectionView
+                        ItemsSource="{Binding FirearmsInSession}"
+                        SelectedItem="{Binding SelectedFirearmInSession, Mode=TwoWay}"
+                        SelectionChangedCommand="{Binding FirearmSelectedCommand}"
+                        SelectionMode="Single"
+                        MaximumHeightRequest="200">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="viewmodel:FirearmData">
+                                <Grid ColumnDefinitions="*,*"
+                                    MinimumHeightRequest="30">
+                                    <Border Grid.Column="0"
+                                        Margin="-1">
+                                        <Label Text="{Binding Name}"
+                                            VerticalOptions="Center"
+                                            HorizontalOptions="Center" />
+                                    </Border>
+                                    <Border Grid.Column="1"
+                                        Margin="-1">
+                                        <Label Text="{Binding Caliber}"
+                                            VerticalOptions="Center"
+                                            HorizontalOptions="Center" />
+                                    </Border>
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </Border>
+            </ScrollView>
+            <Button Text="Remove From Session"
+                IsVisible="{Binding FirearmRemoveButtonVisible}"
+                IsEnabled="{Binding FirearmRemoveButtonClickable}"
+                Command="{Binding RemoveFirearmCommand}" />
 
+            <Label Text="Avialable"
+                HorizontalOptions="Center"
+                Padding="0,10,0,0"
+                TextDecorations="Underline" />
+            <Grid ColumnDefinitions="100,*"
+                RowDefinitions="40">
+                <Label Text="Search: "
+                    HorizontalOptions="End"
+                    VerticalOptions="Center"
+                    Grid.Column="0" />
+                <Entry Text="{Binding FirearmSearch}"
+                    Grid.Column="1"
+                    ClearButtonVisibility="WhileEditing">
+                    <Entry.Behaviors>
+                        <toolkit:EventToCommandBehavior
+                            EventName="TextChanged"
+                            Command="{Binding FirearmSearchTextChangedCommand}" />
+                    </Entry.Behaviors>
+                </Entry>
+            </Grid>
+            <ScrollView>
+                <Border>
+                    <CollectionView
+                        ItemsSource="{Binding FilteredFirearms}"
+                        SelectedItem="{Binding SelectedFirearm, Mode=TwoWay}"
+                        SelectionMode="Single"
+                        MaximumHeightRequest="200">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="viewmodel:FirearmData">
+                                <Grid ColumnDefinitions="*,*"
+                                    MinimumHeightRequest="30">
+                                    <Border Grid.Column="0"
+                                        Margin="-1">
+                                        <Label Text="{Binding Name}"
+                                            VerticalOptions="Center"
+                                            HorizontalOptions="Center" />
+                                    </Border>
+                                    <Border Grid.Column="1"
+                                        Margin="-1">
+                                        <Label Text="{Binding Caliber}"
+                                            VerticalOptions="Center"
+                                            HorizontalOptions="Center" />
+                                    </Border>
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </Border>
+            </ScrollView>
+            <Grid ColumnDefinitions="*,*"
+                Padding="0,10,0,0"
+                ColumnSpacing="10">
+                <Button Text="Add To Session"
+                    Command="{Binding AddFirearmCommand}"
+                    Grid.Column="0" />
+                <Button Text="New Firearm"
+                    Command="{Binding NewFirearmCommand}"
+                    Grid.Column="1" />
+            </Grid>
+            <Label Text="{Binding AddFirearmStatusMessage}" />
 
-    </VerticalStackLayout>
+            <Button Text="Start Session"
+                Margin="0,20,0,0"
+                Command="{Binding SaveSessionCommand}" />
+            <Label Text="{Binding StatusMessage}" />
+        </VerticalStackLayout>
+
+    </ScrollView>
 
 </ContentPage>

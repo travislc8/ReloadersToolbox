@@ -77,7 +77,7 @@
                 </Border>
             </Grid>
             <Border>
-                <ScrollView Padding="0,0,0,0">
+                <ScrollView>
                     <CollectionView x:Name="RoundListView"
                         ItemsSource="{Binding RefinedRoundData}"
                         SelectedItem="{Binding SelectedRoundData, Mode=TwoWay}"

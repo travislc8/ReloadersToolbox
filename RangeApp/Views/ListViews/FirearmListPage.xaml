@@ -1,54 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             xmlns:viewmodel="clr-namespace:RangeApp.ViewModel"
-             x:Class="RangeApp.Views.FirearmListPage"
-             x:DataType="viewmodel:FirearmListPageViewModel"
-             Title="Firearms">
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:viewmodel="clr-namespace:RangeApp.ViewModel"
+    x:Class="RangeApp.Views.FirearmListPage"
+    x:DataType="viewmodel:FirearmListPageViewModel"
+    Title="Firearms">
 
 
-    <ScrollView>
+    <ScrollView Padding="10">
         <VerticalStackLayout>
             <Grid ColumnDefinitions="50,*">
                 <Label
                     Text="Search:"
                     HorizontalOptions="Center"
                     Grid.Column="0"
-                    VerticalOptions="Center"/>
+                    VerticalOptions="Center" />
                 <Entry x:Name="SearchInput"
-                       Placeholder="Search Firearms"
-                       Text="{Binding SearchInputText}"
-                       ClearButtonVisibility="WhileEditing"
-                       Grid.Column="1">
+                    Placeholder="Search Firearms"
+                    Text="{Binding SearchInputText}"
+                    ClearButtonVisibility="WhileEditing"
+                    Grid.Column="1">
                     <Entry.Behaviors>
                         <toolkit:EventToCommandBehavior
                             EventName="TextChanged"
-                            Command="{Binding SearchTextChangedCommand}"/>
+                            Command="{Binding SearchTextChangedCommand}" />
                     </Entry.Behaviors>
                 </Entry>
             </Grid>
             <Border>
                 <CollectionView x:Name="FirearmListView"
-                                ItemsSource="{Binding RefinedFirearms}"
-                                SelectedItem="{Binding SelectedFirearm, Mode=TwoWay}"
-                                SelectionMode="Single"
-                                MaximumHeightRequest="200">
+                    ItemsSource="{Binding RefinedFirearms}"
+                    SelectedItem="{Binding SelectedFirearm, Mode=TwoWay}"
+                    SelectionMode="Single"
+                    MaximumHeightRequest="200">
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="viewmodel:FirearmData">
                             <Grid ColumnDefinitions="*,*"
-                                  MinimumHeightRequest="30">
+                                MinimumHeightRequest="30">
                                 <Border Grid.Column="0"
-                                        Margin="-1">
+                                    Margin="-1">
                                     <Label Text="{Binding Name}"
-                                           VerticalOptions="Center"
-                                           HorizontalOptions="Center"/>
+                                        VerticalOptions="Center"
+                                        HorizontalOptions="Center" />
                                 </Border>
                                 <Border Grid.Column="1"
-                                        Margin="-1">
+                                    Margin="-1">
                                     <Label Text="{Binding Caliber}"
-                                           VerticalOptions="Center"
-                                           HorizontalOptions="Center"/>
+                                        VerticalOptions="Center"
+                                        HorizontalOptions="Center" />
                                 </Border>
                             </Grid>
                         </DataTemplate>
@@ -57,63 +57,63 @@
             </Border>
 
             <Grid ColumnDefinitions="*,*,*"
-                  ColumnSpacing="5"
-                  Margin="0,5,0,0">
+                ColumnSpacing="5"
+                Margin="0,5,0,0">
                 <Button Text="New Firearm"
-                        Grid.Column="0"
-                        Command="{Binding NewFirearmCommand}"/>
+                    Grid.Column="0"
+                    Command="{Binding NewFirearmCommand}" />
                 <Button Text="Edit Selected"
-                        Grid.Column="1"
-                        Command="{Binding EditFirearmCommand}"/>
+                    Grid.Column="1"
+                    Command="{Binding EditFirearmCommand}" />
                 <Button Text="Delete Selected"
-                        Grid.Column="2"
-                        Command="{Binding DeleteFirearmCommand}"/>
+                    Grid.Column="2"
+                    Command="{Binding DeleteFirearmCommand}" />
             </Grid>
             <Label
                 Text="Selected Info"
                 HorizontalOptions="Center"
                 FontSize="Large"
-                Padding="0,20,0,0"/>
+                Padding="0,20,0,0" />
 
             <Label HorizontalOptions="Center"
-                   Padding="0,10,0,0"
-                   TextDecorations="Underline"
-                   Text="Name"/>
+                Padding="0,10,0,0"
+                TextDecorations="Underline"
+                Text="Name" />
             <Label x:Name="Name"
-                   HorizontalOptions="Center"
-                   Text="{Binding SelectedFirearm.Name}"/>
+                HorizontalOptions="Center"
+                Text="{Binding SelectedFirearm.Name}" />
 
             <Label HorizontalOptions="Center"
-                   Padding="0,10,0,0"
-                   Text="Barrel Length"
-                   TextDecorations="Underline"/>
+                Padding="0,10,0,0"
+                Text="Barrel Length"
+                TextDecorations="Underline" />
             <Label x:Name="BarrelLength"
-                   HorizontalOptions="Center"
-                   Text="{Binding SelectedFirearm.BarrelLength}"/>
+                HorizontalOptions="Center"
+                Text="{Binding SelectedFirearm.BarrelLength}" />
 
             <Label HorizontalOptions="Center"
-                   Padding="0,10,0,0"
-                   Text="Manufacture"
-                   TextDecorations="Underline"/>
+                Padding="0,10,0,0"
+                Text="Manufacture"
+                TextDecorations="Underline" />
             <Label x:Name="Manufacture"
-                   HorizontalOptions="Center"
-                   Text="{Binding SelectedFirearm.Manufacturer}"/>
+                HorizontalOptions="Center"
+                Text="{Binding SelectedFirearm.Manufacturer}" />
 
             <Label HorizontalOptions="Center"
-                   Padding="0,10,0,0"
-                   Text="Caliber"
-                   TextDecorations="Underline"/>
+                Padding="0,10,0,0"
+                Text="Caliber"
+                TextDecorations="Underline" />
             <Label x:Name="Caliber"
-                   HorizontalOptions="Center"
-                   Text="{Binding SelectedFirearm.Caliber}"/>
+                HorizontalOptions="Center"
+                Text="{Binding SelectedFirearm.Caliber}" />
 
             <Label HorizontalOptions="Center"
-                   Padding="0,10,0,0"
-                   Text="Scope"
-                   TextDecorations="Underline"/>
+                Padding="0,10,0,0"
+                Text="Scope"
+                TextDecorations="Underline" />
             <Label x:Name="Scope"
-                   HorizontalOptions="Center"
-                   Text="{Binding SelectedFirearm.ScopeID}"/>
+                HorizontalOptions="Center"
+                Text="{Binding SelectedFirearm.ScopeID}" />
         </VerticalStackLayout>
 
     </ScrollView>

@@ -11,30 +11,16 @@
     </Shell.FlyoutHeader>
     <FlyoutItem Title="Home"
         Icon="home.png">
-        <Tab>
-            <ShellContent ContentTemplate="{DataTemplate local:Views.HomePage}" />
-        </Tab>
+        <ShellContent ContentTemplate="{DataTemplate local:Views.HomePage}" />
     </FlyoutItem>
     <FlyoutItem Title="Create Session">
         <ShellContent ContentTemplate="{DataTemplate local:Views.SessionOptions}" />
     </FlyoutItem>
-    <FlyoutItem Title="Lists">
-        <Tab>
-            <ShellContent ContentTemplate="{DataTemplate local:Views.RoundListPage}"
-                Title="Rounds List" />
-            <ShellContent ContentTemplate="{DataTemplate local:Views.FirearmListPage}"
-                Title="Firearm List" />
-            <ShellContent ContentTemplate="{DataTemplate local:Views.SessionListPage}"
-                Title="Sessions List" />
-            <ShellContent ContentTemplate="{DataTemplate local:Views.LocationListPage}"
-                Title="Location List" />
-        </Tab>
+    <FlyoutItem Title="View/Modify Equipment">
+        <ShellContent ContentTemplate="{DataTemplate local:Views.ModifyNavigationPage}" />
     </FlyoutItem>
     <FlyoutItem Title="Round Builder">
         <ShellContent ContentTemplate="{DataTemplate local:Views.NewRoundPage}" />
-    </FlyoutItem>
-    <FlyoutItem Title="Location List">
-        <ShellContent ContentTemplate="{DataTemplate local:Views.LocationListPage}" />
     </FlyoutItem>
 
 

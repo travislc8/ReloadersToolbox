@@ -1,5 +1,9 @@
 ﻿Current 
     Update SessionList
+    Update SessionOptions
+    Update SessionDetails
+
+    Session needs delete
 
 Entry
     Max length on entries

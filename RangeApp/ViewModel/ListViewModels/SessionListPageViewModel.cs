@@ -69,7 +69,7 @@ public partial class SessionListPageViewModel : ObservableObject, IQueryAttribut
         var NavigationParameter = new Dictionary<string, object> {
             {"SessionId", SelectedSession.SessionId}
         };
-        await Shell.Current.GoToAsync("SessionPage", NavigationParameter);
+        await Shell.Current.GoToAsync("SessionListPage", NavigationParameter);
     }
     [RelayCommand]
     void ViewFirearmSelected()

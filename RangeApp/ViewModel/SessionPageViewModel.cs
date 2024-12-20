@@ -69,10 +69,10 @@ public partial class SessionPageViewModel : ObservableObject, IQueryAttributable
             return;
         if (attributes.ContainsKey("Firearm"))
         {
-            var firearm = attributes["Firearm"] as Models.Firearm;
+            var firearm = attributes["Firearm"] as ViewModel.FirearmData;
             if (firearm == null)
                 return;
-            App.SessionRepo.AddFirearmToSession(firearm, session_id);
+            App.SessionRepo.AddFirearmToSession(FirearmData.GetFirearm(firearm), session_id);
             UpdateAllFirearmsList();
         }
         if (attributes.ContainsKey("NameEntry"))

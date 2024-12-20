@@ -100,10 +100,19 @@ public partial class FirearmListPageViewModel : ObservableObject, IQueryAttribut
     }
 
     [RelayCommand]
-    public void DeleteFirearm()
+    async public void DeleteFirearm()
     {
         if (SelectedFirearm != null)
         {
+            string question = string.Format("Delete {0}?", SelectedFirearm.Name);
+            // displays a pop up to make sure the user wishes to delete the entry
+            if (Application.Current != null && Application.Current.MainPage != null)
+            {
+                bool response = await Application.Current.MainPage.DisplayAlert(
+                        "Alert", question, "Yes", "No");
+                if (!response)
+                    return;
+            }
             AllFirearms.Remove(SelectedFirearm);
             App.FirearmRepo.RemoveFirearm(SelectedFirearm);
             StatusMessage = App.FirearmRepo.StatusMessage;

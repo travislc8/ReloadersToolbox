@@ -33,4 +33,26 @@ public class LocationData
 
         return location;
     }
+
+    public static List<LocationData> GetData(List<Models.Location> locations)
+    {
+        List<LocationData> dataList = [];
+        foreach (var location in locations)
+        {
+            dataList.Add(LocationData.GetData(location));
+        }
+
+        return dataList;
+    }
+
+    public static List<Models.Location> GetLocation(List<LocationData> dataList)
+    {
+        List<Models.Location> locations = [];
+        foreach (var data in dataList)
+        {
+            locations.Add(LocationData.GetLocation(data));
+        }
+
+        return locations;
+    }
 }
