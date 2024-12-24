@@ -27,7 +27,7 @@ public partial class HomePage : ContentPage
         var NavigationProperty = new Dictionary<string, object> {
             {"SessionId", session_id}
         };
-        Shell.Current.GoToAsync("SessionListPage", NavigationProperty);
+        Shell.Current.GoToAsync("SessionPage", NavigationProperty);
     }
 }
 

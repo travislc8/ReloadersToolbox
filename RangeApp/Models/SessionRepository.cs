@@ -557,7 +557,7 @@ public class SessionRepository
         }
         return count;
     }
-    public List<ViewModel.SessionData> GetSessionData()
+    public List<ViewModel.SessionData> GetSessionDataList()
     {
         Init();
         List<ViewModel.SessionData> DataList = [];
@@ -599,6 +599,50 @@ public class SessionRepository
         }
         return DataList;
     }
+
+    ///<summary>
+    /// Gets the SessionData object that contains the data for the given sessionId
+    ///</summary>
+    public int GetSessionShotCount(int sessionId)
+    {
+        Init();
+        int count = 0;
+        try
+        {
+            var shots = from shot in conn.Table<Shot>()
+                        from groups in conn.Table<Group>()
+                        where groups.SessionId == sessionId
+                        where shot.GroupId == groups.Id
+                        select shot;
+            count = shots.Count();
+        }
+        catch (Exception e)
+        {
+            StatusMessage = string.Format("Failed to Get Shot Count. Error {0}", e.Message);
+        }
+        return count;
+    }
+
+    public ViewModel.SessionData GetSessionData(int id)
+    {
+        ViewModel.SessionData data = new();
+        Init();
+        try
+        {
+            var table = from c in conn.Table<Session>()
+                        where c.Id == id
+                        select c;
+
+            var Session = table.FirstOrDefault();
+            data = ViewModel.SessionData.GetData(Session);
+        }
+        catch (Exception e)
+        {
+            StatusMessage = string.Format("Failed to retrieve Session Data. Error {0}", e.Message);
+        }
+        return data;
+    }
+
     public bool IsFirearmInSession(string firearm_name, int session_id)
     {
         bool check = false;

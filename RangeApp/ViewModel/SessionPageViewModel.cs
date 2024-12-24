@@ -18,7 +18,7 @@ public partial class SessionPageViewModel : ObservableObject, IQueryAttributable
         ClearStatusMessages();
         if (attributes == null)
             return;
-        if (attributes.ContainsKey("SessionData"))
+        else if (attributes.ContainsKey("SessionData"))
         {
             var data = attributes["SessionData"] as ViewModel.SessionData;
             if (data == null)
@@ -28,9 +28,11 @@ public partial class SessionPageViewModel : ObservableObject, IQueryAttributable
             else
             {
                 SessionData = data;
+                UpdateAllFirearmsList();
+                UpdateAllRoundsList();
             }
         }
-        if (attributes.ContainsKey("Firearm"))
+        else if (attributes.ContainsKey("Firearm"))
         {
             var firearm = attributes["Firearm"] as ViewModel.FirearmData;
             if (firearm == null)
@@ -41,29 +43,29 @@ public partial class SessionPageViewModel : ObservableObject, IQueryAttributable
             FilterFirearms();
         }
 
-        if (attributes.ContainsKey("ShotAdded"))
+        else if (attributes.ContainsKey("ShotAdded"))
         {
             if ((attributes["ShotAdded"] as string) != "0")
                 UpdateGroupData();
         }
-        if (attributes.ContainsKey("AddedRound"))
+        else if (attributes.ContainsKey("AddedRound"))
         {
             UpdateAllRoundsList();
         }
-        if (attributes.ContainsKey("SessionId"))
+        else if (attributes.ContainsKey("SessionId"))
         {
             var id_string = attributes["SessionId"].ToString();
             if (id_string != null)
             {
                 var id = int.Parse(id_string);
                 SessionData.SessionId = id;
-                Preferences.Set("SessionActive", SessionData.SessionId);
                 FillDataFromId(id);
+                UpdateAllFirearmsList();
+                UpdateAllRoundsList();
                 UpdateGroupData();
-                UpdateAllRoundsList();
-                UpdateAllRoundsList();
             }
         }
+        else { }
         attributes.Clear();
     }
 
@@ -268,9 +270,16 @@ public partial class SessionPageViewModel : ObservableObject, IQueryAttributable
     [RelayCommand]
     async void SaveSession()
     {
-        StatusMessage = "Saving";
-        Preferences.Set("SessionActive", 0);
-        await Shell.Current.GoToAsync("HomePage");
+        try
+        {
+            StatusMessage = "Saving";
+            Preferences.Set("SessionActive", 0);
+            await Shell.Current.Navigation.PopToRootAsync();
+        }
+        catch (Exception e)
+        {
+            StatusMessage = e.Message;
+        }
     }
 
     [RelayCommand]
@@ -397,18 +406,20 @@ public partial class SessionPageViewModel : ObservableObject, IQueryAttributable
         FilterFirearms();
     }
 
+    ///<summary>
+    /// Fills the SessionData object from the database
+    ///</summary>
     private void FillDataFromId(int id)
     {
-        var temp = App.SessionRepo.GetSessionNameFromId(id);
-        if (temp == null)
+        SessionData = App.SessionRepo.GetSessionData(id);
+        if (SessionData.SessionId == -1)
         {
-            StatusMessage = "Error Loading Session";
+            StatusMessage = "Error Loading Session" + App.SessionRepo.StatusMessage;
         }
         else
         {
-            UpdateAllFirearmsList();
-            UpdateAllRoundsList();
             Groups = App.SessionRepo.GetGroupData(SessionData.SessionId);
+            StatusMessage = string.Format("Loaded {0} from memory", SessionData.Name);
         }
     }
 }

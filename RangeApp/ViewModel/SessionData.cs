@@ -17,4 +17,24 @@ public class SessionData
         SessionId = -1;
         Location = new LocationData();
     }
+
+    public static SessionData GetData(Models.Session session)
+    {
+        SessionData data = new();
+
+        if (session.Name == null) data.Name = string.Empty;
+        else data.Name = session.Name;
+        if (session.LocationId == -1) data.Location = new LocationData();
+        else
+            data.Location = LocationData.GetData(App.LocationRepo.GetLocationFromId(session.LocationId));
+
+        data.SessionId = session.Id;
+        data.Note = session.Note;
+        data.Date = session.Date_Time;
+        data.Firearms = FirearmData.GetData(App.SessionRepo.GetFirearmsInSession(session.Id));
+        data.NumShots = App.SessionRepo.GetSessionShotCount(session.Id);
+        data.NumGroups = App.SessionRepo.GetGroupCount(session.Id);
+
+        return data;
+    }
 }

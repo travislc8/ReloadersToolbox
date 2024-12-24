@@ -148,6 +148,12 @@ public partial class SessionOptionsViewModel : ObservableObject, IQueryAttributa
             StatusMessage = "Name must not be blank";
             return;
         }
+        if (Session.Location.Id == 0)
+        {
+            StatusMessage = "A location must be selected";
+            return;
+        }
+
         var saveSession = new Models.Session
         {
             LocationId = Session.Location.Id,
@@ -169,14 +175,14 @@ public partial class SessionOptionsViewModel : ObservableObject, IQueryAttributa
 
         StatusMessage = "Creating Session: " + Session.Name;
         // sets the save flag that a session is being edited
-        Preferences.Set("SessionActive", 1);
+        Preferences.Set("SessionActive", Session.SessionId);
 
         var NavigationParameter = new Dictionary<string, object>
         {
             {"SessionData", Session}
         };
 
-        await Shell.Current.GoToAsync("SessionListPage", NavigationParameter);
+        await Shell.Current.GoToAsync("SessionPage", NavigationParameter);
     }
 
     [RelayCommand]

@@ -92,6 +92,7 @@
                     <Grid ColumnSpacing="10"
                         ColumnDefinitions="30,Auto,*">
                         <CheckBox x:Name="FirearmsInSessionCheckBox"
+                            IsChecked="{Binding FirearmsInSessionCheckBox}"
                             Grid.Column="0">
                             <CheckBox.Behaviors>
                                 <toolkit:EventToCommandBehavior

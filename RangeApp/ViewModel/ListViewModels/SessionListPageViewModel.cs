@@ -84,7 +84,7 @@ public partial class SessionListPageViewModel : ObservableObject, IQueryAttribut
     }
     private void UpdateAllSessionData()
     {
-        AllSessionData = App.SessionRepo.GetSessionData();
+        AllSessionData = App.SessionRepo.GetSessionDataList();
         UpdateRefinedSessionData();
     }
     private void UpdateRefinedSessionData()
