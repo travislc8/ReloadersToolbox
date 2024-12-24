@@ -35,5 +35,29 @@ public partial class RoundData : ObservableObject
         if (InQueue != null)
             App.RoundRepo.UpdateQueue(RoundId, (bool)InQueue);
     }
+
+    public static RoundData GetData(Models.Round round)
+    {
+        RoundData data = new();
+
+        data.RoundId = round.Id;
+        data.Name = round.Name;
+        data.Caliber = round.Caliber;
+        data.PowderWeight = round.PowderGrains;
+        data.CaseName = round.CaseName;
+        data.Primer = round.Primer;
+        data.TotalLength = round.TotalLength;
+        data.InQueue = round.InQueue;
+        data.PowderId = round.PowderId;
+        data.BulletId = round.BulletId;
+        return data;
+    }
+    public static List<RoundData> GetData(List<Models.Round> rounds)
+    {
+        List<RoundData> list = [];
+        foreach (var round in rounds)
+            list.Add(RoundData.GetData(round));
+        return list;
+    }
 }
 

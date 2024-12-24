@@ -1,144 +1,159 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:SessionPage="clr-namespace:RangeApp"
-             x:Class="RangeApp.Views.SessionPage"
-             xmlns:viewmodel="clr-namespace:RangeApp.ViewModel"
-             x:DataType="viewmodel:SessionPageViewModel"
-             Padding="10,20,10,0"
-             Title="Session Details">
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:SessionPage="clr-namespace:RangeApp"
+    x:Class="RangeApp.Views.SessionPage"
+    xmlns:viewmodel="clr-namespace:RangeApp.ViewModel"
+    x:DataType="viewmodel:SessionPageViewModel"
+    Title="Session Details">
     <ScrollView>
-        <VerticalStackLayout>
+        <VerticalStackLayout Padding="10,0,10,400">
             <Label Text="Groups"
-                   FontSize="Subtitle"
-                   HorizontalOptions="Center"/>
+                FontSize="Medium"
+                HorizontalOptions="Center" />
             <ScrollView>
-                <ListView x:Name="GropDataListView"
-                          ItemsSource="{Binding Groups}"
-                          ItemSelected="OnGroupItemSelected"
-                          x:DataType="{x:Null}"
-                          MaximumHeightRequest="200">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <ViewCell>
+                <CollectionView x:Name="GropDataListView"
+                    ItemsSource="{Binding Groups}"
+                    SelectedItem="{Binding SelectedGroup}"
+                    SelectionChangedCommand="{Binding GroupSelectedCommand}"
+                    SelectionMode="Single"
+                    MaximumHeightRequest="200">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="viewmodel:GroupData">
+                            <Border Margin="-1"
+                                StrokeThickness="2">
+
                                 <VerticalStackLayout>
                                     <HorizontalStackLayout>
                                         <Label Text="Group: "
-                                               FontAttributes="Bold"/>
-                                        <Label Text="{Binding GroupNum}"/>
+                                            FontAttributes="Bold" />
+                                        <Label Text="{Binding GroupNum}" />
                                         <Label Text="     Firearm: "
-                                               FontAttributes="Bold"/>
-                                        <Label Text="{Binding FirearmName}"/>
+                                            FontAttributes="Bold" />
+                                        <Label Text="{Binding FirearmName}" />
                                         <Label Text="      Round: "
-                                               FontAttributes="Bold"/>
-                                        <Label Text="{Binding RoundName}"/>
+                                            FontAttributes="Bold" />
+                                        <Label Text="{Binding RoundName}" />
                                     </HorizontalStackLayout>
                                     <HorizontalStackLayout>
                                         <Label Text="Average Velocity: "
-                                               FontAttributes="Bold"/>
-                                        <Label Text="{Binding AverageVelocity}"/>
+                                            FontAttributes="Bold" />
+                                        <Label Text="{Binding AverageVelocity}" />
                                         <Label Text="    Standard Deviation: "
-                                               FontAttributes="Bold"/>
-                                        <Label Text="{Binding StDev}"/>
+                                            FontAttributes="Bold" />
+                                        <Label Text="{Binding StDev}" />
                                     </HorizontalStackLayout>
                                 </VerticalStackLayout>
-                            </ViewCell>
+                            </Border>
                         </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
             </ScrollView>
             <Grid ColumnSpacing="10"
-                  ColumnDefinitions="*,*,*">
+                ColumnDefinitions="*,*,*">
                 <Button Text="New Group"
-                        Grid.Column="0"
-                        IsEnabled="True"
-                        Command="{Binding NewGroupCommand}"/>
+                    Grid.Column="0"
+                    Command="{Binding NewGroupCommand}" />
                 <Button Text="Edit Group"
-                        Grid.Column="1"
-                        Clicked="EditGroupButtonClicked"/>
+                    Grid.Column="1"
+                    IsEnabled="{Binding AllowEditGroup}"
+                    Command="{Binding EditGroupCommand}" />
                 <Button Text="Delete Group"
-                        Grid.Column="2"
-                        Clicked="DeleteGroupButtonClicked"/>
+                    Grid.Column="2"
+                    IsEnabled="{Binding AllowDeleteGroup}"
+                    Command="{Binding DeleteGroupCommand}" />
             </Grid>
-            <Label Text="{Binding GroupStatusMessage}"/>
+            <Label Text="{Binding GroupStatusMessage}" />
 
             <Grid ColumnSpacing="10"
-                  ColumnDefinitions="*,*,100"
-                  Padding="0,20,0,20">
+                ColumnDefinitions="*,*,100"
+                Padding="0,20,0,20">
 
                 <Label x:Name="CurrentFirearmTitle"
-                       Text="Selected Firearm: "
-                       VerticalTextAlignment="Center"
-                       Grid.Column="0"/>
+                    Text="Selected Firearm: "
+                    VerticalTextAlignment="Center"
+                    Grid.Column="0" />
                 <Label Text="{Binding SelectedFirearm.Name}"
-                       VerticalTextAlignment="Center"
-                       Grid.Column="1"/>
+                    VerticalTextAlignment="Center"
+                    Grid.Column="1" />
 
                 <Button Text="Change"
-                        Grid.Column="2"
-                        Clicked="ChangeFirearmButtonClicked"/>
+                    Grid.Column="2"
+                    Command="{Binding ChangeFirearmCommand}" />
             </Grid>
             <Border x:Name="FirearmChange"
-                    Padding="10"
-                    IsVisible="Hidden">
+                Padding="10"
+                IsVisible="{Binding ShowFirearms}">
                 <VerticalStackLayout>
                     <Label Text="Firearm Selection"
-                           HorizontalOptions="Center"
-                           FontSize="Medium"/>
+                        HorizontalOptions="Center"
+                        FontSize="Medium" />
                     <Grid ColumnSpacing="10"
-                          ColumnDefinitions="30,Auto,*">
+                        ColumnDefinitions="30,Auto,*">
                         <CheckBox x:Name="FirearmsInSessionCheckBox"
-                                  CheckedChanged="OnFirearmInSessionCheckBoxChanged"
-                                  Grid.Column="0"/>
+                            Grid.Column="0">
+                            <CheckBox.Behaviors>
+                                <toolkit:EventToCommandBehavior
+                                    EventName="CheckedChanged"
+                                    Command="{Binding FirearmsInSessionCheckChangedCommand}" />
+                            </CheckBox.Behaviors>
+                        </CheckBox>
                         <Label Text="Firearms In Session"
-                               Grid.Column="1"
-                               VerticalOptions="Center"
-                               FontSize="Small"/>
+                            Grid.Column="1"
+                            VerticalOptions="Center"
+                            FontSize="Small" />
                         <Entry Placeholder="Search Firearms"
-                               Text="{Binding FirearmSearchEntry}"
-                               TextChanged="SearchFirearmTextChanged"
-                               Grid.Column="2"/>
+                            Text="{Binding FirearmSearchEntry}"
+                            Grid.Column="2">
+                            <Entry.Behaviors>
+                                <toolkit:EventToCommandBehavior
+                                    EventName="TextChanged"
+                                    Command="{Binding FirearmSearchTextChangedCommand}" />
+                            </Entry.Behaviors>
+                        </Entry>
                     </Grid>
                     <ScrollView Margin="0,0,0,10">
                         <CollectionView x:Name="FirearmListView"
-                                        ItemsSource="{Binding RefinedFirearms}"
-                                        SelectedItem="{Binding SelectedFirearm, Mode=TwoWay}"
-                                        SelectionMode="Single"
-                                        x:DataType="{x:Null}"
-                                        MaximumHeightRequest="200">
+                            ItemsSource="{Binding RefinedFirearms}"
+                            SelectedItem="{Binding SelectedFirearm, Mode=TwoWay}"
+                            SelectionChangedCommand="{Binding FirearmSelectedCommand}"
+                            SelectionMode="Single"
+                            x:DataType="{x:Null}"
+                            MaximumHeightRequest="200">
                             <CollectionView.ItemTemplate>
-                                <DataTemplate>
+                                <DataTemplate x:DataType="viewmodel:FirearmData">
                                     <VerticalStackLayout>
                                         <Border Margin="0,-1,0,-1"
-                                                Stroke="Black"
-                                                StrokeThickness="1"
-                                                Padding="5">
+                                            Stroke="Black"
+                                            StrokeThickness="1"
+                                            Padding="5">
                                             <Grid ColumnDefinitions="50,*,60,*"
-                                                  RowDefinitions="20,20">
+                                                RowDefinitions="20,20">
                                                 <Label Text="Name: "
-                                                       Grid.Column="0"
-                                                       Grid.Row="0"/>
+                                                    Grid.Column="0"
+                                                    Grid.Row="0" />
                                                 <Label Text="{Binding Name}"
-                                                       Grid.Column="1"
-                                                       Grid.Row="0"/>
+                                                    Grid.Column="1"
+                                                    Grid.Row="0" />
                                                 <Label Text="Caliber: "
-                                                       Grid.Column="2"
-                                                       Grid.Row="0"/>
+                                                    Grid.Column="2"
+                                                    Grid.Row="0" />
                                                 <Label Text="{Binding Caliber}"
-                                                       Grid.Column="3"
-                                                       Grid.Row="0"/>
+                                                    Grid.Column="3"
+                                                    Grid.Row="0" />
                                                 <Label Text="Mfg: "
-                                                       Grid.Column="0"
-                                                       Grid.Row="1"/>
+                                                    Grid.Column="0"
+                                                    Grid.Row="1" />
                                                 <Label Text="{Binding Manufacturer}"
-                                                       Grid.Column="1"
-                                                       Grid.Row="1"/>
+                                                    Grid.Column="1"
+                                                    Grid.Row="1" />
                                                 <Label Text="Barrel Length: "
-                                                       Grid.Column="2"
-                                                       Grid.Row="1"/>
+                                                    Grid.Column="2"
+                                                    Grid.Row="1" />
                                                 <Label Text="{Binding BarrelLength}"
-                                                       Grid.Column="3"
-                                                       Grid.Row="1"/>
+                                                    Grid.Column="3"
+                                                    Grid.Row="1" />
                                             </Grid>
                                         </Border>
                                     </VerticalStackLayout>
@@ -147,120 +162,137 @@
                         </CollectionView>
                     </ScrollView>
                     <Grid ColumnDefinitions="*,*,*"
-                          ColumnSpacing="10">
+                        ColumnSpacing="10">
                         <Button Text="Save Selection"
-                                Grid.Column="0"
-                                Clicked="FirearmChangeSave"/>
-                        <Button Text="Cancel"
-                                Grid.Column="1"
-                                Clicked="FirearmChangeCancel"/>
+                            Grid.Column="0"
+                            Command="{Binding SaveFirearmCommand}" />
                         <Button Text="Create New"
-                                Grid.Column="2"
-                                Clicked="FirearmChangeCreateNew"/>
+                            Grid.Column="2"
+                            Command="{Binding NewFirearmCommand}" />
                     </Grid>
-
-
+                    <Label Text="{Binding FirearmStatusMessage}" />
                 </VerticalStackLayout>
             </Border>
             <Grid ColumnSpacing="10"
-                  ColumnDefinitions="*,*,100"
-                  Padding="0,20,0,0">
+                ColumnDefinitions="*,*,100"
+                Padding="0,20,0,0">
 
                 <Label Text="Selected Round: "
-                       Grid.Column="0"
-                       VerticalTextAlignment="Center"/>
+                    Grid.Column="0"
+                    VerticalTextAlignment="Center" />
                 <Label Text="{Binding SelectedRound.Name}"
-                       Grid.Column="1"
-                       VerticalTextAlignment="Center"/>
+                    Grid.Column="1"
+                    VerticalTextAlignment="Center" />
                 <Button Text="Change"
-                        Grid.Column="2"
-                        Clicked="ChangeRoundButtonClicked"/>
+                    Grid.Column="2"
+                    Command="{Binding ChangeRoundCommand}" />
             </Grid>
 
-            <Border IsVisible="Hidden"
-                    Padding="10"
-                    x:Name="RoundChange">
+            <Border IsVisible="{Binding ShowRounds}"
+                Padding="10"
+                x:Name="RoundChange">
                 <VerticalStackLayout>
                     <Label Text="Rounds For Current Firearm"
-                           FontSize="Medium"
-                           HorizontalOptions="Center"/>
+                        FontSize="Medium"
+                        HorizontalOptions="Center" />
                     <Grid ColumnSpacing="10"
-                          ColumnDefinitions="30,Auto,*">
+                        ColumnDefinitions="30,Auto,*">
                         <CheckBox Grid.Column="0"
-                                  IsChecked="{Binding RoundsInTestQueue}"
-                                  CheckedChanged="RoundsInTestQueueChanged"/>
+                            IsChecked="{Binding RoundsInQueueCheckBox}">
+                            <CheckBox.Behaviors>
+                                <toolkit:EventToCommandBehavior
+                                    EventName="CheckedChanged"
+                                    Command="{Binding RoundsInQueueCheckChangedCommand}" />
+                            </CheckBox.Behaviors>
+                        </CheckBox>
                         <Label Text="Rounds In Test Queue"
-                               Grid.Column="1"
-                               VerticalOptions="Center"/>
+                            Grid.Column="1"
+                            VerticalOptions="Center" />
                         <Entry Grid.Column="2"
-                               Text="{Binding RoundSearchEntry}"
-                               TextChanged="RoundsSearchEntryTextChanged"
-                               Placeholder="Search Rounds"/>
+                            Text="{Binding RoundSearchEntry}"
+                            Placeholder="Search Rounds">
+                            <Entry.Behaviors>
+                                <toolkit:EventToCommandBehavior
+                                    EventName="TextChanged"
+                                    Command="{Binding RoundSearchTextChangedCommand}" />
+                            </Entry.Behaviors>
+                        </Entry>
 
                     </Grid>
                     <ScrollView>
                         <CollectionView x:Name="RoundListView"
-                                        ItemsSource="{Binding RefinedRounds}"
-                                        SelectedItem="{Binding SelectedRound}"
-                                        x:DataType="{x:Null}"
-                                        MaximumHeightRequest="200">
+                            ItemsSource="{Binding RefinedRounds}"
+                            SelectedItem="{Binding SelectedRound, Mode=TwoWay}"
+                            SelectionChangedCommand="{Binding RoundSelectedCommand}"
+                            SelectionMode="Single"
+                            MaximumHeightRequest="200">
                             <CollectionView.ItemTemplate>
-                                <DataTemplate>
+                                <DataTemplate x:DataType="viewmodel:RoundData">
                                     <Border Margin="0,-1,0,-1"
-                                            Stroke="Black"
-                                            StrokeThickness="1"
-                                            Padding="5">
+                                        Stroke="Black"
+                                        StrokeThickness="1"
+                                        Padding="5">
                                         <Grid ColumnDefinitions="50,*,60,*,60,*"
-                                              RowDefinitions="20,20">
+                                            RowDefinitions="20,20">
                                             <Label Text="Name: "
-                                                   Grid.Column="0"
-                                                   Grid.Row="0"/>
+                                                Grid.Column="0"
+                                                Grid.Row="0" />
                                             <Label Text="{Binding Name}"
-                                                   Grid.Column="1"
-                                                   Grid.Row="0"/>
+                                                Grid.Column="1"
+                                                Grid.Row="0" />
                                             <Label Text="Caliber: "
-                                                   Grid.Column="2"
-                                                   Grid.Row="0"/>
+                                                Grid.Column="2"
+                                                Grid.Row="0" />
                                             <Label Text="{Binding Caliber}"
-                                                   Grid.Column="3"
-                                                   Grid.Row="0"/>
+                                                Grid.Column="3"
+                                                Grid.Row="0" />
                                             <Label Text="Powder (g): "
-                                                   Grid.Column="0"
-                                                   Grid.Row="1"/>
-                                            <Label Text="{Binding PowderGrains}"
-                                                   Grid.Column="1"
-                                                   Grid.Row="1"/>
-                                            <Label Text="Barrel Length: "
-                                                   Grid.Column="2"
-                                                   Grid.Row="1"/>
-                                            <Label Text="{Binding BarrelLength}"
-                                                   Grid.Column="3"
-                                                   Grid.Row="1"/>
+                                                Grid.Column="0"
+                                                Grid.Row="1" />
+                                            <Label Text="{Binding PowderWeight}"
+                                                Grid.Column="1"
+                                                Grid.Row="1" />
+                                            <Label Text="Round Length: "
+                                                Grid.Column="2"
+                                                Grid.Row="1" />
+                                            <Label Text="{Binding TotalLength}"
+                                                Grid.Column="3"
+                                                Grid.Row="1" />
                                         </Grid>
                                     </Border>
                                 </DataTemplate>
                             </CollectionView.ItemTemplate>
                         </CollectionView>
                     </ScrollView>
-                    <Grid ColumnDefinitions="*,*,*"
-                          ColumnSpacing="10">
+                    <Grid ColumnDefinitions="*,*"
+                        ColumnSpacing="10"
+                        Padding="0,10,0,0">
                         <Button Text="Save Selection"
-                                Grid.Column="0"
-                                Clicked="RoundChangeSave"/>
-                        <Button Text="Cancel"
-                                Grid.Column="1"
-                                Clicked="RoundChangeCancel"/>
+                            Grid.Column="0"
+                            Command="{Binding SaveRoundCommand}" />
                         <Button Text="Create New"
-                                Grid.Column="2"
-                                Command="{Binding RoundChangeNewCommand}"/>
+                            Grid.Column="2"
+                            Command="{Binding NewRoundCommand}" />
                     </Grid>
                 </VerticalStackLayout>
             </Border>
 
-            <Button Text="Finish Session"
-                    Command="{Binding FinishSessionCommand}"
-                    Margin="0,20,0,0"/>
+            <Grid ColumnDefinitions="*,*,*"
+                ColumnSpacing="10"
+                Padding="0,10,0,0">
 
+                <Button Text="Save Session"
+                    Command="{Binding SaveSessionCommand}"
+                    Grid.Column="0" />
+                <Button Text="Edit Later"
+                    Command="{Binding SaveForLaterCommand}"
+                    Grid.Column="1" />
+                <Button Text="Delete Session"
+                    Command="{Binding DeleteSessionCommand}"
+                    Grid.Column="2" />
+
+            </Grid>
+            <Label Text="{Binding StatusMessage}" />
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

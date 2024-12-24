@@ -305,11 +305,11 @@ public class SessionRepository
         try
         {
             Init();
-            var session = from c in conn.Table<Session>()
-                          where c.Id == id
-                          select c;
-            result = conn.Delete(session.FirstOrDefault());
-            StatusMessage = string.Format("Removed {0} session.", result);
+            var temp = from c in conn.Table<Session>()
+                       where c.Id == id
+                       select c;
+            var session = temp.FirstOrDefault();
+            DeleteSession(session);
         }
         catch (Exception ex)
         {
@@ -323,6 +323,20 @@ public class SessionRepository
         try
         {
             Init();
+            var id = session.Id;
+            // removes groups
+            var choice = from c in conn.Table<Group>()
+                         where c.SessionId == id
+                         select c;
+            var group_list = choice.ToList();
+            foreach (var group in group_list)
+                DeleteGroup(group.Id);
+
+            //removes firearms
+            var firearm_list = GetFirearmsInSession(id);
+            foreach (var firearm in firearm_list)
+                RemoveFirearmFromSession(firearm.Id, id);
+
             result = conn.Delete(session);
             StatusMessage = string.Format("Removed {0} session.", result);
         }
@@ -501,23 +515,24 @@ public class SessionRepository
     /// Id to find the name of.</param>
     /// <returns>
     /// Session name or empty string.</returns>
-    public string GetSessionNameFromId(int id)
+    public Session? GetSessionNameFromId(int id)
     {
-        string name = string.Empty;
+        Session session;
         try
         {
             Init();
             var result = from c in conn.Table<Session>()
                          where c.Id == id
-                         select c.Name;
+                         select c;
             StatusMessage = string.Format("Found {0} session name from session id.", result.Count());
-            name = result.FirstOrDefault("");
+            session = result.FirstOrDefault(new Session());
+            return session;
         }
         catch (Exception ex)
         {
             StatusMessage = string.Format("Failed to retrieve session name from session id. Error: {0}", ex.Message);
+            return null;
         }
-        return name;
     }
     /// <summary>
     /// Gets the number of groups in the session.

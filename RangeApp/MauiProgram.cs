@@ -28,7 +28,7 @@ public static class MauiProgram
 
         //Page Routes
         Routing.RegisterRoute("NewGroupPage", typeof(Views.NewGroupPage));
-        Routing.RegisterRoute("SessionListPage", typeof(Views.SessionPage));
+        Routing.RegisterRoute("SessionListPage", typeof(Views.SessionListPage));
         Routing.RegisterRoute("NewFirearmPage", typeof(Views.NewFirearmPage));
         Routing.RegisterRoute("FirearmListPage", typeof(Views.FirearmListPage));
         Routing.RegisterRoute("NewRoundPage", typeof(Views.NewRoundPage));
@@ -37,6 +37,7 @@ public static class MauiProgram
         Routing.RegisterRoute("RoundListPage", typeof(Views.RoundListPage));
         Routing.RegisterRoute("NewLocationPage", typeof(Views.NewLocationPage));
         Routing.RegisterRoute("LocationListPage", typeof(Views.LocationListPage));
+        Routing.RegisterRoute("HomePage", typeof(Views.HomePage));
 
 
 #if DEBUG

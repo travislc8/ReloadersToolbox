@@ -115,12 +115,12 @@ public partial class SessionOptionsViewModel : ObservableObject, IQueryAttributa
         {
             AddFirearmStatusMessage = string.Format("{0} already in session", SelectedFirearm.Name);
         }
-        else 
+        else
         {
             Session.Firearms.Add(SelectedFirearm);
             FirearmsInSession.Add(SelectedFirearm);
             UpdateRemoveFirearmButton();
-            AddFirearmStatusMessage = string.Format("Added {0} to session", 
+            AddFirearmStatusMessage = string.Format("Added {0} to session",
                     SelectedFirearm.Name);
         }
     }
@@ -143,6 +143,11 @@ public partial class SessionOptionsViewModel : ObservableObject, IQueryAttributa
     async void SaveSession()
     {
         StatusMessage = "Saving Session";
+        if (Session.Name == string.Empty)
+        {
+            StatusMessage = "Name must not be blank";
+            return;
+        }
         var saveSession = new Models.Session
         {
             LocationId = Session.Location.Id,
@@ -163,6 +168,8 @@ public partial class SessionOptionsViewModel : ObservableObject, IQueryAttributa
             App.SessionRepo.AddFirearmsToSession(FirearmData.GetFirearm(Session.Firearms), Session.SessionId);
 
         StatusMessage = "Creating Session: " + Session.Name;
+        // sets the save flag that a session is being edited
+        Preferences.Set("SessionActive", 1);
 
         var NavigationParameter = new Dictionary<string, object>
         {
@@ -214,7 +221,7 @@ public partial class SessionOptionsViewModel : ObservableObject, IQueryAttributa
     private void FilterFirearms()
     {
         FilteredFirearms.Clear();
-        foreach (var firearm in AvailableFirearms) 
+        foreach (var firearm in AvailableFirearms)
         {
             if (firearm.Name != null && firearm.Name.ToLower().Contains(FirearmSearch.ToLower()))
                 FilteredFirearms.Add(firearm);
@@ -227,7 +234,7 @@ public partial class SessionOptionsViewModel : ObservableObject, IQueryAttributa
     private void FilterLocations()
     {
         FilteredLocations.Clear();
-        foreach (var location in AvailableLocations) 
+        foreach (var location in AvailableLocations)
         {
             if (location.Name != null && location.Name.ToLower().Contains(LocationSearch.ToLower()))
                 FilteredLocations.Add(location);
@@ -241,12 +248,12 @@ public partial class SessionOptionsViewModel : ObservableObject, IQueryAttributa
             FirearmRemoveButtonVisible = false;
             FirearmRemoveButtonClickable = false;
         }
-        else if (SelectedFirearmInSession == null )
+        else if (SelectedFirearmInSession == null)
         {
             FirearmRemoveButtonVisible = true;
             FirearmRemoveButtonClickable = false;
         }
-        else 
+        else
         {
             FirearmRemoveButtonVisible = true;
             FirearmRemoveButtonClickable = true;

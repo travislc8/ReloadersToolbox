@@ -1,10 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using Microsoft.Maui.Controls;
-using CommunityToolkit.Mvvm.Messaging;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.Input;
-using RangeApp.Models;
-using System.ComponentModel.Design;
 
 namespace RangeApp.ViewModel;
 
@@ -13,80 +9,36 @@ public partial class SessionPageViewModel : ObservableObject, IQueryAttributable
 {
     public SessionPageViewModel()
     {
-        groups = [];
-        RefinedFirearms = [];
         UpdateAllRoundsList();
-        RefinedRounds = [];
         UpdateAllFirearmsList();
     }
 
-    private string _SessionName;
-    public string SessionName
-    {
-        get
-        {
-            return _SessionName;
-        }
-        set
-        {
-            _SessionName = value;
-        }
-    }
-
-    private int session_id = 0;
-    public GroupData? SelectedGroup;
-    private List<Firearm> AllFirearms;
-    private List<Round> AllRounds;
-    private bool FirearmsInSessionChecked = true;
-
-    [ObservableProperty]
-    ObservableCollection<ViewModel.GroupData> groups;
-    [ObservableProperty]
-    ObservableCollection<Models.Firearm> refinedFirearms = new ObservableCollection<Firearm>();
-    [ObservableProperty]
-    ObservableCollection<Models.Round> refinedRounds = new ObservableCollection<Round>();
-    [ObservableProperty]
-    Models.Firearm? selectedFirearm;
-    [ObservableProperty]
-    Models.Round? selectedRound;
-    [ObservableProperty]
-    string firearmSearchEntry = string.Empty;
-    [ObservableProperty]
-    string roundSearchEntry = string.Empty;
-    [ObservableProperty]
-    bool roundsInTestQueue = false;
-    [ObservableProperty]
-    string groupStatusMessage = string.Empty;
-
-    public void SetSessionName(string sessionName)
-    {
-        SessionName = sessionName;
-    }
-    [RelayCommand]
     public void ApplyQueryAttributes(IDictionary<string, object> attributes)
     {
+        ClearStatusMessages();
         if (attributes == null)
             return;
+        if (attributes.ContainsKey("SessionData"))
+        {
+            var data = attributes["SessionData"] as ViewModel.SessionData;
+            if (data == null)
+            {
+                StatusMessage = "Error: Session not loaded";
+            }
+            else
+            {
+                SessionData = data;
+            }
+        }
         if (attributes.ContainsKey("Firearm"))
         {
             var firearm = attributes["Firearm"] as ViewModel.FirearmData;
             if (firearm == null)
                 return;
-            App.SessionRepo.AddFirearmToSession(FirearmData.GetFirearm(firearm), session_id);
-            UpdateAllFirearmsList();
-        }
-        if (attributes.ContainsKey("NameEntry"))
-        {
-            var temp = attributes["NameEntry"] as string;
-            if (temp != null)
-            {
-                _SessionName = temp;
-                session_id = App.SessionRepo.GetSessionIdFromName(SessionName);
-                Preferences.Set("SessionActive", session_id);
-                UpdateGroupData();
-                if (RefinedFirearms != null && RefinedFirearms.Count != 0)
-                    SelectedFirearm = RefinedFirearms[0];
-            }
+            App.SessionRepo.AddFirearmToSession(FirearmData.GetFirearm(firearm), SessionData.SessionId);
+            SessionData.Firearms.Add(firearm);
+            AllFirearms.Add(firearm);
+            FilterFirearms();
         }
 
         if (attributes.ContainsKey("ShotAdded"))
@@ -104,36 +56,154 @@ public partial class SessionPageViewModel : ObservableObject, IQueryAttributable
             if (id_string != null)
             {
                 var id = int.Parse(id_string);
-                session_id = id;
-                Preferences.Set("SessionActive", session_id);
+                SessionData.SessionId = id;
+                Preferences.Set("SessionActive", SessionData.SessionId);
                 FillDataFromId(id);
                 UpdateGroupData();
-                App.SessionRepo.GetGroupCount(session_id);
+                UpdateAllRoundsList();
+                UpdateAllRoundsList();
             }
         }
         attributes.Clear();
     }
+
+    private SessionData SessionData = new();
+    private List<FirearmData> AllFirearms = [];
+    private List<RoundData> AllRounds = [];
+
+    // firearm selection
+    [ObservableProperty]
+    ObservableCollection<FirearmData> refinedFirearms = new ObservableCollection<FirearmData>();
+    [ObservableProperty]
+    bool firearmsInSessionCheckBox = true;
+    [ObservableProperty]
+    bool showFirearms = false;
+    [ObservableProperty]
+    string firearmStatusMessage = string.Empty;
+    [ObservableProperty]
+    string firearmSearchText = string.Empty;
+    [ObservableProperty]
+    FirearmData? selectedFirearm;
+    [ObservableProperty]
+    string firearmSearchEntry = string.Empty;
+
     [RelayCommand]
-    async public Task NewGroup()
+    void ChangeFirearm()
+    {
+        ShowFirearms = !ShowFirearms;
+    }
+    [RelayCommand]
+    void SaveFirearm()
+    {
+        ShowFirearms = false;
+    }
+    [RelayCommand]
+    async void NewFirearm()
+    {
+        await Shell.Current.GoToAsync("NewFirearmPage");
+    }
+    [RelayCommand]
+    void FirearmsInSessionCheckChanged()
+    {
+        FilterFirearms();
+    }
+    [RelayCommand]
+    void FirearmSelected()
+    {
+        if (SelectedFirearm != null && SelectedFirearm.Name != null)
+            FirearmSearchEntry = SelectedFirearm.Name;
+    }
+    [RelayCommand]
+    async void FirearmSearchTextChanged()
+    {
+        await Task.Run(() => FilterFirearms());
+    }
+
+    // round selection
+    [ObservableProperty]
+    ObservableCollection<RoundData> refinedRounds = new ObservableCollection<RoundData>();
+    [ObservableProperty]
+    bool roundsInQueueCheckBox = true;
+    [ObservableProperty]
+    bool showRounds = false;
+    [ObservableProperty]
+    string roundStatusMessage = string.Empty;
+    [ObservableProperty]
+    string roundSearchText = string.Empty;
+    [ObservableProperty]
+    RoundData? selectedRound;
+    [ObservableProperty]
+    string roundSearchEntry = string.Empty;
+
+    [RelayCommand]
+    void ChangeRound()
+    {
+        ShowRounds = !ShowRounds;
+    }
+    [RelayCommand]
+    void SaveRound()
+    {
+        ShowRounds = false;
+    }
+    [RelayCommand]
+    async void NewRound()
+    {
+        await Shell.Current.GoToAsync("NewRoundPage");
+    }
+    [RelayCommand]
+    void RoundsInQueueCheckChanged()
+    {
+        FilterRounds();
+    }
+    [RelayCommand]
+    void RoundSelected()
+    {
+        if (SelectedRound != null && SelectedRound.Name != null)
+            RoundSearchEntry = SelectedRound.Name;
+    }
+    [RelayCommand]
+    async void RoundSearchTextChanged()
+    {
+        await Task.Run(() => FilterRounds());
+    }
+
+    // group section
+    [ObservableProperty]
+    ObservableCollection<ViewModel.GroupData> groups = [];
+    [ObservableProperty]
+    bool allowEditGroup = false;
+    [ObservableProperty]
+    bool allowDeleteGroup = false;
+    [ObservableProperty]
+    string groupStatusMessage = string.Empty;
+    [ObservableProperty]
+    GroupData? selectedGroup;
+
+    [RelayCommand]
+    async void NewGroup()
     {
         if (SelectedFirearm == null || SelectedRound == null)
         {
             GroupStatusMessage = "Must select a round and a firearm";
             return;
         }
-        GroupStatusMessage = "";
-        App.SessionRepo.AddFirearmToSession(SelectedFirearm, session_id);
+        GroupStatusMessage = "Creating New Group";
+        if (!SessionData.Firearms.Contains(SelectedFirearm))
+        {
+            App.SessionRepo.AddFirearmToSession(
+                    FirearmData.GetFirearm(SelectedFirearm), SessionData.SessionId);
+        }
         int group_num = Groups.Count + 1;
-        string group_name = session_id.ToString() + "-" + (Groups.Count + 1).ToString();
+        string group_name = SessionData.SessionId.ToString() + "-" + (Groups.Count + 1).ToString();
         var group_data = new GroupData
         {
-            SessionId = session_id,
+            SessionId = SessionData.SessionId,
             Name = group_name,
             GroupNum = group_num,
             FirearmName = SelectedFirearm.Name,
             FirearmId = SelectedFirearm.Id,
             RoundName = SelectedRound.Name,
-            RoundId = SelectedRound.Id,
+            RoundId = SelectedRound.RoundId,
 
         };
         var navigationParamenter = new Dictionary<string, object>
@@ -142,137 +212,203 @@ public partial class SessionPageViewModel : ObservableObject, IQueryAttributable
         };
         await Shell.Current.GoToAsync("NewGroupPage", navigationParamenter);
     }
+
+    [RelayCommand]
+    async void EditGroup()
+    {
+        if (SelectedGroup == null)
+        {
+            GroupStatusMessage = "No Group Selected to Edit";
+        }
+        else
+        {
+            GroupStatusMessage = string.Format("Editing {0}", SelectedGroup.Name);
+            var navigationParamenter = new Dictionary<string, object>
+            {
+                {"GroupData", SelectedGroup }
+            };
+            await Shell.Current.GoToAsync("NewGroupPage", navigationParamenter);
+        }
+    }
+
+    [RelayCommand]
+    async void DeleteGroup()
+    {
+        if (SelectedGroup != null)
+        {
+            string question = string.Format("Delete {0}?", SelectedGroup.Name);
+            // displays a pop up to make sure the user wishes to delete the entry
+            if (Application.Current != null && Application.Current.MainPage != null)
+            {
+                bool response = await Application.Current.MainPage.DisplayAlert(
+                        "Alert", question, "Yes", "No");
+                if (!response) return;
+            }
+            App.SessionRepo.DeleteGroup(SelectedGroup.Id);
+            Groups.Remove(SelectedGroup);
+            GroupStatusMessage = string.Format("Deleted {0}", SelectedGroup.Name);
+        }
+        else
+        {
+            GroupStatusMessage = "No Group Selected To Delete";
+        }
+    }
+
+    [RelayCommand]
+    void GroupSelected()
+    {
+        AllowEditGroup = true;
+        AllowDeleteGroup = true;
+    }
+
+    // Session Saving
+    [ObservableProperty]
+    string statusMessage = string.Empty;
+
+    [RelayCommand]
+    async void SaveSession()
+    {
+        StatusMessage = "Saving";
+        Preferences.Set("SessionActive", 0);
+        await Shell.Current.GoToAsync("HomePage");
+    }
+
+    [RelayCommand]
+    async void DeleteSession()
+    {
+        string question = "Delete Group";
+        // displays a pop up to make sure the user wishes to delete the entry
+        if (Application.Current != null && Application.Current.MainPage != null)
+        {
+            bool response = await Application.Current.MainPage.DisplayAlert(
+                    "Alert", question, "Yes", "No");
+            if (!response) return;
+        }
+
+        var result = App.SessionRepo.DeleteSession(SessionData.SessionId);
+        if (result == 0)
+        {
+            StatusMessage = "Error Deleting " + App.SessionRepo.StatusMessage;
+            return;
+        }
+        Preferences.Set("SessionActive", 0);
+        await Shell.Current.GoToAsync("HomePage");
+
+    }
+
+    [RelayCommand]
+    async void SaveForLater()
+    {
+        await Shell.Current.GoToAsync("HomePage");
+    }
+
+
     [RelayCommand]
     async Task RoundChangeNew()
     {
         await Shell.Current.GoToAsync("NewRoundPage");
     }
-    [RelayCommand]
-    void FinishSession()
-    {
 
-        Preferences.Set("SessionActive", 0);
-        var NavigationParameter = new Dictionary<string, object> {
-            {"SessionId", session_id}
-        };
-        Shell.Current.GoToAsync("..", NavigationParameter);
-    }
+    ///<summary>
+    /// Gets the group data from the database
+    ///</summary>
     private void UpdateGroupData()
     {
-        Groups = App.SessionRepo.GetGroupData(session_id);
-    }
-    public void ChangeFirearm()
-    {
-
-        //Doesn't need to do anything?
-    }
-    async public void EditGroup()
-    {
-        if (SelectedGroup == null)
-            return;
-        var navigationParamenter = new Dictionary<string, object>
-        {
-            {"GroupData", SelectedGroup }
-        };
-        await Shell.Current.GoToAsync("NewGroupPage", navigationParamenter);
-    }
-    public void DeleteGroup()
-    {
-        if (SelectedGroup != null)
-            App.SessionRepo.DeleteGroup(SelectedGroup.Id);
-        UpdateGroupData();
-    }
-    public void SetSelectedGroup(int index)
-    {
-        SelectedGroup = Groups[index];
-    }
-    public void FirearmSearchEntryTextChanged()
-    {
-        UpdateRefinedFirearmData();
-    }
-    public void FirearmsInSessionCheckBoxChanged(bool is_checked)
-    {
-        FirearmsInSessionChecked = is_checked;
-        UpdateAllFirearmsList();
-    }
-    public void RoundSearchEntryTextChanged()
-    {
-        UpdateRefinedRoundData();
-    }
-    public void RoundsInTestQueueChanged()
-    {
-        UpdateRefinedRoundData();
+        Groups = App.SessionRepo.GetGroupData(SessionData.SessionId);
     }
 
-    private void UpdateAllRoundsList()
+
+    ///<summary>
+    /// Clears all the status messages
+    ///</summary>
+    private void ClearStatusMessages()
     {
-        AllRounds = App.RoundRepo.GetRounds();
-        UpdateRefinedRoundData();
+        GroupStatusMessage = string.Empty;
+        FirearmStatusMessage = string.Empty;
+        RoundStatusMessage = string.Empty;
+        StatusMessage = string.Empty;
+
+        SelectedGroup = null;
+        AllowEditGroup = false;
+        AllowDeleteGroup = false;
+
     }
-    private void UpdateRefinedRoundData()
+
+    ///<summary>
+    /// Filters the firearm data
+    ///</summary>
+    private void FilterFirearms()
     {
-        if (RoundSearchEntry == string.Empty && RoundsInTestQueue == false)
+        RefinedFirearms.Clear();
+        if (FirearmsInSessionCheckBox)
         {
-            RefinedRounds = new ObservableCollection<Round>(AllRounds);
-            return;
+            foreach (var firearm in SessionData.Firearms)
+            {
+                if (firearm.Name != null &&
+                        firearm.Name.ToLower().Contains(FirearmSearchEntry.ToLower()))
+                    RefinedFirearms.Add(firearm);
+            }
         }
+        else
+        {
+            foreach (var firearm in AllFirearms)
+            {
+                if (firearm.Name != null &&
+                        firearm.Name.ToLower().Contains(FirearmSearchEntry.ToLower()))
+                    RefinedFirearms.Add(firearm);
+            }
 
+        }
+    }
+
+
+    ///<summary>
+    /// Filters the round data
+    ///</summary>
+    private void FilterRounds()
+    {
         RefinedRounds.Clear();
         foreach (var round in AllRounds)
         {
-            if (RoundsInTestQueue == true)
+            if (round.Name != null && round.Name.ToLower().Contains(RoundSearchEntry.ToLower()))
             {
-                if (round.InQueue != true)
-                    continue;
-            }
-            if (round.Name != null && round.Name.Contains(RoundSearchEntry))
-                RefinedRounds.Add(round);
-        }
-    }
-    public void UpdateAllFirearmsList()
-    {
-        if (FirearmsInSessionChecked)
-        {
-            AllFirearms = App.SessionRepo.GetFirearmsInSession(session_id);
-        }
-        else
-        {
-            AllFirearms = App.FirearmRepo.GetAllFirearms();
-        }
-        UpdateRefinedFirearmData();
-    }
-
-    private void UpdateRefinedFirearmData()
-    {
-        if (RefinedFirearms == null)
-        {
-            throw new Exception("Refined Firearm List is not initiated");
-        }
-        if (AllFirearms == null)
-        {
-            throw new Exception("All FirearmList is not initiated");
-        }
-        if (FirearmSearchEntry == string.Empty)
-        {
-            RefinedFirearms = new ObservableCollection<Firearm>(AllFirearms);
-        }
-        else
-        {
-            RefinedFirearms.Clear();
-            foreach (Firearm firearm in AllFirearms)
-            {
-                if (firearm.Name != null && firearm.Name.Contains(FirearmSearchEntry))
+                if (RoundsInQueueCheckBox)
                 {
-                    RefinedFirearms.Add(firearm);
+                    if (round.InQueue == true)
+                        RefinedRounds.Add(round);
+                }
+                else
+                {
+                    RefinedRounds.Add(round);
                 }
             }
         }
     }
+
+    private void UpdateAllRoundsList()
+    {
+        AllRounds = RoundData.GetData(App.RoundRepo.GetRounds());
+        FilterRounds();
+    }
+
+    private void UpdateAllFirearmsList()
+    {
+        AllFirearms = FirearmData.GetData(App.FirearmRepo.GetAllFirearms());
+        FilterFirearms();
+    }
+
     private void FillDataFromId(int id)
     {
-        SessionName = App.SessionRepo.GetSessionNameFromId(id);
-        UpdateAllFirearmsList();
-        UpdateAllRoundsList();
-        Groups = App.SessionRepo.GetGroupData(session_id);
+        var temp = App.SessionRepo.GetSessionNameFromId(id);
+        if (temp == null)
+        {
+            StatusMessage = "Error Loading Session";
+        }
+        else
+        {
+            UpdateAllFirearmsList();
+            UpdateAllRoundsList();
+            Groups = App.SessionRepo.GetGroupData(SessionData.SessionId);
+        }
     }
 }
