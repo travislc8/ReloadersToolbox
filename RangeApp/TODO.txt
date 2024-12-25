@@ -1,6 +1,8 @@
 ﻿Current 
     Update SessionList
     Check session page
+    set date when creating session
+    when returning to home from session, remove session button
 
 
 Entry

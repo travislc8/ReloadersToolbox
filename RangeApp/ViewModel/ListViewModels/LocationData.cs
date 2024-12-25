@@ -11,9 +11,10 @@ public class LocationData
     public string? Name { get; set; }
     public int? ShootingDirection { get; set; }
 
-    public static LocationData GetData(Models.Location location)
+    public static LocationData GetData(Models.Location? location)
     {
         var data = new LocationData();
+        if (location == null) return data;
 
         data.Id = location.Id;
         data.Name = location.Name;

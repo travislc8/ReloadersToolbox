@@ -163,7 +163,6 @@ public class FirearmRepository
         {
             Init();
             return conn.Table<Location>().ToList();
-
         }
         catch (Exception ex)
         {
@@ -174,19 +173,23 @@ public class FirearmRepository
     }
     public List<Firearm> GetFirearmsInSession(int session_id)
     {
+        List<Firearm> list = [];
         try
         {
             Init();
-            var command = new SQLiteCommand(conn);
-            command.CommandText = "SELECT FirearmName FROM FirearmName ,Sessions, FirearmInSession WHERE Session.Id=session_id AND FirearmName.Id=FirearmInSession.FirearmId";
-            return command.ExecuteQuery<Firearm>();
+            var result = from c in conn.Table<FirearmInSession>()
+                         from f in conn.Table<Firearm>()
+                         where c.SessionID == session_id
+                         where c.FirearmId == f.Id
+                         select f;
+            list = result.ToList();
         }
         catch (Exception ex)
         {
             StatusMessage = string.Format("Failed to retrieve data. {0}", ex.Message);
         }
 
-        return new List<Firearm>();
+        return list;
     }
     public Firearm GetFirearmFromName(string name)
     {

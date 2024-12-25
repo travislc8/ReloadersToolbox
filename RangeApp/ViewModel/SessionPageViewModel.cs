@@ -30,6 +30,7 @@ public partial class SessionPageViewModel : ObservableObject, IQueryAttributable
                 SessionData = data;
                 UpdateAllFirearmsList();
                 UpdateAllRoundsList();
+                UpdateGroupData();
             }
         }
         else if (attributes.ContainsKey("Firearm"))

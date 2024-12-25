@@ -60,16 +60,16 @@ public partial class SessionListPageViewModel : ObservableObject, IQueryAttribut
     [RelayCommand]
     async Task EditSessionSelected()
     {
-        //TODO
         if (SelectedSession == null)
         {
             StatusMessage = "No Session Selected";
             return;
         }
+        StatusMessage = string.Format("Editing {0}", SelectedSession.Name);
         var NavigationParameter = new Dictionary<string, object> {
-            {"SessionId", SelectedSession.SessionId}
+            {"SessionData", SelectedSession}
         };
-        await Shell.Current.GoToAsync("SessionListPage", NavigationParameter);
+        await Shell.Current.GoToAsync("SessionPage", NavigationParameter);
     }
     [RelayCommand]
     void ViewFirearmSelected()
@@ -78,18 +78,24 @@ public partial class SessionListPageViewModel : ObservableObject, IQueryAttribut
         StatusMessage = "Not Implemented";
     }
     [RelayCommand]
-    void SessionSearchTextChanged()
+    async void SessionSearchTextChanged()
     {
-        UpdateRefinedSessionData();
+        await Task.Run(() => UpdateRefinedSessionData());
     }
     private void UpdateAllSessionData()
     {
         AllSessionData = App.SessionRepo.GetSessionDataList();
-        UpdateRefinedSessionData();
+        if (AllSessionData.Count == 0)
+        {
+            StatusMessage = "No Sessions to View";
+        }
+        else
+        {
+            UpdateRefinedSessionData();
+        }
     }
     private void UpdateRefinedSessionData()
     {
         RefinedSessionData = new ObservableCollection<SessionData>(AllSessionData);
-        //TODO 
     }
 }
