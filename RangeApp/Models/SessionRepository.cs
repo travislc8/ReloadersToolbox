@@ -309,7 +309,7 @@ public class SessionRepository
                        where c.Id == id
                        select c;
             var session = temp.FirstOrDefault();
-            DeleteSession(session);
+            result = DeleteSession(session);
         }
         catch (Exception ex)
         {

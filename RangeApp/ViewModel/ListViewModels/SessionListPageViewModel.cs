@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.Input;
-using Model.Utils;
 
 namespace RangeApp.ViewModel;
 
@@ -20,14 +19,14 @@ public partial class SessionListPageViewModel : ObservableObject, IQueryAttribut
         attributes.Clear();
     }
 
-    List<ViewModel.SessionData> AllSessionData;
+    List<ViewModel.SessionData> AllSessionData = [];
 
     [ObservableProperty]
-    ObservableCollection<ViewModel.SessionData> refinedSessionData;
+    string sessionSearchText = string.Empty;
+    [ObservableProperty]
+    ObservableCollection<ViewModel.SessionData> refinedSessionData = [];
     [ObservableProperty]
     ViewModel.SessionData? selectedSession;
-    [ObservableProperty]
-    string buttonStatusMessage = "";
     [ObservableProperty]
     string statusMessage = string.Empty;
 
@@ -37,24 +36,34 @@ public partial class SessionListPageViewModel : ObservableObject, IQueryAttribut
         SelectedSession = AllSessionData[index];
     }
     [RelayCommand]
-    void DeleteSelected()
+    async void DeleteSelected()
     {
         if (SelectedSession != null)
         {
+            // displays a pop up to make sure the user wishes to delete the entry
+            string question = string.Format("Delete {0}?", SelectedSession.Name);
+            if (Application.Current != null && Application.Current.MainPage != null)
+            {
+                bool response = await Application.Current.MainPage.DisplayAlert(
+                        "Alert", question, "Yes", "No");
+                if (!response) return;
+            }
+
+            // deletes the session
             int result = App.SessionRepo.DeleteSession(SelectedSession.SessionId);
             if (result != 0)
             {
-                ButtonStatusMessage = string.Format("Deleted {0}.", SelectedSession.Name);
+                StatusMessage = string.Format("Deleted {0}.", SelectedSession.Name);
                 UpdateAllSessionData();
             }
             else
             {
-                ButtonStatusMessage = string.Format("Could not delete {0}.", SelectedSession.Name);
+                StatusMessage = string.Format("Could not delete {0}.", SelectedSession.Name);
             }
         }
         else
         {
-            ButtonStatusMessage = "No Session Selected";
+            StatusMessage = "No Session Selected";
         }
     }
     [RelayCommand]
@@ -96,6 +105,11 @@ public partial class SessionListPageViewModel : ObservableObject, IQueryAttribut
     }
     private void UpdateRefinedSessionData()
     {
-        RefinedSessionData = new ObservableCollection<SessionData>(AllSessionData);
+        RefinedSessionData.Clear();
+        foreach (var session in AllSessionData)
+        {
+            if (session.Name.Contains(SessionSearchText))
+                RefinedSessionData.Add(session);
+        }
     }
 }

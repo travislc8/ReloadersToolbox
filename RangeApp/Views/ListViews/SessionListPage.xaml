@@ -14,6 +14,7 @@
                 Padding="0,0,10,0"
                 VerticalOptions="Center" />
             <Entry Placeholder="Name"
+                Text="{Binding SessionSearchText}"
                 MinimumWidthRequest="200">
                 <Entry.Behaviors>
                     <toolkit:EventToCommandBehavior
@@ -132,7 +133,7 @@
         </Border>
 
         <Border MinimumHeightRequest="20"
-            Margin="0,10,0,0"
+            Margin="0,20,0,0"
             StrokeThickness="5">
             <VerticalStackLayout>
                 <Label Text="Firearms In Session"
@@ -140,7 +141,7 @@
                     HorizontalOptions="Center"
                     TextDecorations="Underline"
                 />
-                <ScrollView Padding="0,0,0,0">
+                <ScrollView Padding="10">
                     <CollectionView x:Name="FirearmList"
                         MaximumHeightRequest="200"
                         ItemsSource="{Binding SelectedSession.Firearms}">
@@ -150,6 +151,8 @@
                                 <HorizontalStackLayout>
                                     <Label Text="Name: " />
                                     <Label Text="{Binding Name}" />
+                                    <Label Text="  Caliber: " />
+                                    <Label Text="{Binding Caliber}" />
                                 </HorizontalStackLayout>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
