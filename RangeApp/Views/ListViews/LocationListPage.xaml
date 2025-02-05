@@ -37,7 +37,7 @@
                     MaximumHeightRequest="200">
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="viewmodel:LocationData">
-                            <Border Margin="0,-1,0,-1"
+                            <Border Margin="0"
                                 Padding="5">
                                 <Grid ColumnSpacing="5"
                                     ColumnDefinitions="Auto,*,Auto,*">
@@ -83,7 +83,7 @@
                 Text="{Binding SelectedLocation.Name}" />
 
             <Label HorizontalOptions="Center"
-                Text="Barrel Length"
+                Text="Shooting Direction"
                 TextDecorations=" Underline"
             />
             <Label x:Name="ShootingDirection"

@@ -30,6 +30,7 @@ public static class MauiProgram
         Routing.RegisterRoute("NewGroupPage", typeof(Views.NewGroupPage));
         Routing.RegisterRoute("SessionListPage", typeof(Views.SessionListPage));
         Routing.RegisterRoute("SessionPage", typeof(Views.SessionPage));
+        Routing.RegisterRoute("SessionOptions", typeof(Views.SessionOptions));
         Routing.RegisterRoute("NewFirearmPage", typeof(Views.NewFirearmPage));
         Routing.RegisterRoute("FirearmListPage", typeof(Views.FirearmListPage));
         Routing.RegisterRoute("NewRoundPage", typeof(Views.NewRoundPage));

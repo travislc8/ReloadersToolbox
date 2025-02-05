@@ -41,6 +41,8 @@ public partial class SessionOptionsViewModel : ObservableObject, IQueryAttributa
     [ObservableProperty]
     string locationSearch = string.Empty;
     [ObservableProperty]
+    bool showLocation = true;
+    [ObservableProperty]
     string firearmSearch = string.Empty;
     [ObservableProperty]
     bool firearmRemoveButtonVisible = false;
@@ -58,20 +60,15 @@ public partial class SessionOptionsViewModel : ObservableObject, IQueryAttributa
         }
         if (attributes.ContainsKey("Location"))
         {
-            if (attributes["Location"].ToString() == "1")
-            {
-                StatusMessage = "Added Location";
-                UpdateLocations();
-            }
+            StatusMessage = "Added Location";
+            UpdateLocations();
         }
         else if (attributes.ContainsKey("Firearm"))
         {
-            if (attributes["Firearm"].ToString() == "1")
-            {
-                StatusMessage = "Added Firearm";
-                UpdateFirearms();
-            }
+            StatusMessage = "Added Firearm";
+            UpdateFirearms();
         }
+        attributes.Clear();
     }
 
     [RelayCommand]
@@ -89,8 +86,14 @@ public partial class SessionOptionsViewModel : ObservableObject, IQueryAttributa
     [RelayCommand]
     void LocationSelected()
     {
-        if (Session.Location.Name != null)
+    }
+
+    [RelayCommand]
+    void AddLocation()
+    {
+        if (Session.Location.Name != null && Session.Location.Name != null)
             LocationSearch = Session.Location.Name;
+        ShowLocation = !ShowLocation;
     }
 
     [RelayCommand]
@@ -200,7 +203,8 @@ public partial class SessionOptionsViewModel : ObservableObject, IQueryAttributa
     [RelayCommand]
     async void LocationSearchTextChanged()
     {
-        await Task.Run(() => FilterLocations());
+        ShowLocation = true;
+        FilteredLocations = await Task.Run(() => FilterLocations());
     }
     [RelayCommand]
     void FirearmSelected()
@@ -208,10 +212,10 @@ public partial class SessionOptionsViewModel : ObservableObject, IQueryAttributa
         UpdateRemoveFirearmButton();
     }
 
-    private void UpdateLocations()
+    async private void UpdateLocations()
     {
         AvailableLocations = LocationData.GetData(App.LocationRepo.GetAllLocations());
-        FilterLocations();
+        FilteredLocations = await Task.Run(() => FilterLocations());
     }
 
     private void UpdateFirearms()
@@ -237,14 +241,16 @@ public partial class SessionOptionsViewModel : ObservableObject, IQueryAttributa
     ///<summary>
     /// Updates the FilteredLocations based on the filters
     ///</summary>
-    private void FilterLocations()
+    private ObservableCollection<LocationData> FilterLocations()
     {
-        FilteredLocations.Clear();
+        ObservableCollection<LocationData> filtered = new();
         foreach (var location in AvailableLocations)
         {
             if (location.Name != null && location.Name.ToLower().Contains(LocationSearch.ToLower()))
-                FilteredLocations.Add(location);
+                filtered.Add(location);
         }
+
+        return filtered;
     }
 
     private void UpdateRemoveFirearmButton()

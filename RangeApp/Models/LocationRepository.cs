@@ -104,7 +104,6 @@ public class LocationRepository
     /// </returns>
     public List<Location> GetAllLocations()
     {
-        // TODO: Init then retrieve a list of Location objects from the database into a list
         try
         {
             Init();

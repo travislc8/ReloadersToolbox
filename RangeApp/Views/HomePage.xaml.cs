@@ -2,32 +2,23 @@
 
 public partial class HomePage : ContentPage
 {
-
+    private readonly ViewModel.HomePageViewModel VM;
     public HomePage()
     {
         InitializeComponent();
+        VM = new ViewModel.HomePageViewModel();
+        BindingContext = VM;
         if (Preferences.Get("SessionActive", 0) != 0)
         {
             ContinueSessionButton.IsVisible = true;
+            NewSessionButton.IsVisible = false;
         }
         else
         {
             ContinueSessionButton.IsVisible = false;
+            NewSessionButton.IsVisible = true;
         }
 
-    }
-    private void RoundBuilderClicked(object sender, EventArgs e)
-    {
-
-        Shell.Current.GoToAsync("NewRoundPage");
-    }
-    void ContinueSessionClicked(object sender, EventArgs e)
-    {
-        int session_id = Preferences.Get("SessionActive", 0);
-        var NavigationProperty = new Dictionary<string, object> {
-            {"SessionId", session_id}
-        };
-        Shell.Current.GoToAsync("SessionPage", NavigationProperty);
     }
 }
 

@@ -6,23 +6,6 @@
     x:Class="RangeApp.Views.RoundListPage"
     x:DataType="viewmodel:RoundListPageViewModel"
     Title="Round List Page">
-    <ContentPage.Resources>
-        <Style TargetType="Grid">
-            <Setter Property="VisualStateManager.VisualStateGroups">
-                <VisualStateGroupList>
-                    <VisualStateGroup x:Name="CommonStates">
-                        <VisualState x:Name="Normal" />
-                        <VisualState x:Name="Selected">
-                            <VisualState.Setters>
-                                <Setter Property="BackgroundColor"
-                                    Value="LightSkyBlue" />
-                            </VisualState.Setters>
-                        </VisualState>
-                    </VisualStateGroup>
-                </VisualStateGroupList>
-            </Setter>
-        </Style>
-    </ContentPage.Resources>
 
     <ScrollView>
         <VerticalStackLayout Padding="5">
@@ -47,32 +30,24 @@
                     StrokeThickness="2"
                     Grid.Column="0">
                     <Label Text="Name"
-                        TextDecorations="Underline"
-                        FontSize="Medium"
                         HorizontalOptions="Center" />
                 </Border>
                 <Border Stroke="Black"
                     StrokeThickness="2"
                     Grid.Column="1">
                     <Label Text="Caliber"
-                        TextDecorations="Underline"
-                        FontSize="Medium"
                         HorizontalOptions="Center" />
                 </Border>
                 <Border Stroke="Black"
                     StrokeThickness="2"
                     Grid.Column="2">
                     <Label Text="Powder"
-                        TextDecorations="Underline"
-                        FontSize="Medium"
                         HorizontalOptions="Center" />
                 </Border>
                 <Border Stroke="Black"
                     StrokeThickness="2"
                     Grid.Column="3">
                     <Label Text="Queue"
-                        TextDecorations="Underline"
-                        FontSize="Medium"
                         HorizontalOptions="Center" />
                 </Border>
             </Grid>
@@ -85,6 +60,7 @@
                         MaximumHeightRequest="200">
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="viewmodel:RoundData">
+                                <Border Margin="-1">
                                 <Grid ColumnDefinitions="1.2*,*,*,65"
                                     MinimumHeightRequest="25">
                                     <Border Grid.Column="0"
@@ -94,7 +70,7 @@
                                             VerticalOptions="Center"
                                             HorizontalOptions="Center"
                                             Grid.Column="0"
-                                            FontAttributes="Bold" />
+                                            />
                                     </Border>
                                     <Border Grid.Column="1"
                                         Stroke="Black"
@@ -103,7 +79,7 @@
                                             VerticalOptions="Center"
                                             HorizontalOptions="Center"
                                             Grid.Column="1"
-                                            FontAttributes="Bold" />
+                                            />
                                     </Border>
                                     <Border Grid.Column="2"
                                         Stroke="Black"
@@ -112,7 +88,7 @@
                                             VerticalOptions="Center"
                                             HorizontalOptions="Center"
                                             Grid.Column="2"
-                                            FontAttributes="Bold" />
+                                            />
                                     </Border>
                                     <Border Grid.Column="3"
                                         Stroke="Black"
@@ -126,6 +102,7 @@
                                         </CheckBox>
                                     </Border>
                                 </Grid>
+                                </Border>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>

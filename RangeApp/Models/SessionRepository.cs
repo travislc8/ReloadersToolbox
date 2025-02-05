@@ -674,7 +674,7 @@ public class SessionRepository
                          where c.SessionID == session_id
                          select c;
 
-            if (result.FirstOrDefault().FirearmId == firearm.Id)
+            if (result.FirstOrDefault() != null && result.FirstOrDefault().FirearmId == firearm.Id)
                 check = true;
             else
                 check = false;

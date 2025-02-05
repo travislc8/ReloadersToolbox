@@ -41,7 +41,7 @@ public partial class SessionPageViewModel : ObservableObject, IQueryAttributable
             App.SessionRepo.AddFirearmToSession(FirearmData.GetFirearm(firearm), SessionData.SessionId);
             SessionData.Firearms.Add(firearm);
             AllFirearms.Add(firearm);
-            FilterFirearms();
+            RefinedFirearms = FilterFirearms();
         }
 
         else if (attributes.ContainsKey("ShotAdded"))
@@ -108,18 +108,16 @@ public partial class SessionPageViewModel : ObservableObject, IQueryAttributable
     [RelayCommand]
     void FirearmsInSessionCheckChanged()
     {
-        FilterFirearms();
+        RefinedFirearms = FilterFirearms();
     }
     [RelayCommand]
     void FirearmSelected()
     {
-        if (SelectedFirearm != null && SelectedFirearm.Name != null)
-            FirearmSearchEntry = SelectedFirearm.Name;
     }
     [RelayCommand]
     async void FirearmSearchTextChanged()
     {
-        await Task.Run(() => FilterFirearms());
+        RefinedFirearms = await Task.Run(() => FilterFirearms());
     }
 
     // round selection
@@ -156,18 +154,16 @@ public partial class SessionPageViewModel : ObservableObject, IQueryAttributable
     [RelayCommand]
     void RoundsInQueueCheckChanged()
     {
-        FilterRounds();
+        RefinedRounds = FilterRounds();
     }
     [RelayCommand]
     void RoundSelected()
     {
-        if (SelectedRound != null && SelectedRound.Name != null)
-            RoundSearchEntry = SelectedRound.Name;
     }
     [RelayCommand]
     async void RoundSearchTextChanged()
     {
-        await Task.Run(() => FilterRounds());
+        RefinedRounds = await Task.Run(() => FilterRounds());
     }
 
     // group section
@@ -347,16 +343,16 @@ public partial class SessionPageViewModel : ObservableObject, IQueryAttributable
     ///<summary>
     /// Filters the firearm data
     ///</summary>
-    private void FilterFirearms()
+    private ObservableCollection<FirearmData> FilterFirearms()
     {
-        RefinedFirearms.Clear();
+        ObservableCollection<FirearmData> result = new();
         if (FirearmsInSessionCheckBox)
         {
             foreach (var firearm in SessionData.Firearms)
             {
                 if (firearm.Name != null &&
                         firearm.Name.ToLower().Contains(FirearmSearchEntry.ToLower()))
-                    RefinedFirearms.Add(firearm);
+                    result.Add(firearm);
             }
         }
         else
@@ -365,19 +361,21 @@ public partial class SessionPageViewModel : ObservableObject, IQueryAttributable
             {
                 if (firearm.Name != null &&
                         firearm.Name.ToLower().Contains(FirearmSearchEntry.ToLower()))
-                    RefinedFirearms.Add(firearm);
+                    result.Add(firearm);
             }
 
         }
+
+        return result;
     }
 
 
     ///<summary>
     /// Filters the round data
     ///</summary>
-    private void FilterRounds()
+    private ObservableCollection<RoundData> FilterRounds()
     {
-        RefinedRounds.Clear();
+        ObservableCollection<RoundData> result = new();
         foreach (var round in AllRounds)
         {
             if (round.Name != null && round.Name.ToLower().Contains(RoundSearchEntry.ToLower()))
@@ -385,26 +383,27 @@ public partial class SessionPageViewModel : ObservableObject, IQueryAttributable
                 if (RoundsInQueueCheckBox)
                 {
                     if (round.InQueue == true)
-                        RefinedRounds.Add(round);
+                        result.Add(round);
                 }
                 else
                 {
-                    RefinedRounds.Add(round);
+                    result.Add(round);
                 }
             }
         }
+        return result;
     }
 
     private void UpdateAllRoundsList()
     {
         AllRounds = RoundData.GetData(App.RoundRepo.GetRounds());
-        FilterRounds();
+        RefinedRounds = FilterRounds();
     }
 
     private void UpdateAllFirearmsList()
     {
         AllFirearms = FirearmData.GetData(App.FirearmRepo.GetAllFirearms());
-        FilterFirearms();
+        RefinedFirearms = FilterFirearms();
     }
 
     ///<summary>

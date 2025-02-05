@@ -1,4 +1,6 @@
 ﻿Current 
+    New session list page not accessible
+
     Update SessionList
     Check session page
     set date when creating session
