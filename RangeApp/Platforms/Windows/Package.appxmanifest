@@ -6,13 +6,13 @@
   xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
   IgnorableNamespaces="uap rescap">
 
-  <Identity Name="maui-package-name-placeholder" Publisher="CN=Travis C" Version="0.1.0.0" />
+  <Identity Name="RangeApp" Publisher="CN=Travis C" Version="1.1.3.0" />
 
   <mp:PhoneIdentity PhoneProductId="03F42929-23BA-4330-8A56-025D8D237BFC" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>$placeholder$</DisplayName>
-    <PublisherDisplayName>User Name</PublisherDisplayName>
+    <DisplayName>ReloadersToolbox</DisplayName>
+    <PublisherDisplayName>Travis Clark</PublisherDisplayName>
     <Logo>$placeholder$.png</Logo>
   </Properties>
 
@@ -28,12 +28,12 @@
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="$targetentrypoint$">
       <uap:VisualElements
-        DisplayName="$placeholder$"
-        Description="$placeholder$"
+        DisplayName="Reloaders Toolbox"
+        Description="Application for tracking reloading data."
         Square150x150Logo="$placeholder$.png"
         Square44x44Logo="$placeholder$.png"
-        BackgroundColor="transparent">
-        <uap:DefaultTile Square71x71Logo="$placeholder$.png" Wide310x150Logo="$placeholder$.png" Square310x310Logo="$placeholder$.png" />
+        BackgroundColor="blue">
+        <uap:DefaultTile Wide310x150Logo="$placeholder$.png" Square310x310Logo="$placeholder$.png" />
         <uap:SplashScreen Image="$placeholder$.png" />
       </uap:VisualElements>
     </Application>

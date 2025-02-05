@@ -33,6 +33,7 @@
         <!-- Versions -->
         <ApplicationDisplayVersion>1.1</ApplicationDisplayVersion>
         <ApplicationVersion>1.1</ApplicationVersion>
+		<WindowsPackageType>None</WindowsPackageType>
 
         <SupportedOSPlatformVersion
             Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">
