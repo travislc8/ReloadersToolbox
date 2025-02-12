@@ -1,5 +1,5 @@
 .vscode/
 .vs/
-RangeApp/bin/
-RangeApp/obj/
+bin
+obj
 RangeApp_TemporaryKey.pfx
