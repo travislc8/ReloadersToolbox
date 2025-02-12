@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net8.0-maccatalyst;net8.0-android34.0</TargetFrameworks>
+        <TargetFrameworks>net8.0-android34.0</TargetFrameworks>
         <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">
             $(TargetFrameworks);net8.0-windows10.0.19041.0</TargetFrameworks>
         <!-- Uncomment to also build the tizen app. You will need to install tizen by following
@@ -33,7 +33,7 @@
         <!-- Versions -->
         <ApplicationDisplayVersion>1.1</ApplicationDisplayVersion>
         <ApplicationVersion>1.1</ApplicationVersion>
-		<WindowsPackageType>None</WindowsPackageType>
+        <WindowsPackageType>None</WindowsPackageType>
 
         <SupportedOSPlatformVersion
             Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">
