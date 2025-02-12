@@ -36,7 +36,7 @@ public partial class SessionListPageViewModel : ObservableObject, IQueryAttribut
         SelectedSession = AllSessionData[index];
     }
     [RelayCommand]
-    async void DeleteSelected()
+    async Task DeleteSelected()
     {
         if (SelectedSession != null)
         {
@@ -87,7 +87,7 @@ public partial class SessionListPageViewModel : ObservableObject, IQueryAttribut
         StatusMessage = "Not Implemented";
     }
     [RelayCommand]
-    async void SessionSearchTextChanged()
+    async Task SessionSearchTextChanged()
     {
         await Task.Run(() => UpdateRefinedSessionData());
     }

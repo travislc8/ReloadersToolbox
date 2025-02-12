@@ -11,7 +11,8 @@ public class LocationRepository
     public LocationRepository(string dbPath)
     {
         _dbPath = dbPath;
-        Init();
+        conn = new SQLiteConnection(_dbPath);
+        conn.CreateTable<Location>();
     }
     private void Init()
     {

@@ -104,12 +104,14 @@ public partial class NewRoundPageViewModel : ObservableObject, IQueryAttributabl
                     CaliberEntry = data.Caliber;
                 if (data.CaseName != null)
                     CaseNameEntry = data.CaseName;
-                if (data.TotalLength != null)
-                    LengthEntry = data.TotalLength.ToString();
+                var length_temp = data.TotalLength.ToString();
+                if (length_temp != null)
+                    LengthEntry = length_temp;
                 if (data.Primer != null)
                     PrimerEntry = data.Primer;
-                if (data.PowderWeight != null)
-                    PowderWeightEntry = data.PowderWeight.ToString();
+                string? temp = data.PowderWeight.ToString();
+                if (temp != null)
+                    PowderWeightEntry = temp;
 
                 if (data.PowderId != null)
                 {

@@ -109,7 +109,6 @@ public partial class NewFirearmPage : ContentPage
     /// Checks that the BarrelLength field is valid and sets the save button to clickable
     /// if it is valid
     /// </summary>
-    private bool NewFirearmBarrelLengthPass = false;
     void NewFirearmBarrelLengthTextChanged(object sender, EventArgs e)
     {
         if (NewFirearmBarrelLength.Text.Length > 0)
@@ -122,17 +121,14 @@ public partial class NewFirearmPage : ContentPage
             {
                 VM.SetStatusMessage("Barrel Length Must Be a Number");
                 NewFirearmBarrelLength.TextColor = Colors.Red;
-                NewFirearmBarrelLengthPass = false;
                 return;
             }
             VM.SetStatusMessage("");
             if (NewFirearmBarrelLength.TextColor != textColor)
                 NewFirearmBarrelLength.TextColor = textColor;
-            NewFirearmBarrelLengthPass = true;
         }
         else
         {
-            NewFirearmBarrelLengthPass = false;
             NewFirearmBarrelLength.Placeholder = "Enter Barrel Length";
             VM.SetStatusMessage("");
         }
@@ -142,27 +138,23 @@ public partial class NewFirearmPage : ContentPage
     /// Checks that the Manufacture field is valid and sets the save button to clickable
     /// if it is valid
     /// </summary>
-    private bool NewFirearmManufactrurerPass = false;
     void NewFirearmManufacturerTextChanged(object sender, EventArgs e)
     {
         if (NewFirearmManufacturer.Text.Length > 30)
         {
             NewFirearmManufacturer.TextColor = Colors.Red;
             VM.SetStatusMessage("Manufacture Name To Long");
-            NewFirearmManufactrurerPass = false;
         }
         else if (NewFirearmManufacturer.Text.Length < 1)
         {
             VM.SetStatusMessage("");
             NewFirearmManufacturer.Placeholder = "Enter Manufacturer";
-            NewFirearmManufactrurerPass = false;
         }
         else
         {
             VM.SetStatusMessage("");
             if (NewFirearmManufacturer.TextColor != textColor)
                 NewFirearmManufacturer.TextColor = textColor;
-            NewFirearmManufactrurerPass = true;
         }
 
     }
@@ -171,27 +163,23 @@ public partial class NewFirearmPage : ContentPage
     /// Checks that the Caliber field is valid and sets the save button to clickable
     /// if it is valid
     /// </summary>
-    private bool NewFirearmCaliberPass = false;
     void NewFirearmCaliberTextChanged(object sender, EventArgs e)
     {
         if (NewFirearmCaliber.Text.Length > 20)
         {
             NewFirearmCaliber.TextColor = Colors.Red;
             VM.SetStatusMessage("Caliber Name To Long");
-            NewFirearmCaliberPass = false;
         }
         else if (NewFirearmCaliber.Text.Length < 1)
         {
             VM.SetStatusMessage("");
             NewFirearmCaliber.Placeholder = "Enter Caliber";
-            NewFirearmCaliberPass = false;
         }
         else
         {
             VM.SetStatusMessage("");
             if (NewFirearmCaliber.TextColor != textColor)
                 NewFirearmCaliber.TextColor = textColor;
-            NewFirearmCaliberPass = true;
         }
     }
 
@@ -199,27 +187,23 @@ public partial class NewFirearmPage : ContentPage
     /// Checks that the Scope field is valid and sets the save button to clickable
     /// if it is valid
     /// </summary>
-    private bool NewFirearmScopePass = false;
     void NewFirearmScopeTextChanged(object sender, EventArgs e)
     {
         if (NewFirearmScope.Text.Length > 50)
         {
             NewFirearmScope.TextColor = Colors.Red;
             VM.SetStatusMessage("Scope Name To Long");
-            NewFirearmScopePass = false;
         }
         else if (NewFirearmScope.Text.Length < 1)
         {
             VM.SetStatusMessage("");
             NewFirearmScope.Placeholder = "Enter Scope Name";
-            NewFirearmScopePass = false;
         }
         else
         {
             VM.SetStatusMessage("");
             if (NewFirearmScope.TextColor != textColor)
                 NewFirearmScope.TextColor = textColor;
-            NewFirearmScopePass = true;
         }
 
     }

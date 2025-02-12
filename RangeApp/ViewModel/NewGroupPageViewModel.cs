@@ -94,9 +94,12 @@ public partial class NewGroupPageViewModel : ObservableObject, IQueryAttributabl
 
         if (Shots != null && ShotSelectedIndex != -1)
         {
-            string note = Shots[ShotSelectedIndex].Note;
+            string? note = Shots[ShotSelectedIndex].Note;
+            if (note != null)
+            {
+                ShotNote = note;
+            }
             VelocityEntry = Shots[ShotSelectedIndex].Velocity.ToString();
-            ShotNote = note;
             UpdateStats();
             return true;
         }

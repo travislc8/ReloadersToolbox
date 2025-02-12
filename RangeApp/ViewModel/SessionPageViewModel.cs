@@ -101,7 +101,7 @@ public partial class SessionPageViewModel : ObservableObject, IQueryAttributable
         ShowFirearms = false;
     }
     [RelayCommand]
-    async void NewFirearm()
+    async Task NewFirearm()
     {
         await Shell.Current.GoToAsync("NewFirearmPage");
     }
@@ -115,7 +115,7 @@ public partial class SessionPageViewModel : ObservableObject, IQueryAttributable
     {
     }
     [RelayCommand]
-    async void FirearmSearchTextChanged()
+    async Task FirearmSearchTextChanged()
     {
         RefinedFirearms = await Task.Run(() => FilterFirearms());
     }
@@ -147,7 +147,7 @@ public partial class SessionPageViewModel : ObservableObject, IQueryAttributable
         ShowRounds = false;
     }
     [RelayCommand]
-    async void NewRound()
+    async Task NewRound()
     {
         await Shell.Current.GoToAsync("NewRoundPage");
     }
@@ -161,7 +161,7 @@ public partial class SessionPageViewModel : ObservableObject, IQueryAttributable
     {
     }
     [RelayCommand]
-    async void RoundSearchTextChanged()
+    async Task RoundSearchTextChanged()
     {
         RefinedRounds = await Task.Run(() => FilterRounds());
     }
@@ -179,7 +179,7 @@ public partial class SessionPageViewModel : ObservableObject, IQueryAttributable
     GroupData? selectedGroup;
 
     [RelayCommand]
-    async void NewGroup()
+    async Task NewGroup()
     {
         if (SelectedFirearm == null || SelectedRound == null)
         {
@@ -213,7 +213,7 @@ public partial class SessionPageViewModel : ObservableObject, IQueryAttributable
     }
 
     [RelayCommand]
-    async void EditGroup()
+    async Task EditGroup()
     {
         if (SelectedGroup == null)
         {
@@ -231,7 +231,7 @@ public partial class SessionPageViewModel : ObservableObject, IQueryAttributable
     }
 
     [RelayCommand]
-    async void DeleteGroup()
+    async Task DeleteGroup()
     {
         if (SelectedGroup != null)
         {
@@ -265,7 +265,7 @@ public partial class SessionPageViewModel : ObservableObject, IQueryAttributable
     string statusMessage = string.Empty;
 
     [RelayCommand]
-    async void SaveSession()
+    async Task SaveSession()
     {
         try
         {
@@ -280,7 +280,7 @@ public partial class SessionPageViewModel : ObservableObject, IQueryAttributable
     }
 
     [RelayCommand]
-    async void DeleteSession()
+    async Task DeleteSession()
     {
         string question = "Delete Group";
         // displays a pop up to make sure the user wishes to delete the entry
@@ -303,7 +303,7 @@ public partial class SessionPageViewModel : ObservableObject, IQueryAttributable
     }
 
     [RelayCommand]
-    async void SaveForLater()
+    async Task SaveForLater()
     {
         await Shell.Current.GoToAsync("HomePage");
     }

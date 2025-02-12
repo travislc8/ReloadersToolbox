@@ -14,7 +14,7 @@ public partial class ModifyDataPageViewModel : ObservableObject
     [ObservableProperty]
     ObservableCollection<string> options;
     [ObservableProperty]
-    string name;
+    string name = string.Empty;
     [ObservableProperty]
     string statusMessage = string.Empty;
     [ObservableProperty]
@@ -35,7 +35,7 @@ public partial class ModifyDataPageViewModel : ObservableObject
     }
 
     [RelayCommand]
-    async void ItemSelected()
+    async Task ItemSelected()
     {
         switch (Index)
         {

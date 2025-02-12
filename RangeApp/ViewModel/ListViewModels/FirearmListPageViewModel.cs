@@ -100,7 +100,7 @@ public partial class FirearmListPageViewModel : ObservableObject, IQueryAttribut
     }
 
     [RelayCommand]
-    async public void DeleteFirearm()
+    async public Task DeleteFirearm()
     {
         if (SelectedFirearm != null)
         {

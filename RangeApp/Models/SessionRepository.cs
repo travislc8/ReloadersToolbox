@@ -12,6 +12,14 @@ public class SessionRepository
     public SessionRepository(string dbPath)
     {
         _dbPath = dbPath;
+        conn = new SQLiteConnection(_dbPath);
+        conn.CreateTable<Session>();
+        conn.CreateTable<GroupInSessison>();
+        conn.CreateTable<FirearmInSession>();
+        conn.CreateTable<Group>();
+        conn.CreateTable<Round>();
+        conn.CreateTable<Shot>();
+        conn.CreateTable<Firearm>();
     }
     private void Init()
     {
@@ -384,7 +392,7 @@ public class SessionRepository
         }
         return new ObservableCollection<ViewModel.GroupData>();
     }
-    public string GetRoundNameFromId(int? id)
+    public string? GetRoundNameFromId(int? id)
     {
         try
         {

@@ -77,7 +77,7 @@ public partial class LocationListPageViewModel : ObservableObject, IQueryAttribu
     }
 
     [RelayCommand]
-    async private void DeleteSelected()
+    async private Task DeleteSelected()
     {
         // checks that an item is selected
         if (SelectedLocation != null)

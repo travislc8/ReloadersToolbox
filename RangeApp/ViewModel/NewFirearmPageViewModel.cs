@@ -58,8 +58,9 @@ public partial class NewFirearmPageViewModel : ObservableObject, IQueryAttributa
             return;
         if (firearm.Name != null)
             Name = firearm.Name;
-        if (firearm.BarrelLength != null)
-            BarrelLength = firearm.BarrelLength.ToString();
+        var length_temp = firearm.BarrelLength.ToString();
+        if (length_temp != null)
+            BarrelLength = length_temp;
         if (firearm.Manufacturer != null)
             Manufacture = firearm.Manufacturer;
         if (firearm.Caliber != null)

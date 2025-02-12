@@ -16,8 +16,6 @@ public class RangeDayRepository
 
     public string StatusMessage { get; set; }
 
-    // TODO: Add variable for the SQLite connection
-
     private void Init()
     {
         // TODO: Add code to initialize the repository         
@@ -39,6 +37,16 @@ public class RangeDayRepository
     {
         _dbPath = dbPath;
         StatusMessage = "";
+        conn = new SQLiteConnection(_dbPath);
+        conn.CreateTable<Firearm>();
+        conn.CreateTable<FirearmInSession>();
+        conn.CreateTable<FirearmToRound>();
+        conn.CreateTable<Group>();
+        conn.CreateTable<GroupInSessison>();
+        conn.CreateTable<Round>();
+        conn.CreateTable<RoundInSession>();
+        conn.CreateTable<Session>();
+        conn.CreateTable<Shot>();
     }
 
     public int AddNewFirearm(Firearm firearm)

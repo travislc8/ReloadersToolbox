@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RangeApp", "RangeApp\RangeApp.csproj", "{177A210D-4C1D-44A8-905E-E2D19E35D654}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RangeAppTest", "RangeAppTest\RangeAppTest.csproj", "{A16ACA5D-E46E-41A6-9353-AFA7E2A240D2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,6 +21,12 @@ Global
 		{177A210D-4C1D-44A8-905E-E2D19E35D654}.Release|Any CPU.Build.0 = Release|Any CPU
 		{177A210D-4C1D-44A8-905E-E2D19E35D654}.ReleaseAll|Any CPU.ActiveCfg = ReleaseAll|Any CPU
 		{177A210D-4C1D-44A8-905E-E2D19E35D654}.ReleaseAll|Any CPU.Build.0 = ReleaseAll|Any CPU
+		{A16ACA5D-E46E-41A6-9353-AFA7E2A240D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A16ACA5D-E46E-41A6-9353-AFA7E2A240D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A16ACA5D-E46E-41A6-9353-AFA7E2A240D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A16ACA5D-E46E-41A6-9353-AFA7E2A240D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A16ACA5D-E46E-41A6-9353-AFA7E2A240D2}.ReleaseAll|Any CPU.ActiveCfg = Release|Any CPU
+		{A16ACA5D-E46E-41A6-9353-AFA7E2A240D2}.ReleaseAll|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

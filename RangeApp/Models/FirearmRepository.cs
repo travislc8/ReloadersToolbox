@@ -11,7 +11,8 @@ public class FirearmRepository
     public FirearmRepository(string dbPath)
     {
         _dbPath = dbPath;
-        Init();
+        conn = new SQLiteConnection(_dbPath);
+        conn.CreateTable<Firearm>();
     }
     private void Init()
     {
@@ -208,7 +209,7 @@ public class FirearmRepository
         }
         return new Firearm();
     }
-    public string GetFirearmNameFromId(int? id)
+    public string? GetFirearmNameFromId(int? id)
     {
         try
         {

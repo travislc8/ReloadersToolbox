@@ -72,13 +72,13 @@ public partial class SessionOptionsViewModel : ObservableObject, IQueryAttributa
     }
 
     [RelayCommand]
-    async void NewLocation()
+    async Task NewLocation()
     {
         await Shell.Current.GoToAsync("NewLocationPage");
     }
 
     [RelayCommand]
-    async void NewFirearm()
+    async Task NewFirearm()
     {
         await Shell.Current.GoToAsync("NewFirearmPage");
     }
@@ -143,7 +143,7 @@ public partial class SessionOptionsViewModel : ObservableObject, IQueryAttributa
     }
 
     [RelayCommand]
-    async void SaveSession()
+    async Task SaveSession()
     {
         StatusMessage = "Saving Session";
         if (Session.Name == string.Empty)
@@ -189,19 +189,19 @@ public partial class SessionOptionsViewModel : ObservableObject, IQueryAttributa
     }
 
     [RelayCommand]
-    async void CancelSession()
+    async Task CancelSession()
     {
         await Shell.Current.GoToAsync("..");
     }
 
     [RelayCommand]
-    async void FirearmSearchTextChanged()
+    async Task FirearmSearchTextChanged()
     {
         await Task.Run(() => FilterFirearms());
     }
 
     [RelayCommand]
-    async void LocationSearchTextChanged()
+    async Task LocationSearchTextChanged()
     {
         ShowLocation = true;
         FilteredLocations = await Task.Run(() => FilterLocations());

@@ -18,7 +18,10 @@ public partial class App : Application
     public App(Models.FirearmRepository firearmRepoIn, Models.LocationRepository locationRepoIn, Models.SessionRepository sessionRepoIn, Models.RoundRepository roundRepoIn)
     {
         InitializeComponent();
-
+        FirearmRepo = firearmRepoIn;
+        LocationRepo = locationRepoIn;
+        SessionRepo = sessionRepoIn;
+        RoundRepo = roundRepoIn;
 
 #if WINDOWS
         Microsoft.Maui.Handlers.WindowHandler.Mapper.AppendToMapping(nameof(IWindow), (handler, view) =>
@@ -34,11 +37,6 @@ public partial class App : Application
 });
 #endif
         MainPage = new AppShell();
-
-        FirearmRepo = firearmRepoIn;
-        LocationRepo = locationRepoIn;
-        SessionRepo = sessionRepoIn;
-        RoundRepo = roundRepoIn;
 
 
     }

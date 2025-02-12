@@ -5,12 +5,18 @@ namespace RangeApp.Models;
 public class RoundRepository
 {
     string _dbPath;
-    private SQLiteConnection? conn;
+    private SQLiteConnection conn;
     public string StatusMessage = "";
 
     public RoundRepository(string dbPath)
     {
         _dbPath = dbPath;
+        conn = new SQLiteConnection(_dbPath);
+        conn.CreateTable<Round>();
+        conn.CreateTable<FirearmToRound>();
+        conn.CreateTable<Powder>();
+        conn.CreateTable<Bullet>();
+        conn.CreateTable<Group>();
     }
     private void Init()
     {
@@ -398,7 +404,7 @@ public class RoundRepository
         try
         {
             Init();
-            var round_table = from c in conn.Table<Round>()
+            var round_table = from c in conn!.Table<Round>()
                               where c.Id == id
                               select c;
             Round round = round_table.First();
@@ -408,7 +414,7 @@ public class RoundRepository
         }
         catch (Exception e)
         {
-            StatusMessage = string.Format("Failed to update round");
+            StatusMessage = string.Format("Failed to update round: {0}", e.Message);
         }
         return result;
     }

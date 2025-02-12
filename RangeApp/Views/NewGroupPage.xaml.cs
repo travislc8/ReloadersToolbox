@@ -23,7 +23,11 @@ public partial class NewGroupPage : ContentPage
 
     private void UnitPickerIndexChanged(object sender, EventArgs e)
     {
-		VM.UnitChanged((string)UnitPicker.ItemsSource[UnitPicker.SelectedIndex]);
+		string? index = (string?)UnitPicker.ItemsSource[UnitPicker.SelectedIndex];
+		if (index != null)
+		{
+			VM.UnitChanged(index);
+		}
     }
 
     private void OnShotSelected(object sender, SelectedItemChangedEventArgs e)
