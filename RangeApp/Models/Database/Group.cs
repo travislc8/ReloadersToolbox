@@ -20,6 +20,7 @@ public class Group
     public int? SessionId { get; set; }
     public float? AverageVelocity { get; set; }
     public float? StDev { get; set; }
+    public decimal? GroupSize { get; set; }
 
     public Group()
     {

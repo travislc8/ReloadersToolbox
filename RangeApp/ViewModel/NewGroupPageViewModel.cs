@@ -32,6 +32,10 @@ public partial class NewGroupPageViewModel : ObservableObject, IQueryAttributabl
     [ObservableProperty]
     public string? minVelocity;
     [ObservableProperty]
+    public float? stDev;
+    [ObservableProperty]
+    public float? avg;
+    [ObservableProperty]
     ObservableCollection<ViewModel.ShotData> shots;
     [ObservableProperty]
     GroupData group;
@@ -173,6 +177,8 @@ public partial class NewGroupPageViewModel : ObservableObject, IQueryAttributabl
 
         Group.StDev = (float)Math.Sqrt(stdev_sum / (Shots.Count - 1));
         Group.AverageVelocity = avg;
+        StDev = Group.StDev;
+        Avg = Group.AverageVelocity;
         MaxVelocity = max.ToString("F1");
         MinVelocity = min.ToString("F1");
     }
@@ -189,6 +195,7 @@ public partial class NewGroupPageViewModel : ObservableObject, IQueryAttributabl
             SessionId = Group.SessionId,
             AverageVelocity = Group.AverageVelocity,
             StDev = Group.StDev,
+            GroupSize = Group.GroupSize,
 
         };
         var check = App.SessionRepo.AddGroup(group);

@@ -163,6 +163,7 @@ public partial class SessionOptionsViewModel : ObservableObject, IQueryAttributa
             Note = Session.Note,
             Id = Session.SessionId,
             Name = Session.Name,
+            Date_Time = DateTime.Now,
         };
 
         int result = App.SessionRepo.AddSession(saveSession);

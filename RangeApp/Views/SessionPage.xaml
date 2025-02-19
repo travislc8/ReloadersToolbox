@@ -24,27 +24,56 @@
                             <Border Margin="-1"
                                 StrokeThickness="2">
 
-                                <VerticalStackLayout>
-                                    <HorizontalStackLayout>
-                                        <Label Text="Group: "
-                                            FontAttributes="Bold" />
-                                        <Label Text="{Binding GroupNum}" />
-                                        <Label Text="     Firearm: "
-                                            FontAttributes="Bold" />
-                                        <Label Text="{Binding FirearmName}" />
-                                        <Label Text="      Load: "
-                                            FontAttributes="Bold" />
-                                        <Label Text="{Binding RoundName}" />
-                                    </HorizontalStackLayout>
-                                    <HorizontalStackLayout>
-                                        <Label Text="Average Velocity: "
-                                            FontAttributes="Bold" />
-                                        <Label Text="{Binding AverageVelocity}" />
-                                        <Label Text="    Standard Deviation: "
-                                            FontAttributes="Bold" />
-                                        <Label Text="{Binding StDev}" />
-                                    </HorizontalStackLayout>
-                                </VerticalStackLayout>
+                                <Grid ColumnDefinitions="Auto,*,Auto,*"
+                                    RowDefinitions="Auto,Auto,Auto"
+                                    Margin="2">
+                                    <Label Text="Group #: "
+                                        FontAttributes="Bold"
+                                        Grid.Column="0"
+                                        Grid.Row="0" />
+                                    <Label Text="{Binding GroupNum}"
+                                        Grid.Column="1"
+                                        Grid.Row="0" />
+                                    <Label Text="Group Size: "
+                                        FontAttributes="Bold"
+                                        Grid.Column="2"
+                                        Grid.Row="0" />
+                                    <Label Text="{Binding GroupSize}"
+                                        Grid.Column="3"
+                                        Grid.Row="0" />
+                                    <Label Text="Firearm: "
+                                        FontAttributes="Bold"
+                                        HorizontalOptions="End"
+                                        Grid.Column="0"
+                                        Grid.Row="1" />
+                                    <Label Text="{Binding FirearmName}"
+                                        Grid.Column="1"
+                                        Grid.Row="1" />
+                                    <Label Text="Load: "
+                                        FontAttributes="Bold"
+                                        HorizontalOptions="End"
+                                        Grid.Column="2"
+                                        Grid.Row="1" />
+                                    <Label Text="{Binding RoundName}"
+                                        Grid.Column="3"
+                                        Grid.Row="1" />
+                                    <Label Text="Avg Velo: "
+                                        FontAttributes="Bold"
+                                        HorizontalOptions="End"
+                                        Grid.Column="0"
+                                        Grid.Row="2" />
+                                    <Label Text="{Binding AverageVelocity, StringFormat='{0:f1}'}"
+                                        Grid.Column="1"
+                                        Grid.Row="2" />
+                                    <Label Text="StDev: "
+                                        FontAttributes="Bold"
+                                        HorizontalOptions="End"
+                                        Grid.Column="2"
+                                        Grid.Row="2" />
+                                    <Label Text="{Binding StDev, StringFormat='{0:f2}'}"
+                                        Grid.Column="3"
+                                        Grid.Row="2" />
+                                </Grid>
                             </Border>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>

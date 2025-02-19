@@ -14,4 +14,5 @@ public class GroupData
     public int? RoundId { get; set; }
     public float? AverageVelocity { get; set; }
     public float? StDev { get; set; }
+    public decimal? GroupSize { get; set; }
 }

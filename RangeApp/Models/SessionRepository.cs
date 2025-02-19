@@ -379,7 +379,8 @@ public class SessionRepository
                     RoundName = GetRoundNameFromId(group_list[i].RoundId),
                     RoundId = group_list[i].RoundId,
                     AverageVelocity = group_list[i].AverageVelocity,
-                    StDev = group_list[i].StDev
+                    StDev = group_list[i].StDev,
+                    GroupSize = group_list[i].GroupSize,
                 };
                 group_data_list.Add(temp);
 
