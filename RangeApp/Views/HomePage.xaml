@@ -15,11 +15,13 @@
             x:Name="ContinueSessionButton"
             VerticalOptions="End"
             Margin="0,10,0,0"
+            IsVisible="{Binding ShowContinueButton}"
             Command="{Binding ContinueSessionCommand }" />
         <Button Text="New Session"
             x:Name="NewSessionButton"
             VerticalOptions="End"
             Margin="0,10,0,0"
+            IsVisible="{Binding ShowNewButton}"
             Command="{Binding NewSessionCommand}" />
     </VerticalStackLayout>
 

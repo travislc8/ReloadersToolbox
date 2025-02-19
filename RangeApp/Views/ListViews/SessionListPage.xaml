@@ -65,15 +65,18 @@
             </ScrollView>
         </Border>
 
-        <Grid ColumnDefinitions="*,*"
+        <Grid ColumnDefinitions="*,*,*"
             ColumnSpacing="5"
             Margin="0,5,0,0">
+            <Button Text="New Session"
+                Command="{Binding NewSessionSelectedCommand}"
+                Grid.Column="0" />
             <Button Text="Edit Session"
                 Command="{Binding EditSessionSelectedCommand}"
-                Grid.Column="0" />
+                Grid.Column="1" />
             <Button Text="Delete Session"
                 Command="{Binding DeleteSelectedCommand}"
-                Grid.Column="1" />
+                Grid.Column="2" />
         </Grid>
         <Label Text="{Binding StatusMessage}" />
 

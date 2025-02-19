@@ -66,6 +66,12 @@ public partial class SessionListPageViewModel : ObservableObject, IQueryAttribut
             StatusMessage = "No Session Selected";
         }
     }
+
+    [RelayCommand]
+    async Task NewSessionSelected()
+    {
+        await Shell.Current.GoToAsync("SessionOptions");
+    }
     [RelayCommand]
     async Task EditSessionSelected()
     {
@@ -74,7 +80,8 @@ public partial class SessionListPageViewModel : ObservableObject, IQueryAttribut
             StatusMessage = "No Session Selected";
             return;
         }
-        StatusMessage = string.Format("Editing {0}", SelectedSession.Name);
+        StatusMessage = string.Format("Editing {0}", SelectedSession.SessionId);
+        Preferences.Set("SessionActive", SelectedSession.SessionId);
         var NavigationParameter = new Dictionary<string, object> {
             {"SessionData", SelectedSession}
         };

@@ -333,6 +333,8 @@ public partial class NewRoundPageViewModel : ObservableObject, IQueryAttributabl
             {"AddedRound", round_id }
         };
         Shell.Current.GoToAsync("..", NavigationParemeter);
+        //TODO cannot go back to page if there isn't one
+        //await Shell.Current.Navigation.PopToRootAsync();
     }
     [RelayCommand]
     public void Cancel()

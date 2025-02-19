@@ -184,7 +184,6 @@ public partial class SessionOptionsViewModel : ObservableObject, IQueryAttributa
         {
             {"SessionData", Session}
         };
-
         await Shell.Current.GoToAsync("SessionPage", NavigationParameter);
     }
 

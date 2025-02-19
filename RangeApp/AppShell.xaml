@@ -13,8 +13,8 @@
         Icon="home.png">
         <ShellContent ContentTemplate="{DataTemplate local:Views.HomePage}" />
     </FlyoutItem>
-    <FlyoutItem Title="Create Session">
-        <ShellContent ContentTemplate="{DataTemplate local:Views.SessionOptions}" />
+    <FlyoutItem Title="Sessions">
+        <ShellContent ContentTemplate="{DataTemplate local:Views.SessionListPage}" />
     </FlyoutItem>
     <FlyoutItem Title="View/Modify Equipment">
         <ShellContent ContentTemplate="{DataTemplate local:Views.ModifyNavigationPage}" />

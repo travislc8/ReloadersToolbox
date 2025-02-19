@@ -3,9 +3,28 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace RangeApp.ViewModel;
 
-public partial class HomePageViewModel : ObservableObject
+public partial class HomePageViewModel : ObservableObject, IQueryAttributable
 {
+    [ObservableProperty]
+    bool showContinueButton = false;
+    [ObservableProperty]
+    bool showNewButton = false;
 
+    public HomePageViewModel()
+    {
+        updateShow();
+    }
+
+    ///<summary>
+    /// Any time the page is returned to the continue or new session button must
+    /// be updated
+    ///</summary>
+    public void ApplyQueryAttributes(IDictionary<string, object> attributes)
+    {
+        updateShow();
+        attributes.Clear();
+
+    }
     [RelayCommand]
     void NewSession()
     {
@@ -29,4 +48,17 @@ public partial class HomePageViewModel : ObservableObject
         Shell.Current.GoToAsync("NewRoundPage");
     }
 
+    private void updateShow()
+    {
+        if (Preferences.Get("SessionActive", 0) != 0)
+        {
+            ShowContinueButton = true;
+            ShowNewButton = false;
+        }
+        else
+        {
+            ShowContinueButton = false;
+            ShowNewButton = true;
+        }
+    }
 }
