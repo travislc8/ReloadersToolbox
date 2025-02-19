@@ -17,7 +17,7 @@
                                    TextDecorations="Underline"/>
                             <Label Text="{Binding Group.FirearmName}"
                                    Grid.Column="1"/>
-                            <Label Text="Round:"
+                            <Label Text="Load:"
                                    Grid.Column="2"
                                    TextDecorations="Underline"/>
                             <Label Text="{Binding Group.RoundName}"

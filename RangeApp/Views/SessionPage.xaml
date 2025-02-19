@@ -32,7 +32,7 @@
                                         <Label Text="     Firearm: "
                                             FontAttributes="Bold" />
                                         <Label Text="{Binding FirearmName}" />
-                                        <Label Text="      Round: "
+                                        <Label Text="      Load: "
                                             FontAttributes="Bold" />
                                         <Label Text="{Binding RoundName}" />
                                     </HorizontalStackLayout>
@@ -178,7 +178,7 @@
                 ColumnDefinitions="*,*,100"
                 Padding="0,20,0,0">
 
-                <Label Text="Selected Round: "
+                <Label Text="Selected Load: "
                     Grid.Column="0"
                     VerticalTextAlignment="Center" />
                 <Label Text="{Binding SelectedRound.Name}"
@@ -193,7 +193,7 @@
                 Padding="10"
                 x:Name="RoundChange">
                 <VerticalStackLayout>
-                    <Label Text="Rounds For Current Firearm"
+                    <Label Text="Loads For Current Firearm"
                         FontSize="Medium"
                         HorizontalOptions="Center" />
                     <Grid ColumnSpacing="10"
@@ -206,12 +206,12 @@
                                     Command="{Binding RoundsInQueueCheckChangedCommand}" />
                             </CheckBox.Behaviors>
                         </CheckBox>
-                        <Label Text="Rounds In Test Queue"
+                        <Label Text="Loads In Test Queue"
                             Grid.Column="1"
                             VerticalOptions="Center" />
                         <Entry Grid.Column="2"
                             Text="{Binding RoundSearchEntry}"
-                            Placeholder="Search Rounds">
+                            Placeholder="Search Loads">
                             <Entry.Behaviors>
                                 <toolkit:EventToCommandBehavior
                                     EventName="TextChanged"
@@ -253,7 +253,7 @@
                                             <Label Text="{Binding PowderWeight}"
                                                 Grid.Column="1"
                                                 Grid.Row="1" />
-                                            <Label Text="Round Length: "
+                                            <Label Text="Load Length: "
                                                 Grid.Column="2"
                                                 Grid.Row="1" />
                                             <Label Text="{Binding TotalLength}"

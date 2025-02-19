@@ -7,7 +7,7 @@
     x:Class="RangeApp.Views.NewRoundPage"
     x:DataType="viewmodel:NewRoundPageViewModel"
     Padding="10,20,10,0"
-    Title="Round Builder">
+    Title="Load Builder">
     <ScrollView>
         <VerticalStackLayout Padding="10,0,10,500">
             <HorizontalStackLayout>
@@ -19,7 +19,7 @@
             <Grid ColumnDefinitions="100,*"
                 ColumnSpacing="10"
                 RowDefinitions="40,40,40,40,40,40,40">
-                <Label Text="Round Name:"
+                <Label Text="Load Name:"
                     VerticalOptions="Center"
                     HorizontalOptions="End"
                     Grid.Row="0"

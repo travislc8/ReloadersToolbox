@@ -9,7 +9,7 @@
         <Label Padding="0,0,0,20"
             Text="Welcome To The Range Day App"
             FontSize="32" />
-        <Button Text="Round Builder"
+        <Button Text="Load Builder"
             Command="{Binding RoundBuilderCommand}" />
         <Button Text="Continue Session"
             x:Name="ContinueSessionButton"

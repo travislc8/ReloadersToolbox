@@ -29,7 +29,7 @@ public partial class ModifyDataPageViewModel : ObservableObject
     {
         Options.Add("Select");
         Options.Add("Firearm");
-        Options.Add("Round");
+        Options.Add("Load");
         Options.Add("Location");
         Options.Add("Session");
     }
@@ -48,7 +48,7 @@ public partial class ModifyDataPageViewModel : ObservableObject
                 }
             case 2:
                 {
-                    StatusMessage = "Opening Round List Page";
+                    StatusMessage = "Opening Load List Page";
                     await Shell.Current.GoToAsync("RoundListPage");
                     Index = 0;
                     break;
