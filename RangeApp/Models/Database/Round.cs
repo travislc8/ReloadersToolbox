@@ -13,7 +13,7 @@ public class Round
     public int? BulletId { get; set; }
     [MaxLength(20)]
     public string? Caliber { get; set; }
-    public int? PowderGrains { get; set; }
+    public decimal? PowderGrains { get; set; }
     public int? PowderId { get; set; }
     [MaxLength(50)]
     public string? CaseName { get; set; }

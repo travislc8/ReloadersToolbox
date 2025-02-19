@@ -12,7 +12,7 @@ public partial class RoundData : ObservableObject
     public int RoundId { get; set; }
     public string? Name { get; set; }
     public string? Caliber { get; set; }
-    public int? PowderWeight { get; set; }
+    public decimal? PowderWeight { get; set; }
     public string? CaseName { get; set; }
     public string? Primer { get; set; }
     public decimal? TotalLength { get; set; }

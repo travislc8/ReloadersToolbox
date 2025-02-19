@@ -233,7 +233,7 @@
                                         Stroke="Black"
                                         StrokeThickness="1"
                                         Padding="5">
-                                        <Grid ColumnDefinitions="50,*,60,*,60,*"
+                                        <Grid ColumnDefinitions="auto,*,auto,*"
                                             RowDefinitions="20,20">
                                             <Label Text="Name: "
                                                 Grid.Column="0"
@@ -247,7 +247,7 @@
                                             <Label Text="{Binding Caliber}"
                                                 Grid.Column="3"
                                                 Grid.Row="0" />
-                                            <Label Text="Powder (g): "
+                                            <Label Text="Powder(g): "
                                                 Grid.Column="0"
                                                 Grid.Row="1" />
                                             <Label Text="{Binding PowderWeight}"

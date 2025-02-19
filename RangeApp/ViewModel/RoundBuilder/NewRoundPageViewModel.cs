@@ -277,13 +277,13 @@ public partial class NewRoundPageViewModel : ObservableObject, IQueryAttributabl
         StatusMessage = string.Empty;
         if (NameEntry == string.Empty)
             StatusMessage += "Round must have a name\n";
-        var check = int.TryParse(PowderWeightEntry, out int weight);
+        var check = decimal.TryParse(PowderWeightEntry, out decimal weight);
         if (!check)
         {
             if (PowderWeightEntry == string.Empty)
                 weight = 0;
             else
-                StatusMessage += "Invalid Powder Weight (Must be whole numbers)\n";
+                StatusMessage += "Invalid Powder Weight\n";
         }
         check = decimal.TryParse(LengthEntry, out decimal length);
         if (!check)
