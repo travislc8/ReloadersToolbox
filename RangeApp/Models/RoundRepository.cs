@@ -242,6 +242,27 @@ public class RoundRepository
         }
         return new Bullet();
     }
+
+    public string? GetRoundNameFromId(int? id)
+    {
+        if (id == null)
+        {
+            return null;
+        }
+        try
+        {
+            var result = from c in conn.Table<Round>()
+                         where c.Id == id
+                         select c;
+            StatusMessage = string.Format("Found Round from Id");
+            return result.FirstOrDefault().Name;
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = string.Format("Could not retrieve round name from id{0}", ex.Message);
+            return null;
+        }
+    }
     public List<ViewModel.RoundData> GetRoundData()
     {
         List<ViewModel.RoundData> round_data_list = [];

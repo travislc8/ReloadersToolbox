@@ -11,7 +11,6 @@ public class Group
     /// <summary>
     /// Name = SessionId + "-" + (Group number in group)
     /// </summary>
-    [Unique]
     public string Name { get; set; }
     public int? RoundId { get; set; }
     public int? FirearmId { get; set; }

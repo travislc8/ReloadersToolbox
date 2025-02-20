@@ -451,6 +451,29 @@ public class SessionRepository
         }
         return new Group();
     }
+
+    public ObservableCollection<ViewModel.GroupData> GetGroupsFromRound(int roundId)
+    {
+        ObservableCollection<ViewModel.GroupData> groupData = new ();
+        try
+        {
+            Init();
+            var choice = from c in conn.Table<Group>()
+                         where c.RoundId == roundId
+                         select c;
+
+            foreach(var group in choice)
+            {
+                groupData.Add(ViewModel.GroupData.GetGroupData(group));
+            }
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = string.Format("Failed to retrieve data. {0}", ex.Message);
+        }
+
+        return groupData;
+    }
     public List<string> GetSessionNames()
     {
         try
@@ -524,8 +547,9 @@ public class SessionRepository
     /// Id to find the name of.</param>
     /// <returns>
     /// Session name or empty string.</returns>
-    public Session? GetSessionNameFromId(int id)
+    public Session? GetSessionNameFromId(int? id)
     {
+        if (id == null) return null;
         Session session;
         try
         {

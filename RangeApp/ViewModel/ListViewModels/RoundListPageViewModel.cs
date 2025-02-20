@@ -12,6 +12,10 @@ public partial class RoundListPageViewModel : ObservableObject, IQueryAttributab
         UpdataRoundData();
     }
 
+    //groups
+    //selected Group
+    //GroupSelectedCommand
+
     List<ViewModel.RoundData> AllRoundData { get; set; } = new List<ViewModel.RoundData>();
 
     [ObservableProperty]
@@ -46,6 +50,19 @@ public partial class RoundListPageViewModel : ObservableObject, IQueryAttributab
                     if (item.RoundId == result)
                         SelectedRoundData = item;
                 }
+            }
+        }
+        if (attributes.ContainsKey("ShotAdded"))
+        {
+            string result = attributes["ShotAdded"] as string;
+            if (result == "0")
+            {
+                GroupStatusMessage = "";
+            }
+            else
+            {
+                GetGroups();
+                GroupStatusMessage = "Edited Group";
             }
         }
     }
@@ -163,9 +180,10 @@ public partial class RoundListPageViewModel : ObservableObject, IQueryAttributab
     }
 
     [RelayCommand]
-    public void RoundDetailedView()
+    async public Task RoundDetailedView()
     {
-        StatusMessage = "Groud Data Feature Coming Soon";
+        GetGroups();
+        ShowGroups = true;
     }
 
     [RelayCommand]
@@ -178,5 +196,90 @@ public partial class RoundListPageViewModel : ObservableObject, IQueryAttributab
                 App.RoundRepo.UpdateQueue(item.RoundId, (bool)item.InQueue);
             }
         }
+    }
+
+
+    // group section
+    [ObservableProperty]
+    ObservableCollection<ViewModel.GroupData> groups = [];
+
+    [ObservableProperty]
+    bool showGroups = false;
+    [ObservableProperty]
+    bool allowEditGroup = false;
+    [ObservableProperty]
+    bool allowDeleteGroup = false;
+    [ObservableProperty]
+    string groupStatusMessage = string.Empty;
+    [ObservableProperty]
+    GroupData? selectedGroup;
+    [ObservableProperty]
+    int groupCount = 0;
+    [ObservableProperty]
+    decimal avgGroupSize = 0;
+
+
+    [RelayCommand]
+    async Task EditGroup()
+    {
+        if (SelectedGroup == null)
+        {
+            GroupStatusMessage = "No Group Selected to Edit";
+        }
+        else
+        {
+            GroupStatusMessage = string.Format("Editing {0}", SelectedGroup.Name);
+            var navigationParamenter = new Dictionary<string, object>
+            {
+                {"GroupData", SelectedGroup }
+            };
+            await Shell.Current.GoToAsync("NewGroupPage", navigationParamenter);
+        }
+    }
+
+    [RelayCommand]
+    async Task DeleteGroup()
+    {
+        if (SelectedGroup != null)
+        {
+            string question = string.Format("Delete {0}?", SelectedGroup.Name);
+            // displays a pop up to make sure the user wishes to delete the entry
+            if (Application.Current != null && Application.Current.MainPage != null)
+            {
+                bool response = await Application.Current.MainPage.DisplayAlert(
+                        "Alert", question, "Yes", "No");
+                if (!response) return;
+            }
+            App.SessionRepo.DeleteGroup(SelectedGroup.Id);
+            Groups.Remove(SelectedGroup);
+            GroupStatusMessage = string.Format("Deleted {0}", SelectedGroup.Name);
+        }
+        else
+        {
+            GroupStatusMessage = "No Group Selected To Delete";
+        }
+    }
+
+    [RelayCommand]
+    void GroupSelected()
+    {
+        AllowEditGroup = true;
+        AllowDeleteGroup = true;
+    }
+
+    void GetGroups()
+    {
+        if (SelectedRoundData == null) return;
+
+        Groups = App.SessionRepo.GetGroupsFromRound(SelectedRoundData.RoundId);
+        GroupCount = Groups.Count;
+        if (GroupCount < 1) return;
+        decimal sum = 0;
+        foreach (var group in Groups)
+        {
+            if (group.GroupSize != null)
+                sum += (decimal)group.GroupSize;
+        }
+        AvgGroupSize = sum / GroupCount;
     }
 }

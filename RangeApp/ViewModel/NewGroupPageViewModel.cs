@@ -201,8 +201,14 @@ public partial class NewGroupPageViewModel : ObservableObject, IQueryAttributabl
         var check = App.SessionRepo.AddGroup(group);
         if (check == 0)
         {
-            GroupStatusMessage = App.SessionRepo.StatusMessage;
-            return;
+            group.Name = group.Name + ".";
+            check = App.SessionRepo.AddGroup(group);
+            if (check == 0)
+            {
+
+                GroupStatusMessage = App.SessionRepo.StatusMessage;
+                return;
+            }
         }
 
         var Group_Id = App.SessionRepo.GetGroupId(Group.Name);
@@ -215,8 +221,14 @@ public partial class NewGroupPageViewModel : ObservableObject, IQueryAttributabl
         Models.GroupInSessison group_in_session = new Models.GroupInSessison
         {
             GroupId = Group_Id,
-            SessisonId = Group.SessionId
         };
+        if (Group.SessionId == null)
+        {
+            group_in_session.SessisonId = 0;
+        } else
+        {
+            group_in_session.SessisonId = (int)Group.SessionId;
+        }
 
         App.SessionRepo.AddGroupToSession(group_in_session);
 
