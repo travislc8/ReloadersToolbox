@@ -197,6 +197,7 @@ public partial class SessionPageViewModel : ObservableObject, IQueryAttributable
         var group_data = new GroupData
         {
             SessionId = SessionData.SessionId,
+            SessionName = SessionData.Name,
             Name = group_name,
             GroupNum = group_num,
             FirearmName = SelectedFirearm.Name,
