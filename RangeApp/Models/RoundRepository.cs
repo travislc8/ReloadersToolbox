@@ -30,6 +30,23 @@ public class RoundRepository
         conn.CreateTable<Group>();
     }
 
+    public bool ClearRoundTable() {
+        try {
+            Init();
+            int result = conn.DropTable<Round>();
+            conn.CreateTable<Round>();
+            if (result > 0) return true;
+            else return false;
+        } catch (Exception ex) {
+            StatusMessage = string.Format("Could not remove table. {0}", ex.Message);
+            return false;
+        }
+    }
+
+    ///<summary>
+    /// Gets the round Id from the table for the round that matches the data
+    /// If the data matches for multiple entries, returns the first
+    ///</summary>
     public int GetRoundId(Round round)
     {
         int id = -1;
