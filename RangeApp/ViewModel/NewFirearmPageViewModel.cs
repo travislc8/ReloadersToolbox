@@ -8,7 +8,12 @@ public partial class NewFirearmPageViewModel : ObservableObject, IQueryAttributa
 {
     public NewFirearmPageViewModel()
     {
-        AvailableFirearms = new ObservableCollection<string>(App.FirearmRepo.GetAllFirearmNames());
+        GetAvailableFirearms();
+    }
+
+    async private Task GetAvailableFirearms() {
+        var firearms = await Task.Run(() => App.FirearmRepo.GetAllFirearmNames());
+        AvailableFirearms = new ObservableCollection<string>(firearms);
         StatusMessage = App.FirearmRepo.StatusMessage;
     }
 

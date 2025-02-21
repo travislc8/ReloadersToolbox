@@ -464,7 +464,7 @@ public class SessionRepository
 
             foreach(var group in choice)
             {
-                groupData.Add(ViewModel.GroupData.GetGroupData(group));
+                groupData.Add(ViewModel.GroupData.GetGroupData(group).Result);
             }
         }
         catch (Exception ex)

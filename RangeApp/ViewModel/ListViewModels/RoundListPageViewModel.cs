@@ -70,9 +70,9 @@ public partial class RoundListPageViewModel : ObservableObject, IQueryAttributab
     ///<summary>
     /// Gets the Rounds from the database and updates the displayed list
     ///</summary>
-    private void UpdataRoundData()
+    async private void UpdataRoundData()
     {
-        AllRoundData = App.RoundRepo.GetRoundData();
+        AllRoundData = await Task.Run(() => App.RoundRepo.GetRoundData());
         FilterRoundData();
     }
 
@@ -187,13 +187,13 @@ public partial class RoundListPageViewModel : ObservableObject, IQueryAttributab
     }
 
     [RelayCommand]
-    public void InQueueChanged()
+    async public void InQueueChanged()
     {
         foreach (var item in RefinedRoundData)
         {
             if (item.InQueue != null)
             {
-                App.RoundRepo.UpdateQueue(item.RoundId, (bool)item.InQueue);
+                await Task.Run(() => App.RoundRepo.UpdateQueue(item.RoundId, (bool)item.InQueue));
             }
         }
     }
@@ -267,11 +267,11 @@ public partial class RoundListPageViewModel : ObservableObject, IQueryAttributab
         AllowDeleteGroup = true;
     }
 
-    void GetGroups()
+    async private void GetGroups()
     {
         if (SelectedRoundData == null) return;
 
-        Groups = App.SessionRepo.GetGroupsFromRound(SelectedRoundData.RoundId);
+        Groups = await Task.Run(() => App.SessionRepo.GetGroupsFromRound(SelectedRoundData.RoundId));
         GroupCount = Groups.Count;
         if (GroupCount < 1) return;
         decimal sum = 0;

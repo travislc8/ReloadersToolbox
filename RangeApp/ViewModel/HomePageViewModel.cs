@@ -28,17 +28,35 @@ public partial class HomePageViewModel : ObservableObject, IQueryAttributable
     [RelayCommand]
     void NewSession()
     {
-        Shell.Current.GoToAsync("SessionOptions");
+        int session_id = Preferences.Get("SessionActive", 0);
+        if (session_id == 0)
+        {
+            Shell.Current.GoToAsync("SessionListPage");
+        }
+        else 
+        {
+            var NavigationProperty = new Dictionary<string, object> {
+                {"SessionId", session_id}
+            };
+            Shell.Current.GoToAsync("SessionPage", NavigationProperty);
+        }
     }
 
     [RelayCommand]
     void ContinueSession()
     {
         int session_id = Preferences.Get("SessionActive", 0);
-        var NavigationProperty = new Dictionary<string, object> {
-            {"SessionId", session_id}
-        };
-        Shell.Current.GoToAsync("SessionPage", NavigationProperty);
+        if (session_id == 0)
+        {
+            Shell.Current.GoToAsync("SessionListPage");
+        }
+        else 
+        {
+            var NavigationProperty = new Dictionary<string, object> {
+                {"SessionId", session_id}
+            };
+            Shell.Current.GoToAsync("SessionPage", NavigationProperty);
+        }
     }
 
     [RelayCommand]

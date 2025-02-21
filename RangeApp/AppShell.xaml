@@ -19,9 +19,5 @@
     <FlyoutItem Title="View/Modify Equipment">
         <ShellContent ContentTemplate="{DataTemplate local:Views.ModifyNavigationPage}" />
     </FlyoutItem>
-    <FlyoutItem Title="Load Builder">
-        <ShellContent ContentTemplate="{DataTemplate local:Views.NewRoundPage}" />
-    </FlyoutItem>
-
 
 </Shell>

@@ -18,7 +18,7 @@ public class GroupData
     public decimal? GroupSize { get; set; }
 
 
-    public static GroupData GetGroupData(RangeApp.Models.Group group)
+    async public static Task<GroupData> GetGroupData(RangeApp.Models.Group group)
     {
         var data = new GroupData()
         {
@@ -28,14 +28,14 @@ public class GroupData
             GroupNum = 0,
             Note = group.Note,
             FirearmId = group.FirearmId,
-            FirearmName = App.FirearmRepo.GetFirearmNameFromId(group.FirearmId),
+            FirearmName = await Task.Run(() => App.FirearmRepo.GetFirearmNameFromId(group.FirearmId)),
             RoundId = group.RoundId,
-            RoundName = App.RoundRepo.GetRoundNameFromId(group.RoundId),
+            RoundName = await Task.Run(() => App.RoundRepo.GetRoundNameFromId(group.RoundId)),
             GroupSize = group.GroupSize,
             StDev = group.StDev,
             AverageVelocity = group.AverageVelocity,
         };
-        var session = App.SessionRepo.GetSessionNameFromId(group.SessionId);
+        var session = await Task.Run(() => App.SessionRepo.GetSessionNameFromId(group.SessionId));
         if (session != null) data.SessionName = session.Name;
         return data;
     }

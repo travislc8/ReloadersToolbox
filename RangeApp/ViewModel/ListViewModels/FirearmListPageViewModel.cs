@@ -3,6 +3,7 @@ using Microsoft.Maui.Controls;
 using CommunityToolkit.Mvvm.Messaging;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.Input;
+using System.Runtime.CompilerServices;
 
 namespace RangeApp.ViewModel;
 
@@ -13,10 +14,9 @@ public partial class FirearmListPageViewModel : ObservableObject, IQueryAttribut
     /// populate the page.
     public FirearmListPageViewModel()
     {
-        AllFirearms = new List<ViewModel.FirearmData>(App.FirearmRepo.GetAllFirearmData());
-        RefinedFirearms = new ObservableCollection<ViewModel.FirearmData>(AllFirearms);
-
-        StatusMessage = App.FirearmRepo.StatusMessage;
+        AllFirearms = new();
+        RefinedFirearms = new();
+        UpdateFirearmList();
     }
 
     List<ViewModel.FirearmData> AllFirearms;
@@ -67,9 +67,10 @@ public partial class FirearmListPageViewModel : ObservableObject, IQueryAttribut
     /// <summary>
     /// Updates the AllFirearms List from the database
     /// </summary>
-    public void UpdateFirearmList()
+    public async void UpdateFirearmList()
     {
-        AllFirearms = new List<ViewModel.FirearmData>(App.FirearmRepo.GetAllFirearmData());
+        var list = await Task.Run(() => App.FirearmRepo.GetAllFirearmData());
+        AllFirearms = new List<ViewModel.FirearmData>(list);
         AddAllToRefined();
     }
 

@@ -8,8 +8,10 @@ public partial class LocationListPageViewModel : ObservableObject, IQueryAttribu
 {
     public LocationListPageViewModel()
     {
-        AllLocations = new List<ViewModel.LocationData>(App.LocationRepo.GetAllLocationData());
-        RefinedLocations = new ObservableCollection<ViewModel.LocationData>(AllLocations);
+        AllLocations = new();
+        RefinedLocations = new();
+        
+        GetLocations();
     }
 
     [ObservableProperty]
@@ -40,6 +42,12 @@ public partial class LocationListPageViewModel : ObservableObject, IQueryAttribu
         RefinedLocations = new ObservableCollection<ViewModel.LocationData>(AllLocations);
     }
 
+    async private void GetLocations() {
+        var locations = await Task.Run(() => App.LocationRepo.GetAllLocationData());
+        AllLocations = new List<ViewModel.LocationData>(locations);
+        FilterLocations();
+    }
+
 
     private void FilterLocations()
     {
@@ -62,8 +70,7 @@ public partial class LocationListPageViewModel : ObservableObject, IQueryAttribu
     public void UpdateList()
     {
         SearchInputText = string.Empty;
-        AllLocations = new List<ViewModel.LocationData>(App.LocationRepo.GetAllLocationData());
-        FilterLocations();
+        GetLocations();
     }
     public void SetStatusMessage(string message)
     {

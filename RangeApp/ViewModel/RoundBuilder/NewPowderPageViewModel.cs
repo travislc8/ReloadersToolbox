@@ -8,9 +8,9 @@ public partial class NewPowderPageViewModel : ObservableObject
 
     public NewPowderPageViewModel()
     {
-        AvailablePowders = new ObservableCollection<Models.Powder>(App.RoundRepo.GetPowders());
+        AvailablePowders = new();
+        GetPowders();
 
-        StatusMessage = App.RoundRepo.StatusMessage;
     }
 
     [ObservableProperty]
@@ -24,6 +24,11 @@ public partial class NewPowderPageViewModel : ObservableObject
     [ObservableProperty]
     string type = string.Empty;
 
+    async private void GetPowders() {
+        var powders = await Task.Run(() => App.RoundRepo.GetPowders());
+        AvailablePowders = new ObservableCollection<Models.Powder>(powders);
+        StatusMessage = App.RoundRepo.StatusMessage;
+    }
     public void SetStatusMessage(string message)
     {
         StatusMessage = message;

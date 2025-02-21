@@ -319,9 +319,9 @@ public partial class SessionPageViewModel : ObservableObject, IQueryAttributable
     ///<summary>
     /// Gets the group data from the database
     ///</summary>
-    private void UpdateGroupData()
+    async private void UpdateGroupData()
     {
-        Groups = App.SessionRepo.GetGroupData(SessionData.SessionId);
+        Groups = await Task.Run(() => App.SessionRepo.GetGroupData(SessionData.SessionId));
     }
 
 
@@ -395,31 +395,33 @@ public partial class SessionPageViewModel : ObservableObject, IQueryAttributable
         return result;
     }
 
-    private void UpdateAllRoundsList()
+    async private void UpdateAllRoundsList()
     {
-        AllRounds = RoundData.GetData(App.RoundRepo.GetRounds());
+        var rounds = await Task.Run(() => App.RoundRepo.GetRounds());
+        AllRounds = RoundData.GetData(rounds);
         RefinedRounds = FilterRounds();
     }
 
-    private void UpdateAllFirearmsList()
+    async private void UpdateAllFirearmsList()
     {
-        AllFirearms = FirearmData.GetData(App.FirearmRepo.GetAllFirearms());
+        var firearms = await Task.Run(() => App.FirearmRepo.GetAllFirearms());
+        AllFirearms = FirearmData.GetData(firearms);
         RefinedFirearms = FilterFirearms();
     }
 
     ///<summary>
     /// Fills the SessionData object from the database
     ///</summary>
-    private void FillDataFromId(int id)
+    async private void FillDataFromId(int id)
     {
-        SessionData = App.SessionRepo.GetSessionData(id);
+        SessionData = await Task.Run(() => App.SessionRepo.GetSessionData(id));
         if (SessionData.SessionId == -1)
         {
             StatusMessage = "Error Loading Session" + App.SessionRepo.StatusMessage;
         }
         else
         {
-            Groups = App.SessionRepo.GetGroupData(SessionData.SessionId);
+            Groups = await Task.Run(() => App.SessionRepo.GetGroupData(SessionData.SessionId));
             StatusMessage = string.Format("Loaded {0} from memory", SessionData.Name);
         }
     }

@@ -136,27 +136,27 @@ public partial class NewRoundPageViewModel : ObservableObject, IQueryAttributabl
     ///<summary>
     /// Updates the powders in the displayed list
     ///</summary>
-    private void UpdatePowders()
+    async private void UpdatePowders()
     {
-        AllPowders = App.RoundRepo.GetPowders();
+        AllPowders = await Task.Run(() => App.RoundRepo.GetPowders());
         FilterPowders();
     }
 
     ///<summary>
     /// Updates the bullets in the displayed list
     ///</summary>
-    private void UpdateBullets()
+    async private void UpdateBullets()
     {
-        AllBullets = App.RoundRepo.GetBullets();
+        AllBullets = await Task.Run(() => App.RoundRepo.GetBullets());
         FilterBullets();
     }
 
     ///<summary>
     /// Updates the Firearms in the displayed list
     ///</summary>
-    private void UpdateFirearms()
+    async private void UpdateFirearms()
     {
-        AllFirearms = App.FirearmRepo.GetAllFirearms();
+        AllFirearms = await Task.Run(() => App.FirearmRepo.GetAllFirearms());
         FilterFirearms();
     }
 
@@ -327,6 +327,7 @@ public partial class NewRoundPageViewModel : ObservableObject, IQueryAttributabl
         {
             App.RoundRepo.AddRoundToFirearm(SelectedFirearm.Id, round_id);
         }
+
 
         var NavigationParemeter = new Dictionary<string, object>
         {

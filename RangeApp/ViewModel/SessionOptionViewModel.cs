@@ -10,7 +10,7 @@ public partial class SessionOptionsViewModel : ObservableObject, IQueryAttributa
     {
         UpdateFirearms();
         UpdateLocations();
-        SessionNames = new ObservableCollection<string>(App.SessionRepo.GetSessionNames());
+        UpdateSessionNames();
     }
     [ObservableProperty]
     bool allowSave = false;
@@ -218,9 +218,15 @@ public partial class SessionOptionsViewModel : ObservableObject, IQueryAttributa
         FilteredLocations = await Task.Run(() => FilterLocations());
     }
 
-    private void UpdateFirearms()
+    async private void UpdateSessionNames() {
+        var sessions = await Task.Run(() => App.SessionRepo.GetSessionNames());
+        SessionNames = new ObservableCollection<string>(sessions);
+    }
+
+    async private void UpdateFirearms()
     {
-        AvailableFirearms = FirearmData.GetData(App.FirearmRepo.GetAllFirearms());
+        var firearms = await Task.Run(() => App.FirearmRepo.GetAllFirearms());
+        AvailableFirearms = FirearmData.GetData(firearms);
         FilterFirearms();
         UpdateRemoveFirearmButton();
     }

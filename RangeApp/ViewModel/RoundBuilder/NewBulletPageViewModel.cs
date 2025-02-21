@@ -8,9 +8,8 @@ public partial class NewBulletPageViewModel : ObservableObject
 
     public NewBulletPageViewModel()
     {
-        AvailableBullets = new ObservableCollection<Models.Bullet>(App.RoundRepo.GetBullets());
-
-        StatusMessage = App.RoundRepo.StatusMessage;
+        AvailableBullets = new();
+        GetBullets();
     }
 
 
@@ -26,6 +25,13 @@ public partial class NewBulletPageViewModel : ObservableObject
     string grains = string.Empty;
     [ObservableProperty]
     string mfg = string.Empty;
+
+    async private void GetBullets() {
+        var bullets = await Task.Run(() => App.RoundRepo.GetBullets());
+        AvailableBullets = new ObservableCollection<Models.Bullet>(bullets);
+
+        StatusMessage = App.RoundRepo.StatusMessage;
+    }
 
     public void SetStatusMessage(string message)
     {

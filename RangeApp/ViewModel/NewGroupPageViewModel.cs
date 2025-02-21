@@ -48,14 +48,20 @@ public partial class NewGroupPageViewModel : ObservableObject, IQueryAttributabl
         if (group_data != null)
         {
             Group = group_data;
-            if (Group.Id != 0)
-                Shots = new ObservableCollection<ShotData>(App.SessionRepo.GetGroupShotData(Group.Id));
-            UpdateStats();
+            if (Group.Id != 0) {
+                UpdateShots();
+                UpdateStats();
+            }
         }
         else
         {
             Shell.Current.GoToAsync("..");
         }
+    }
+
+    async private Task UpdateShots() {
+        var shots = await Task.Run(() => App.SessionRepo.GetGroupShotData(Group.Id));
+        Shots = new ObservableCollection<ShotData>(shots);
     }
 
     public void UnitChanged(string unit)

@@ -9,8 +9,8 @@ public partial class NewLocationPageViewModel : ObservableObject, IQueryAttribut
     public NewLocationPageViewModel()
     {
         Location = new ViewModel.LocationData();
-        AvailableLocaitons = new ObservableCollection<string>(App.LocationRepo.GetAllLocationNames());
-
+        AvailableLocaitons = new();
+        UpdateLocations();
     }
 
     [ObservableProperty]
@@ -52,8 +52,12 @@ public partial class NewLocationPageViewModel : ObservableObject, IQueryAttribut
     }
 
     [RelayCommand]
-    public void NameTextChanged()
+    async public Task NameTextChanged()
     {
+        await Task.Run(() => CheckLocationName());
+    }
+
+    private void CheckLocationName() {
         string status = string.Empty;
         if (!Model.Utils.Validate.String(Location.Name, ref status, 50))
         {
@@ -143,5 +147,10 @@ public partial class NewLocationPageViewModel : ObservableObject, IQueryAttribut
     void Cancel()
     {
         Shell.Current.GoToAsync("..");
+    }
+
+    async private Task UpdateLocations() {
+        var locations = await Task.Run(() => App.LocationRepo.GetAllLocationNames());
+        AvailableLocaitons = new ObservableCollection<string>(locations);
     }
 }

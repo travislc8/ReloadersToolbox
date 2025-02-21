@@ -98,9 +98,10 @@ public partial class SessionListPageViewModel : ObservableObject, IQueryAttribut
     {
         await Task.Run(() => UpdateRefinedSessionData());
     }
-    private void UpdateAllSessionData()
+
+    async private void UpdateAllSessionData()
     {
-        AllSessionData = App.SessionRepo.GetSessionDataList();
+        AllSessionData = await Task.Run(() => App.SessionRepo.GetSessionDataList());
         if (AllSessionData.Count == 0)
         {
             StatusMessage = "No Sessions to View";
